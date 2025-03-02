@@ -26,7 +26,10 @@ class AuthAgentPlugin:
 
 
 auth_agent = ChatCompletionAgent(
-    description="An agent that can validate a user's identity using email and OTP code. NOTE: another agent must be called to acquire the email and OTP code.",
+    description="""
+An agent that can validate a user's identity using email and OTP code.
+NOTE: another agent must be called to acquire the email and OTP code.
+""",
     id="auth",
     name="Auth",
     service=create_service(),

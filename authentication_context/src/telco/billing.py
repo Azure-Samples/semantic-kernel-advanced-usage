@@ -108,7 +108,7 @@ class BillingAgentPlugin:
 
 
 billing_agent = ChatCompletionAgent(
-    description="A billing support agent that can answer billing-related questions, like invoices, payment methods, and usage metrics",
+    description="A billing support agent that can answer billing-related questions, like invoices, payment methods, and usage metrics. NOTE: this agent requires user authentication before proceeding.",
     id="billing",
     name="Billing",
     service=create_service(),
