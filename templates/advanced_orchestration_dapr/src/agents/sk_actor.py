@@ -3,8 +3,8 @@ import logging
 
 from semantic_kernel.contents.chat_history import ChatHistory
 from semantic_kernel.contents.chat_message_content import ChatMessageContent
+from semantic_kernel.agents import Agent
 
-from sk_ext.team import Team
 from telco.telco_team import telco_team
 from opentelemetry import trace
 
@@ -29,7 +29,7 @@ class SKAgentActorInterface(ActorInterface):
 class SKAgentActor(Actor, SKAgentActorInterface):
 
     history: ChatHistory
-    agent: Team
+    agent: Agent
 
     async def _on_activate(self) -> None:
         logger.info(f"Activating actor {self.id}")
@@ -65,7 +65,7 @@ class SKAgentActor(Actor, SKAgentActorInterface):
                     f"Invoking actor {self.id} with input message: {input_message}"
                 )
                 self.history.add_user_message(input_message)
-                results = []
+                results: list[ChatMessageContent] = []
 
                 async for result in self.agent.invoke(history=self.history):
                     logger.debug(
@@ -81,6 +81,12 @@ class SKAgentActor(Actor, SKAgentActorInterface):
                 await self._state_manager.set_state("history", dumped_history)
                 await self._state_manager.save_state()
                 logger.info(f"State saved successfully for actor {self.id}")
+
+                # Exclude from results all messages with text "PAUSE"
+                # In this implementation, user interruptions are handled by a specifc agent
+                # whose only response is "PAUSE". This is a simple way to handle interruptions,
+                # and we opt not to show this to the user.
+                results = [msg for msg in results if "PAUSE" not in msg.content]
 
                 return results
             except Exception as e:
