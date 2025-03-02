@@ -51,8 +51,4 @@ async def on_message(message: cl.Message):
         response = ChatMessageContent.model_validate(result)
         logger.debug(f"Received result from agent: {result}")
         # NOTE: "content" is a field in the ChatMessageContent model, BUT not in the dict!
-        # In this implementation, user interruptions are handled by a specifc agent
-        # whose only response is "PAUSE". This is a simple way to handle interruptions,
-        # but we opt not to show this to the user.
-        if "PAUSE" not in response.content:
-            await cl.Message(content=response.content, author=response.name).send()
+        await cl.Message(content=response.content, author=response.name).send()

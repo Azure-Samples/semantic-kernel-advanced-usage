@@ -61,8 +61,8 @@ Your task is to return the agent_id of the speaker that is best suited to procee
 {history}
 
 
-BE SURE TO READ AGAIN THE INSTUCTIONS ABOVE BEFORE PROCEEDING.       
-        """
+BE SURE TO READ AGAIN THE INSTUCTIONS ABOVE BEFORE PROCEEDING.
+"""
 
 
 class LastNMessagesHistoryReducer(ChatHistoryReducer):
