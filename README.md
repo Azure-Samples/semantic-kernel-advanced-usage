@@ -15,6 +15,7 @@ This repository contains advanced usage examples for [Semantic Kernel](https://g
 > Each scenario is self-contained and will run independently.
 
 - [`advanced_orchestration_dapr`](advanced_orchestration_dapr/readme.md): Demonstrates advanced orchestration techniques and Dapr hosting via Actors.
+- [`authentication_context`](authentication_context/readme.md): Demonstrates how to persist "hidden" information in the conversation to maintain context, like the user being authenticated.
 
 ## Contributing
 
