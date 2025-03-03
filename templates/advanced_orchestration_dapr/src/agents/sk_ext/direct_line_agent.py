@@ -1,5 +1,4 @@
 import logging
-import asyncio
 from typing import Any, AsyncIterable
 
 import aiohttp
@@ -155,7 +154,7 @@ class DirectLineAgent(Agent):
                     return None
         except Exception as ex:
             logger.exception(
-                "Exception occurred while sending message to DirectLine Bot."
+                f"Exception occurred while sending message to DirectLine Bot. {ex}"
             )
             return None
 
