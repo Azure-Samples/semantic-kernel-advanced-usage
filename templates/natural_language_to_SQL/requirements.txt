@@ -1,0 +1,4 @@
+openai==1.30.5
+requests==2.32.3
+python-dotenv==1.0.1
+semantic-kernel==1.22.0
