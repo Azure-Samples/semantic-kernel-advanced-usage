@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.botframework.com/schemas/skills/skill-manifest-2.0.0.json",
+  "$id": "EchoBot",
+  "name": "Echo Bot",
+  "version": "1.0",
+  "description": "This is a sample echo bot",
+  "publisherName": "Microsoft",
+  "privacyUrl": "",
+  "copyright": "Copyright (c) Microsoft Corporation. All rights reserved.",
+  "license": "",
+  "iconUrl": "",
+  "tags": ["sample", "skill"],
+  "endpoints": [
+    {
+      "name": "default",
+      "protocol": "BotFrameworkV3",
+      "description": "Default endpoint for the bot",
+      "endpointUrl": "__botEndpoint",
+      "msAppId": "__botAppId"
+    }
+  ],
+  "activities": {
+    "message": {
+      "type": "message",
+      "description": "Echo messages from user"
+    }
+  }
+}
