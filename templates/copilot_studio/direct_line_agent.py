@@ -91,10 +91,18 @@ class DirectLineAgent(Agent):
         logger.debug("DirectLine Bot response: %s", response_data)
 
         for activity in response_data["activities"]:
+            if (
+                activity.get("type") != "message"
+                or activity.get("from", {}).get("role") == "user"
+            ):
+                continue
+            role = activity.get("from", {}).get("role", "assistant")
+            if role == "bot":
+                role = "assistant"
             message = ChatMessageContent(
-                role=activity.get("from", {}).get("role", "assistant"),
+                role=role,
                 content=activity.get("text", ""),
-                name=self.name,
+                name=activity.get("from", {}).get("name", self.name),
             )
             yield message
 
@@ -125,8 +133,9 @@ class DirectLineAgent(Agent):
         1. Ensure the token is fetched.
         2. Start a conversation by posting to the bot_endpoint /conversations endpoint (without a payload)
         3. Post the payload to /conversations/{conversationId}/activities
-        4. Poll GET /conversations/{conversationId}/activities every 1s until an activity
-           with type="event" and name="DynamicPlanFinished" is found.
+        4. Poll GET /conversations/{conversationId}/activities every 1s using a watermark
+           to fetch only the latest messages until an activity with type="event"
+           and name="DynamicPlanFinished" is found.
         """
         if not self.directline_token:
             await self._fetch_token_and_conversation()
@@ -164,13 +173,20 @@ class DirectLineAgent(Agent):
                 raise AgentInvokeException("Failed to post activity.")
             _ = await resp.json()  # Response from posting activity is ignored.
 
-        # Step 4: Poll for activities until DynamicPlanFinished event is found.
+        # Step 4: Poll for new activities using watermark until DynamicPlanFinished event is found.
         finished = False
         collected_data = None
+        watermark = None
         while not finished:
-            async with self.session.get(activities_url, headers=headers) as resp:
+            url = (
+                activities_url
+                if watermark is None
+                else f"{activities_url}?watermark={watermark}"
+            )
+            async with self.session.get(url, headers=headers) as resp:
                 if resp.status == 200:
                     data = await resp.json()
+                    watermark = data.get("watermark", watermark)
                     activities = data.get("activities", [])
                     if any(
                         activity.get("type") == "event"
@@ -182,7 +198,7 @@ class DirectLineAgent(Agent):
                         break
                 else:
                     logger.error("Error polling activities. Status: %s", resp.status)
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.3)
 
         return collected_data
 
