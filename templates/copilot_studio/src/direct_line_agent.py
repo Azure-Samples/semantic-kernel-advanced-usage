@@ -1,8 +1,17 @@
 import asyncio
 import logging
 from typing import Any, AsyncIterable
+import sys
 
+if sys.version_info >= (3, 12):
+    from typing import override  # pragma: no cover
+else:
+    from typing_extensions import override  # pragma: no cover
 import aiohttp
+from semantic_kernel.utils.telemetry.agent_diagnostics.decorators import (
+    trace_agent_get_response,
+    trace_agent_invocation,
+)
 
 from semantic_kernel.agents import Agent
 from semantic_kernel.contents.chat_history import ChatHistory
@@ -80,6 +89,8 @@ class DirectLineAgent(Agent):
                 "Exception occurred while fetching token."
             ) from ex
 
+    @trace_agent_get_response
+    @override
     async def get_response(
         self,
         history: ChatHistory,
@@ -98,6 +109,8 @@ class DirectLineAgent(Agent):
 
         return responses[0]
 
+    @trace_agent_invocation
+    @override
     async def invoke(
         self,
         history: ChatHistory,
@@ -244,5 +257,7 @@ class DirectLineAgent(Agent):
         await self.session.close()
 
     # TODO not implemented yet, maybe use websockets for this?
+    @trace_agent_invocation
+    @override
     async def invoke_stream(self, *args, **kwargs):
         return super().invoke_stream(*args, **kwargs)
