@@ -121,6 +121,9 @@ class DirectLineAgent(Agent):
 
         logger.debug("DirectLine Bot response: %s", response_data)
 
+        # NOTE DirectLine Activities have different formats
+        # than ChatMessageContent. We need to convert them and
+        # remove unsupported activities.
         for activity in response_data["activities"]:
             if (
                 activity.get("type") != "message"
