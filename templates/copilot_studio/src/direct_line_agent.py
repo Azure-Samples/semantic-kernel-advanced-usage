@@ -19,30 +19,61 @@ class DirectLineAgent(Agent):
     to retrieve the token and then starts a conversation.
     """
 
-    token_endpoint: str
+    token_endpoint: str | None = None
+    bot_secret: str | None = None
     bot_endpoint: str
     conversation_id: str | None = None
     directline_token: str | None = None
-    session: aiohttp.ClientSession = aiohttp.ClientSession()
+    session: aiohttp.ClientSession = None
+
+    async def _ensure_session(self) -> None:
+        """
+        Lazily initialize the aiohttp ClientSession.
+        """
+        if self.session is None:
+            self.session = aiohttp.ClientSession()
 
     async def _fetch_token_and_conversation(self) -> None:
         """
-        Query the token_endpoint to retrieve the DirectLine token.
-        Expects a JSON response with a 'token' key.
+        Retrieve the DirectLine token either by using the bot_secret or by querying the token_endpoint.
+        If bot_secret is provided, it posts to "https://directline.botframework.com/v3/directline/tokens/generate".
         """
+        await self._ensure_session()
         try:
-            async with self.session.get(self.token_endpoint) as resp:
-                if resp.status == 200:
-                    data = await resp.json()
-                    self.directline_token = data.get("token")
-                    if not self.directline_token:
-                        logger.error("Token endpoint returned no token: %s", data)
-                        raise AgentInvokeException("No token received.")
-                else:
-                    logger.error("Token endpoint error status: %s", resp.status)
-                    raise AgentInvokeException(
-                        "Failed to fetch token from token endpoint."
-                    )
+            if self.bot_secret:
+                url = f"{self.bot_endpoint}/tokens/generate"
+                headers = {"Authorization": f"Bearer {self.bot_secret}"}
+                async with self.session.post(url, headers=headers) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        self.directline_token = data.get("token")
+                        if not self.directline_token:
+                            logger.error(
+                                "Token generation response missing token: %s", data
+                            )
+                            raise AgentInvokeException(
+                                "No token received from token generation."
+                            )
+                    else:
+                        logger.error(
+                            "Token generation endpoint error status: %s", resp.status
+                        )
+                        raise AgentInvokeException(
+                            "Failed to generate token using bot_secret."
+                        )
+            else:
+                async with self.session.get(self.token_endpoint) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        self.directline_token = data.get("token")
+                        if not self.directline_token:
+                            logger.error("Token endpoint returned no token: %s", data)
+                            raise AgentInvokeException("No token received.")
+                    else:
+                        logger.error("Token endpoint error status: %s", resp.status)
+                        raise AgentInvokeException(
+                            "Failed to fetch token from token endpoint."
+                        )
         except Exception as ex:
             logger.exception("Exception fetching token: %s", ex)
             raise AgentInvokeException(
@@ -137,6 +168,7 @@ class DirectLineAgent(Agent):
            to fetch only the latest messages until an activity with type="event"
            and name="DynamicPlanFinished" is found.
         """
+        await self._ensure_session()
         if not self.directline_token:
             await self._fetch_token_and_conversation()
 
@@ -208,5 +240,6 @@ class DirectLineAgent(Agent):
         """
         await self.session.close()
 
+    # TODO not implemented yet, maybe use websockets for this?
     async def invoke_stream(self, *args, **kwargs):
         return super().invoke_stream(*args, **kwargs)
