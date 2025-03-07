@@ -112,3 +112,4 @@ resource apiContainerApp 'Microsoft.App/containerApps@2023-11-02-preview' = {
 }
 
 output messagesEndpoint string = 'https://${apiContainerApp.properties.configuration.ingress.fqdn}/api/messages'
+output manifestUrl string = 'https://${apiContainerApp.properties.configuration.ingress.fqdn}/manifest'

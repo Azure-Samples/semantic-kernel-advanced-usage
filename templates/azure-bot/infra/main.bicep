@@ -124,17 +124,17 @@ module aca './aca.bicep' = {
 }
 
 
-// module bot 'bot.bicep' = {
-//   name: 'bot'
-//   scope: rg
-//   params: {
-//     uniqueId: uniqueId
-//     prefix: prefix
-//     userAssignedIdentityResourceId: uami.outputs.identityId
-//     userAssignedIdentityPrincipalId: uami.outputs.principalId
-//     messagesEndpoint: aca.outputs.messagesEndpoint
-//   }
-// }
+module bot 'bot.bicep' = {
+  name: 'bot'
+  scope: rg
+  params: {
+    uniqueId: uniqueId
+    prefix: prefix
+    botAppId: botAppId
+    botTenantId: botTenantId
+    messagesEndpoint: aca.outputs.messagesEndpoint
+  }
+}
 
 // These outputs are copied by azd to .azure/<env name>/.env file
 // post provision script will use these values, too
@@ -146,3 +146,7 @@ output AZURE_CONTAINER_REGISTRY_ENDPOINT string = acrModule.outputs.acrEndpoint
 output AZURE_OPENAI_MODEL string = openAIModel
 output AZURE_OPENAI_ENDPOINT string = openAI.outputs.openAIEndpoint
 output AZURE_OPENAI_API_VERSION string = openAIApiVersion
+output ENDPOINT_URL string = aca.outputs.messagesEndpoint
+output MANIFEST_URL string = aca.outputs.manifestUrl
+output BOT_APP_ID string = botAppId
+output BOT_TENANT_ID string = botTenantId

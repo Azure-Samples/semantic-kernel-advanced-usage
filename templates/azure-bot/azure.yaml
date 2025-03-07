@@ -9,3 +9,15 @@ services:
         docker:
             path: dockerfile
             remoteBuild: true
+# hooks:
+#   postdeploy: 
+#     shell: pwsh
+#     run: |
+#         # Get values from azd env
+#         $url = azd env get-value ENDPOINT_URL
+#         $botId = azd env get-value BOT_APP_ID
+#         $botTenantId = azd env get-value BOT_TENANT_ID
+
+#         # Update entra app with home page url as api endpoint
+#         az ad app update --id $botId --set web.homePageUrl=$url
+
