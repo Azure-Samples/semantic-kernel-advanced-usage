@@ -148,5 +148,6 @@ output AZURE_OPENAI_ENDPOINT string = openAI.outputs.openAIEndpoint
 output AZURE_OPENAI_API_VERSION string = openAIApiVersion
 output ENDPOINT_URL string = aca.outputs.messagesEndpoint
 output MANIFEST_URL string = aca.outputs.manifestUrl
+output HOME_URL string = aca.outputs.homeUrl
 output BOT_APP_ID string = botAppId
 output BOT_TENANT_ID string = botTenantId

@@ -1,8 +1,8 @@
 {
-  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/vDevPreview/MicrosoftTeams.schema.json",
-  "manifestVersion": "devPreview",
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
   "version": "1.0.0",
-  "id": "${{TEAMS_APP_ID}}",
+  "id": "__botAppId",
   "developer": {
     "name": "Teams App, Inc.",
     "websiteUrl": "https://www.example.com",
@@ -14,7 +14,7 @@
     "outline": "outline.png"
   },
   "name": {
-    "short": "teams-bot${{APP_NAME_SUFFIX}}",
+    "short": "teams-bot",
     "full": "full name for teams-bot"
   },
   "description": {
@@ -22,14 +22,6 @@
     "full": "full description for teams-bot"
   },
   "accentColor": "#FFFFFF",
-  "copilotAgents": {
-    "customEngineAgents": [
-      {
-        "type": "bot",
-        "id": "${{BOT_ID}}"
-      }
-    ]
-  },
   "composeExtensions": [],
   "configurableTabs": [],
   "staticTabs": [],

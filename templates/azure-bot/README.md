@@ -1,68 +1,53 @@
-# Azure Bot
+# Extend Copilot Studio with Semantic Kernel
 
-This template demonstrates how to build an Azure Bot integrated with Microsoft Teams and powered by [Semantic Kernel](https://github.com/microsoft/semantic-kernel). The bot leverages advanced LLM capabilities and is designed to run as a cloud-native service on [Azure Container Apps](https://docs.microsoft.com/en-us/azure/container-apps/).
+This template demonstrates how to build a [Copilot Studio Skill](https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-add-skills#troubleshoot-errors-during-skill-registration) that allows to extend agent capabilities with a custom API running in Azure with the help of the Semantic Kernel.
 
 ## Rationale
 
-## Folder Structure
+[Microsoft Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio) is a graphical, low-code tool for both creating an agent — including building automation with Power Automate — and extending a Microsoft 365 Copilot with your own enterprise data and scenarios.
 
-- **src/api:** Contains the API implementation (FastAPI app, bot logic, and configuration).
-- **infra:** Bicep templates to deploy Azure resources (Container Apps, Azure OpenAI, Cosmos DB, etc.).
-- **appPackage:** Resources required for the Microsoft Teams bot manifest and assets.
+However, in some cases you may need to extend the default agent capabilities by leveraing a pro-code approach, where specific requirements apply.
 
 ## Prerequisites
 
-- Python 3.12+
-- An [Azure account](https://azure.microsoft.com/en-us/free/) with the required permissions
-- [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/)
-- Docker (for local testing)
+- Azure Subscription
+- Azure CLI
+- Azure Developer CLI
+- Python 3.12 or later
+- A Microsoft 365 tenant with Copilot Studio enabled
 
-## Setup and Running Locally
+> [!NOTE]
+> You don't need the Azure subscription to be on the same tenant as the Microsoft 365 tenant where Copilot Studio is enabled.
+>
+> However, you need to have the necessary permissions to register an application in the Azure Active Directory of the tenant where Copilot Studio is enabled.
 
-1. **Clone the Repository:**
+## Getting Started
 
-   ```bash
-   git clone https://github.com/Azure-Samples/semantic-kernel-advanced-usage.git
-   cd templates/azure-bot
-   ```
-
-2. **Configure Environment Variables:**
-
-   - Rename the `.env.sample` (if provided) to `.env` and update the values:
-     ```bash
-     cp .env.sample .env
-     ```
-   - Alternatively, set the required environment variables in your deployment environment.
-
-3. **Create a Virtual Environment and Install Dependencies:**
-
-   ```bash
-   python -m venv .venv
-   # On Windows:
-   .venv\Scripts\Activate.ps1
-   # On macOS/Linux:
-   source .venv/bin/activate
-   pip install -r src/api/requirements.txt
-   ```
-
-4. **Run the Application Locally:**
-
-   ```bash
-   uvicorn app:app --host 0.0.0.0 --port 80
-   ```
-
-## Deployment
-
-The `infra` folder contains Bicep templates for deploying the required Azure resources. To deploy using the Azure Developer CLI, run:
+1. Clone this repository to your local machine.
 
 ```bash
+git clone https://github.com/Azure-Samples/semantic-kernel-advanced-usage
+cd semantic-kernel-advanced-usage/templates/azure-bot
+```
+
+2. Create a App Registration in Azure Entra ID, with a client secret.
+
+```powershell
+az login --tenant <COPILOT-tenant-id>
+$appId = az ad app create --display-name "MyCopilotSkill" --query appId -o tsv
+$secret = az ad app credential reset --id $appId --append --query password -o tsv
+```
+
+4. Run `azd up` to deploy the Azure resources.
+
+```bash
+azd auth login --tenant <AZURE-tenant-id>
 azd up
 ```
 
-You'll be prompted to select the Azure subscription, region, and existing resources (including an Azure OpenAI resource).
+> [!NOTE]
+> When prompted, provide the `botAppId`, `botPassword` and `botTenantId` values from above.
+>
+> You will also need to input and existing Azure OpenAI resource name and its resource group.
 
-## Additional Information
-
-## License
-
-This project is licensed under the MIT License. See LICENSE.md for details.
+## Implementation

@@ -1,6 +1,6 @@
 import logging
 from fastapi import FastAPI, Request, Response, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 import json
 import os
 from teamsBot import bot
@@ -36,10 +36,18 @@ async def on_messages(req: Request) -> Response:
     return Response(status_code=200)
 
 
-@app.get("/manifest", response_class=JSONResponse)
+@app.get("/")
+async def root():
+    """
+    Root endpoint for the bot service.
+    """
+    return JSONResponse(content={"message": "Hello from Azure Bot Service!"})
+
+
+@app.get("/manifest/copilot-studio", response_class=JSONResponse)
 async def manifest():
     # load manifest from file and interpolate with env vars
-    with open("manifest.json") as f:
+    with open("copilot-studio.manifest.json") as f:
         manifest = f.read()
 
         # Get container app current ingress fqdn
@@ -51,3 +59,44 @@ async def manifest():
         )
 
     return JSONResponse(content=json.loads(manifest))
+
+
+# GET /manifest/teams to return the manifest for Teams in a zip file
+@app.get("/manifest/teams")
+async def manifest_teams():
+    import os
+    import zipfile
+    import io
+
+    # determine the base directory of the current file
+    base_dir = os.path.dirname(__file__)
+
+    # load manifest from file and interpolate with env vars using an absolute path
+    manifest_path = os.path.join(base_dir, "teams_package", "manifest.json")
+    with open(manifest_path, "r") as f:
+        manifest = f.read()
+
+    manifest = manifest.replace("__botAppId", config.APP_ID)
+
+    # Create a zip file with the manifest and the icon using absolute paths for the icons
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        # Add the manifest file
+        zip_file.writestr("manifest.json", manifest)
+
+        # Add the icon files
+        icon_files = [
+            ("outline.png", os.path.join(base_dir, "teams_package", "outline.png")),
+            ("color.png", os.path.join(base_dir, "teams_package", "color.png")),
+        ]
+        for arcname, file_path in icon_files:
+            with open(file_path, "rb") as icon:
+                zip_file.writestr(arcname, icon.read())
+    # Move the buffer position to the beginning
+    zip_buffer.seek(0)
+    # Create a response with the zip file
+    response = StreamingResponse(zip_buffer, media_type="application/zip")
+    # Set the filename for the download
+    response.headers["Content-Disposition"] = "attachment; filename=manifest.zip"
+    # Return the response
+    return response
