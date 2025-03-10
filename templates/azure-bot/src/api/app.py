@@ -48,6 +48,7 @@ async def root():
 async def manifest():
     # load manifest from file and interpolate with env vars
     with open("copilot-studio.manifest.json") as f:
+
         manifest = f.read()
 
         # Get container app current ingress fqdn
@@ -59,6 +60,7 @@ async def manifest():
         )
 
     return JSONResponse(content=json.loads(manifest))
+
 
 
 # GET /manifest/teams to return the manifest for Teams in a zip file

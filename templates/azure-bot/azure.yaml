@@ -21,4 +21,3 @@ services:
 #         # Update entra app with home page url as api endpoint
 #         az login --tenant $botTenantId
 #         az ad app update --id $botId --set web.homePageUrl=$url
-

@@ -4,6 +4,10 @@ from rich.console import Console
 console = Console()
 from semantic_kernel.kernel import Kernel
 
+import sys
+sys.path.append("./")
+sys.path.append("../")
+
 from src.process.sql_process import SqlProcess
 from src.utils.chat_helpers import initialize_kernel
 

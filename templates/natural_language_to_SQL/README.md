@@ -23,7 +23,7 @@ The project utilizes a state machine to manage the flow of query processing. Key
 The architecture is modular, with distinct modules for managing business rules, data models, prompt generation, and core processing, all integrated into one cohesive application workflow.
 
 
-![NL2SQL State Machine](images/sql.png)
+![NL2SQL State Machine](./images/sql.png)
 
 
 ## Project Structure

@@ -71,7 +71,7 @@ class SKAgentActor(Actor, SKAgentActorInterface):
                     logger.debug(
                         f"Received result from agent for actor {self.id}: {result}"
                     )
-                    results.append(result.model_dump())
+                    results.append(result)
 
                 logger.debug(f"Saving conversation state for actor {self.id}")
 
@@ -86,7 +86,9 @@ class SKAgentActor(Actor, SKAgentActorInterface):
                 # In this implementation, user interruptions are handled by a specifc agent
                 # whose only response is "PAUSE". This is a simple way to handle interruptions,
                 # and we opt not to show this to the user.
-                results = [msg for msg in results if "PAUSE" not in msg.content]
+                results = [
+                    msg.model_dump() for msg in results if "PAUSE" not in msg.content
+                ]
 
                 return results
             except Exception as e:
