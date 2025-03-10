@@ -22,9 +22,15 @@ param openAIName string
 @description('Name of the Azure Resource Group where the OpenAI resource is located')
 param openAIResourceGroupName string
 
+@description('Name for Teams App registration')
+param teamsAppName string = 'sk-copilot'
+@description('ID for Teams App registration, if not provided, a new one will be created')
+param teamsAppId string = newGuid()
+
 @description('Azure Bot app ID')
 param botAppId string
 @description('Azure Bot app password')
+@secure()
 param botPassword string
 @description('Azure Bot tenant ID')
 param botTenantId string
@@ -88,17 +94,6 @@ module openAI './openAI.bicep' = {
   }
 }
 
-module cosmos 'cosmos.bicep' = {
-  name: 'cosmos'
-  scope: rg
-  params: {
-    uniqueId: uniqueId
-    prefix: prefix
-    userAssignedIdentityPrincipalId: uami.outputs.principalId
-    currentUserId: principalType == 'User' ? currentUserId : ''
-  }
-}
-
 module aca './aca.bicep' = {
   name: 'aca'
   scope: rg
@@ -112,14 +107,13 @@ module aca './aca.bicep' = {
     applicationInsightsConnectionString: appin.outputs.applicationInsightsConnectionString
     openAiApiKey: '' // Force ManId, otherwise set openAI.listKeys().key1
     openAiEndpoint: openAI.outputs.openAIEndpoint
-    cosmosDbEndpoint: cosmos.outputs.cosmosDbEndpoint
-    cosmosDbDatabaseName: cosmos.outputs.cosmosDbDatabase
-    cosmosDbContainerName: cosmos.outputs.cosmosDbContainer
     userAssignedIdentityClientId: uami.outputs.clientId
     apiAppExists: apiAppExists
     botAppId: botAppId
     botPassword: botPassword
     botTenantId: botTenantId
+    teamAppName: teamsAppName
+    teamsAppId: teamsAppId
   }
 }
 

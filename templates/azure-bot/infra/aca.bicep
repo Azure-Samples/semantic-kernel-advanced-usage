@@ -8,15 +8,14 @@ param applicationInsightsConnectionString string
 param containerRegistry string = '${prefix}acr${uniqueId}'
 param location string = resourceGroup().location
 param logAnalyticsWorkspaceName string
-// param serviceBusNamespaceFqdn string
-param cosmosDbEndpoint string
-param cosmosDbDatabaseName string
-param cosmosDbContainerName string
 param apiAppExists bool
 param emptyContainerImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 param botAppId string
+@secure()
 param botPassword string
 param botTenantId string
+param teamAppName string
+param teamsAppId string
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsWorkspaceName
@@ -98,6 +97,8 @@ resource apiContainerApp 'Microsoft.App/containerApps@2023-11-02-preview' = {
             { name: 'BOT_APP_ID', value: botAppId }
             { name: 'BOT_PASSWORD', value: botPassword }
             { name: 'BOT_TENANT_ID', value: botTenantId }
+            { name: 'TEAMS_APP_NAME', value: teamAppName }
+            { name: 'TEAMS_APP_ID', value: teamsAppId }
             { name: 'APPLICATIONINSIGHTS_CONNECTIONSTRING', value: applicationInsightsConnectionString }
             { name: 'APPLICATIONINSIGHTS_SERVICE_NAME', value: 'api' }
             { name: 'AZURE_OPENAI_ENDPOINT', value: openAiEndpoint }

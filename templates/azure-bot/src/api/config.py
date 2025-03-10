@@ -13,6 +13,9 @@ class Config:
     APP_TENANTID = os.getenv("BOT_TENANT_ID")
     APP_TYPE = os.getenv("APP_TYPE", "singletenant")
 
+    TEAMS_APP_ID = os.getenv("TEAMS_APP_ID")
+    TEAMS_APP_NAME = os.getenv("TEAMS_APP_NAME")
+
     AZURE_OPENAI_MODEL = os.getenv("AZURE_OPENAI_MODEL")
     AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
     AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")

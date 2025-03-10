@@ -25,3 +25,13 @@ resource bot 'Microsoft.BotService/botServices@2023-09-15-preview' = {
     isStreamingSupported: false  
   }
 }
+
+// Connect the bot service to Microsoft Teams
+resource botServiceMsTeamsChannel 'Microsoft.BotService/botServices/channels@2021-03-01' = {
+  parent: bot
+  location: 'global'
+  name: 'MsTeamsChannel'
+  properties: {
+    channelName: 'MsTeamsChannel'
+  }
+}

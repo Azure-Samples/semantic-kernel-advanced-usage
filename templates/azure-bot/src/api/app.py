@@ -76,7 +76,11 @@ async def manifest_teams():
     with open(manifest_path, "r") as f:
         manifest = f.read()
 
-    manifest = manifest.replace("__botAppId", config.APP_ID)
+    manifest = (
+        manifest.replace("__botAppId", config.APP_ID)
+        .replace("__teamsAppId", config.TEAMS_APP_ID)
+        .replace("__teamsAppName", config.TEAMS_APP_NAME)
+    )
 
     # Create a zip file with the manifest and the icon using absolute paths for the icons
     zip_buffer = io.BytesIO()
@@ -97,6 +101,8 @@ async def manifest_teams():
     # Create a response with the zip file
     response = StreamingResponse(zip_buffer, media_type="application/zip")
     # Set the filename for the download
-    response.headers["Content-Disposition"] = "attachment; filename=manifest.zip"
+    response.headers["Content-Disposition"] = (
+        f"attachment; filename={config.TEAMS_APP_NAME}.zip"
+    )
     # Return the response
     return response
