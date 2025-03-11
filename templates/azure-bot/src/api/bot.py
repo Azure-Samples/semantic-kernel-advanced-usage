@@ -4,15 +4,22 @@ from botbuilder.core import MemoryStorage, TurnContext
 from semantic_kernel.contents import ChatHistory
 from sk_conversation_agent import agent
 from config import config
+from botframework.connector.auth import AuthenticationConfiguration
+from auth import AllowedCallersClaimsValidator
 
 storage = MemoryStorage()
+# This is required for bot to work as Copilot Skill
+claims_validator = AllowedCallersClaimsValidator(config)
+auth = AuthenticationConfiguration(
+    tenant_id=config.APP_TENANTID, claims_validator=claims_validator.claims_validator
+)
 
 bot = Application[TurnState](
     ApplicationOptions(
         bot_app_id=config.APP_ID,
         storage=storage,
         # CANNOT PASS A DICT HERE; MUST PASS A CLASS WITH APP_ID, APP_PASSWORD, AND APP_TENANTID ATTRIBUTES
-        adapter=TeamsAdapter(config),
+        adapter=TeamsAdapter(config, auth_configuration=auth),
     )
 )
 

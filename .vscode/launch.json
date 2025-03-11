@@ -14,7 +14,7 @@
       "justMyCode": false
     },
     {
-      "name": "Attach to Chainlit",
+      "name": "Attach",
       "type": "debugpy",
       "request": "attach",
       "connect": {
