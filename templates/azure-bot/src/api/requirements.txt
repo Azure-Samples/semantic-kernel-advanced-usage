@@ -1,5 +1,4 @@
 python-dotenv
-fastapi>=0.115.11
-uvicorn>=0.34.0
+botbuilder-integration-aiohttp>=4.15.0
 teams-ai>=1.4.0,<2.0.0
 semantic-kernel==1.22.0

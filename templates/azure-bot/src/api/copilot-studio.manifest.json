@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.botframework.com/schemas/skills/v2.2/skill-manifest.json",
-  "$id": "EchoBot",
-  "name": "Echo Bot",
+  "$id": "SKCopilotSkill",
+  "name": "SK Copilot Skill",
   "version": "1.0",
-  "description": "This is a sample echo bot",
+  "description": "This is a sample skill using Semantic Kernel",
   "publisherName": "Microsoft",
   "privacyUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
   "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
@@ -19,7 +19,7 @@
   "activities": {
     "message": {
       "type": "message",
-      "description": "Echo messages from user"
+      "description": "Invoke Semantic Kernel skill"
     }
   }
 }

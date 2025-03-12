@@ -1,6 +1,6 @@
 import logging
-from fastapi import FastAPI, Request, Response, HTTPException
-from fastapi.responses import JSONResponse, StreamingResponse
+from aiohttp import web
+from aiohttp.web import Request
 import json
 import os
 from bot import bot
@@ -13,45 +13,22 @@ load_dotenv(override=True)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
-
 
 # Primary endpoint for processing messages,
 # both with Teams and Copilot Studio
-@app.post("/api/messages", response_class=Response)
-async def on_messages(req: Request) -> Response:
+async def messages(req: Request):
     """
     Endpoint for processing messages with the Teams Bot.
     """
     logger.info("Received a message.")
-
-    content_type = req.headers.get("Content-Type", "").lower()
-    if "application/json" in content_type:
-        try:
-            body = await req.json()
-            logger.info("Request body: %s", body)
-        except Exception as e:
-            logger.error("Error parsing JSON payload: %s", e)
-            raise HTTPException(status_code=400, detail="Invalid JSON payload")
+    body = await req.json()
+    logger.info("Request body: %s", body)
 
     # Process the incoming request
-    # This will send a reply activity to the user,
-    # so we don't need to return anything here
-    await bot.process(req)
-
-    return Response(status_code=200)
+    return await bot.process(req)
 
 
-@app.get("/")
-async def root():
-    """
-    Root endpoint for the bot service.
-    """
-    return JSONResponse(content={"message": "Hello from Azure Bot Service!"})
-
-
-@app.get("/manifest/copilot-studio", response_class=JSONResponse)
-async def manifest():
+async def copilot_manifest(req: Request):
     # load manifest from file and interpolate with env vars
     with open("copilot-studio.manifest.json") as f:
 
@@ -59,19 +36,18 @@ async def manifest():
 
         # Get container app current ingress fqdn
         # See https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal
-        fqdn = f"https://{os.getenv('CONTAINER_APP_NAME')}.{os.getenv('CONTAINER_APP_ENV_DNS_SUFFIX')}/api/messages"
-        # fqdn = os.getenv("ENDPOINT_URL")
+        # fqdn = f"https://{os.getenv('CONTAINER_APP_NAME')}.{os.getenv('CONTAINER_APP_ENV_DNS_SUFFIX')}/api/messages"
+        fqdn = os.getenv("ENDPOINT_URL")
 
         manifest = manifest.replace("__botEndpoint", fqdn).replace(
             "__botAppId", config.APP_ID
         )
 
-    return JSONResponse(content=json.loads(manifest))
+    return json.loads(manifest)
 
 
 # GET /manifest/teams to return the manifest for Teams in a zip file
-@app.get("/manifest/teams")
-async def manifest_teams():
+async def manifest_teams(req: Request):
     import os
     import zipfile
     import io
@@ -107,10 +83,28 @@ async def manifest_teams():
     # Move the buffer position to the beginning
     zip_buffer.seek(0)
     # Create a response with the zip file
-    response = StreamingResponse(zip_buffer, media_type="application/zip")
-    # Set the filename for the download
-    response.headers["Content-Disposition"] = (
-        f"attachment; filename={config.TEAMS_APP_NAME}.zip"
+    response = web.StreamResponse(
+        status=200,
+        headers={
+            "Content-Type": "application/zip",
+            "Content-Disposition": f"attachment; filename={config.TEAMS_APP_NAME}.zip",
+        },
     )
+    await response.prepare(req)
+    await response.write(zip_buffer.read())
+    await response.write_eof()
+
     # Return the response
     return response
+
+
+APP = web.Application()
+APP.router.add_post("/api/messages", messages)
+APP.router.add_get("/manifest/teams", manifest_teams)
+APP.router.add_get("/manifest/copilot", copilot_manifest)
+
+if __name__ == "__main__":
+    try:
+        web.run_app(APP, host="0.0.0.0", port=5001)
+    except Exception as error:
+        raise error

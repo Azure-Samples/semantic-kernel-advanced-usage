@@ -1,11 +1,16 @@
 from teams import Application, ApplicationOptions, TeamsAdapter
 from teams.state import TurnState
-from botbuilder.core import MemoryStorage, TurnContext
+from botbuilder.core import MemoryStorage, TurnContext, MessageFactory
 from semantic_kernel.contents import ChatHistory
 from sk_conversation_agent import agent
 from config import config
 from botframework.connector.auth import AuthenticationConfiguration
 from auth import AllowedCallersClaimsValidator
+from botbuilder.schema import (
+    InputHints,
+    Activity,
+    EndOfConversationCodes,
+)
 
 storage = MemoryStorage()
 # This is required for bot to work as Copilot Skill
@@ -53,6 +58,11 @@ async def on_message(context: TurnContext, state: TurnState):
     state.conversation["chat_history"] = chat_history
 
     # Send the response back to the user
-    await context.send_activity(f"{sk_response}")
+    await context.send_activity(
+        MessageFactory.text(sk_response, input_hint=InputHints.ignoring_input)
+    )
+    end = Activity.create_end_of_conversation_activity()
+    end.code = EndOfConversationCodes.completed_successfully
+    await context.send_activity(end)
 
     return True
