@@ -97,9 +97,9 @@ flowchart LR
 
 ### Implementation
 
-Please refer to the original [Bot Framework documentation](https://learn.microsoft.com/en-us/azure/bot-service/skill-implement-skill?view=azure-bot-service-4.0&tabs=python) for more details on how to implement the bot service and the custom API.
+Please refer to the original [Bot Framework documentation](https://learn.microsoft.com/en-us/azure/bot-service/skill-implement-skill?view=azure-bot-service-4.0&tabs=python) for more details on how to implement the bot service skill and the custom API.
 
 > [!NOTE]
 > As of today, Bot Framework SDK offers only `aiohttp` support for Python.
-
-> [!NOTE] > [Microsoft 365 Agents SDK](https://github.com/Microsoft/Agents?tab=readme-ov-file#links) will be available for Python in the future to further improve the integration with Microsoft Copilot Studio, along with many additional features
+>
+> [Microsoft 365 Agents SDK](https://github.com/Microsoft/Agents?tab=readme-ov-file#links) will be available for Python in the future, to further improve the integration with Microsoft Copilot Studio.
