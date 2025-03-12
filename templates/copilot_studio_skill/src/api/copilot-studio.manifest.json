@@ -5,7 +5,7 @@
   "version": "1.0",
   "description": "This is a sample skill using Semantic Kernel",
   "publisherName": "Microsoft",
-  "privacyUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
+  "privacyUrl": "https://www.microsoft.com/en-us/privacy/privacystatement",
   "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
   "endpoints": [
     {

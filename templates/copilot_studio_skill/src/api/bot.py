@@ -1,30 +1,41 @@
-from teams import Application, ApplicationOptions, TeamsAdapter
+from teams import Application, ApplicationOptions
 from teams.state import TurnState
 from botbuilder.core import MemoryStorage, TurnContext, MessageFactory
 from semantic_kernel.contents import ChatHistory
-from sk_conversation_agent import agent
-from config import config
 from botframework.connector.auth import AuthenticationConfiguration
-from auth import AllowedCallersClaimsValidator
+from botbuilder.integration.aiohttp import ConfigurationBotFrameworkAuthentication
 from botbuilder.schema import (
     InputHints,
     Activity,
     EndOfConversationCodes,
 )
 
-storage = MemoryStorage()
-# This is required for bot to work as Copilot Skill
+# Custom classes to handle errors and claims validation
+from auth import AllowedCallersClaimsValidator
+from adapter import AdapterWithErrorHandler
+
+# This is the SK agent that will be used to handle the conversation
+from sk_conversation_agent import agent
+from config import config
+
+# This is required for bot to work as Copilot Skill,
+# not adding a claims validator will result in an error
 claims_validator = AllowedCallersClaimsValidator(config)
 auth = AuthenticationConfiguration(
     tenant_id=config.APP_TENANTID, claims_validator=claims_validator.claims_validator
 )
 
+# Create the bot application
+# We use the Teams Application class to create the bot application,
+# then we added a custom adapter for skill errors handling.
 bot = Application[TurnState](
     ApplicationOptions(
         bot_app_id=config.APP_ID,
-        storage=storage,
+        storage=MemoryStorage(),
         # CANNOT PASS A DICT HERE; MUST PASS A CLASS WITH APP_ID, APP_PASSWORD, AND APP_TENANTID ATTRIBUTES
-        adapter=TeamsAdapter(config, auth_configuration=auth),
+        adapter=AdapterWithErrorHandler(
+            ConfigurationBotFrameworkAuthentication(config, auth_configuration=auth)
+        ),
     )
 )
 
@@ -58,9 +69,15 @@ async def on_message(context: TurnContext, state: TurnState):
     state.conversation["chat_history"] = chat_history
 
     # Send the response back to the user
+    # NOTE in the context of a Copilot Skill,
+    # the response is sent as a Response from /api/messages endpoint
     await context.send_activity(
         MessageFactory.text(sk_response, input_hint=InputHints.ignoring_input)
     )
+
+    # Skills must send an EndOfConversation activity to indicate the conversation is complete
+    # NOTE: this is a simple example, in a real skill you would likely want to send this
+    # only when the user has completed their task
     end = Activity.create_end_of_conversation_activity()
     end.code = EndOfConversationCodes.completed_successfully
     await context.send_activity(end)

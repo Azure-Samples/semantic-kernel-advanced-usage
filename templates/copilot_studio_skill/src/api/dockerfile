@@ -16,5 +16,8 @@ ENV PYTHONUNBUFFERED=1
 # Expose the application port
 EXPOSE 80
 
+ENV HOST 0.0.0.0
+ENV PORT 80
+
 # do not change the arguments
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["python", "app.py"]
