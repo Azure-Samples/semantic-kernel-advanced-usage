@@ -14,7 +14,7 @@ from src.models.step_models import (
     ValidationResult
 )
 from src.utils.chat_helpers import call_chat_completion_structured_outputs
-from src.constants.data_model import markdown_rules
+from src.constants.data_model import json_rules
 from src.constants.prompts import business_rules_prompt
 
 console = Console()
@@ -24,7 +24,7 @@ class BusinessRulesStep(KernelProcessStep):
 
     async def _apply_business_rules(self, kernel: Kernel, data: BusinessRulesStepInput) -> ValidationResult:
         """Apply business rules to the generated SQL statement."""
-        rules_with_query = markdown_rules.format(question=data.user_query)
+        rules_with_query = json_rules.format(question=data.user_query)
         
         prompt = business_rules_prompt.format(
             question=data.user_query,
