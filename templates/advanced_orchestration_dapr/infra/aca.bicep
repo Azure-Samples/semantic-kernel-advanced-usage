@@ -219,7 +219,7 @@ resource agentsContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
             { name: 'AZURE_OPENAI_MODEL', value: 'gpt-4o' }
             { name: 'AZURE_OPENAI_API_KEY', value: '' }
             { name: 'AZURE_OPENAI_API_VERSION', value: '2024-08-01-preview' }
-            { name: 'SEMANTICKERNEL_EXPERIMENTAL_GENAI_ENABLE_OTEL_DIAGNOSTICS_SENSITIVE ', value: 'true' }
+            { name: 'SEMANTICKERNEL_EXPERIMENTAL_GENAI_ENABLE_OTEL_DIAGNOSTICS_SENSITIVE', value: 'true' }
             // { name: 'PUBSUB_NAME', value: 'workflow' }
             // { name: 'TOPIC_NAME', value: 'events' }
           ]
