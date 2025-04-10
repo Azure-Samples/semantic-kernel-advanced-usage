@@ -27,7 +27,7 @@ planned_team = PlannedTeam(
         kernel=kernel, include_tools_descriptions=True
     ),
     feedback_strategy=DefaultFeedbackStrategy(kernel=kernel),
-    fork_history=True,
+    fork_history=False,
     merge_strategy=KernelFunctionMergeHistoryStrategy(
         kernel=kernel,
         kernel_function=KernelFunctionFromPrompt(

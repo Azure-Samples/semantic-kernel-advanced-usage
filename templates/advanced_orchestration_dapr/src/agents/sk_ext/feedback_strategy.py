@@ -30,7 +30,7 @@ class FeedbackResponse(KernelBaseModel):
 
 
 class DefaultFeedbackStrategy(FeedbackStrategy):
-    """A simple feedback strategy that always returns False and an empty string."""
+    """A simple feedback strategy that always returns True and an empty string."""
 
     async def provide_feedback(
         self, history: list["ChatMessageContent"]
