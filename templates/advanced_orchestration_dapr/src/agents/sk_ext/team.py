@@ -23,7 +23,6 @@ from semantic_kernel.agents.strategies.termination.termination_strategy import (
     TerminationStrategy,
 )
 from semantic_kernel.contents import (
-    ChatHistory,
     ChatMessageContent,
     StreamingChatMessageContent,
 )
@@ -111,16 +110,13 @@ class Team(TeamBase):
                 break
 
     @override
-    async def invoke_stream(
+    async def _inner_invoke_stream(
         self,
         *,
         messages: (
             str | ChatMessageContent | list[str | ChatMessageContent] | None
         ) = None,
         thread: AgentThread | None = None,
-        on_intermediate_message: (
-            Callable[[ChatMessageContent], Awaitable[None]] | None
-        ) = None,
         arguments: KernelArguments | None = None,
         kernel: "Kernel | None" = None,
         **kwargs: Any,
@@ -133,9 +129,7 @@ class Team(TeamBase):
         )
         assert thread.id is not None  # nosec
 
-        chat_history = ChatHistory()
-        async for message in thread.get_messages():
-            chat_history.add_message(message)
+        chat_history = await self._build_history(thread)
 
         # TODO: check if it makes sense to have a termination strategy here
         for _ in range(self.termination_strategy.maximum_iterations):

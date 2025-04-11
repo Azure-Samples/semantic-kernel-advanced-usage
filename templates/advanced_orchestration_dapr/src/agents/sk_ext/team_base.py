@@ -164,6 +164,7 @@ class TeamBase(Agent, ABC):
     ) -> AsyncIterable[ChatMessageContent]:
         pass
 
+    @override
     async def invoke_stream(
         self,
         *,
@@ -177,7 +178,72 @@ class TeamBase(Agent, ABC):
         arguments: KernelArguments | None = None,
         kernel: "Kernel | None" = None,
         **kwargs: Any,
-    ) -> AsyncIterable[AgentResponseItem[StreamingChatMessageContent]]: ...
+    ) -> AsyncIterable[AgentResponseItem[StreamingChatMessageContent]]:
+        thread = await self._ensure_thread_exists_with_messages(
+            messages=messages,
+            thread=thread,
+            construct_thread=lambda: ChatHistoryAgentThread(),
+            expected_type=ChatHistoryAgentThread,
+        )
+        assert thread.id is not None  # nosec
+
+        # Accumulate intermediate results in a list
+        results: list[StreamingChatMessageContent] = []
+        async for chunk in self._inner_invoke_stream(
+            thread=thread,
+            arguments=arguments,
+            kernel=kernel,
+            **kwargs,
+        ):
+            results.append(chunk)
+            yield AgentResponseItem(message=chunk, thread=thread)
+
+        # Agents can send multiple messages in a single stream, so we need to aggregate them
+        # and send them as a single messages to the thread.
+        name = None
+        content = None
+        role = None
+        for chunk in results:
+            # First chunk or new message
+            if chunk.name != name:
+                # If this is not the first chunk, send the previous message to the thread
+                if content is not None:
+                    message = ChatMessageContent(
+                        role=role,
+                        name=name,
+                        content=content,
+                    )
+                    await thread.on_new_message(message)
+                    if on_intermediate_message:
+                        await on_intermediate_message(message)
+
+                # Reset the content for the new message
+                name = chunk.name
+                role = chunk.role
+                content = chunk.content
+            else:
+                # If this is not the first chunk, append the content to the previous message
+                content += chunk.content
+
+    async def _inner_invoke_stream(
+        self,
+        thread: ChatHistoryAgentThread,
+        arguments: KernelArguments | None = None,
+        kernel: "Kernel | None" = None,
+        **kwargs: Any,
+    ) -> AsyncIterable[StreamingChatMessageContent]:
+        """Invoke the chat history handler with streaming.
+
+        Args:
+            thread: The agent thread.
+            arguments: The kernel arguments.
+            kernel: The kernel instance.
+            kwargs: The keyword arguments.
+
+        Returns:
+            An async iterable of StreamingChatMessageContent.
+        """
+        pass
 
     async def create_channel(
         self, chat_history: ChatHistory | None = None, thread_id: str | None = None

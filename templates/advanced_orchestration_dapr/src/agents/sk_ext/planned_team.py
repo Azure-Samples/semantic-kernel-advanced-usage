@@ -143,31 +143,19 @@ class PlannedTeam(TeamBase):
                 yield d
 
     @override
-    async def invoke_stream(
+    async def _inner_invoke_stream(
         self,
         *,
         messages: (
             str | ChatMessageContent | list[str | ChatMessageContent] | None
         ) = None,
         thread: AgentThread | None = None,
-        on_intermediate_message: (
-            Callable[[ChatMessageContent], Awaitable[None]] | None
-        ) = None,
         arguments: KernelArguments | None = None,
         kernel: "Kernel | None" = None,
         **kwargs: Any,
     ) -> AsyncIterable[AgentResponseItem[StreamingChatMessageContent]]:
-        thread = await self._ensure_thread_exists_with_messages(
-            messages=messages,
-            thread=thread,
-            construct_thread=lambda: ChatHistoryAgentThread(),
-            expected_type=ChatHistoryAgentThread,
-        )
-        assert thread.id is not None  # nosec
 
-        chat_history = ChatHistory()
-        async for message in thread.get_messages():
-            chat_history.add_message(message)
+        chat_history = await self._build_history(thread)
 
         # In case the agent is invoked multiple times
         self.is_complete = False
