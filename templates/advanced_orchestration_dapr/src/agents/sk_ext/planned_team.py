@@ -18,7 +18,6 @@ from semantic_kernel.agents import (
     AgentThread,
 )
 from semantic_kernel.contents import (
-    ChatHistory,
     ChatMessageContent,
     AuthorRole,
     StreamingChatMessageContent,
@@ -68,18 +67,14 @@ class PlannedTeam(TeamBase):
         self.is_complete = False
         feedback: str = ""
 
-        history = await self._build_history(thread)
-        local_history = (
-            history
-            if not self.fork_history
-            # When forking history, we need to create a new copy of ChatHistory
-            else ChatHistory(
-                system_message=history.system_message, messages=history.messages.copy()
-            )
-        )
+        local_thread = thread
+        if self.fork_history:
+            local_history = await self._build_history(thread)
+            local_thread = ChatHistoryAgentThread(local_history)
 
         while not self.is_complete:
             # Create a plan based on the current history and feedback (if any)
+            local_history = await self._build_history(thread)
             plan = await self.planning_strategy.create_plan(
                 self.agents, local_history.messages, feedback
             )
@@ -90,35 +85,20 @@ class PlannedTeam(TeamBase):
                     agent for agent in self.agents if agent.id == step.agent_id
                 )
                 # And add the step instructions to the history
-                local_history.add_message(
-                    ChatMessageContent(
-                        role=AuthorRole.ASSISTANT,
-                        name=self.id,
-                        content=step.instructions,
-                    )
+                step_instructions = ChatMessageContent(
+                    role=AuthorRole.ASSISTANT,
+                    name=self.id,
+                    content=step.instructions,
                 )
 
-                # Channel required to communicate with agents
-                channel = await self._get_or_create_channel(
-                    selected_agent, local_history
-                )
-                # NOTE: an agent can produce multiple messages in a single invocation
-                async for is_visible, message in channel.invoke(selected_agent):
-                    # Keep updating local history
-                    # NOTE: this is a local history, not the one in the thread
-                    message.name = selected_agent.id
-                    local_history.add_message(message)
+                async for response in selected_agent.invoke(
+                    messages=[step_instructions],
+                    thread=local_thread,
+                ):
+                    message = response.message
+                    logger.debug(f"Agent '{selected_agent.id}' sent message: {message}")
 
-                    if not self.fork_history:
-                        # If we are not forking history, we need to update the thread with the new message
-                        await thread.on_new_message(message)
-                        if on_intermediate_message:
-                            await on_intermediate_message(message)
-
-                    if is_visible and not self.fork_history:
-                        # If we are not forking history, we can yield the message now
-                        # This prevents forked message to appear in the main history
-                        yield message
+                    yield message
 
             # Provide feedback and check if the plan can complete
             ok, feedback = await self.feedback_strategy.provide_feedback(
@@ -129,8 +109,10 @@ class PlannedTeam(TeamBase):
         # Merge the history if needed
         if self.fork_history:
             logger.debug("Merging history after plan execution")
+            local_history = await self._build_history(local_thread)
+            source_history = await self._build_history(thread)
             delta = await self.merge_strategy.merge(
-                history.messages, local_history.messages
+                source_history.messages, local_history.messages
             )
 
             # Yield the merged history delta and update the thread
@@ -155,47 +137,37 @@ class PlannedTeam(TeamBase):
         **kwargs: Any,
     ) -> AsyncIterable[AgentResponseItem[StreamingChatMessageContent]]:
 
-        chat_history = await self._build_history(thread)
-
         # In case the agent is invoked multiple times
         self.is_complete = False
         feedback: str = ""
 
-        local_history = (
-            chat_history
-            if not self.fork_history
-            # When forking history, we need to create a new copy of ChatHistory
-            else ChatHistory(
-                system_message=chat_history.system_message,
-                messages=chat_history.messages.copy(),
-            )
-        )
+        local_thread = thread
+        if self.fork_history:
+            local_history = await self._build_history(thread)
+            local_thread = ChatHistoryAgentThread(local_history)
 
         while not self.is_complete:
+            # Create a plan based on the current history and feedback (if any)
+            local_history = await self._build_history(thread)
             plan = await self.planning_strategy.create_plan(
                 self.agents, local_history.messages, feedback
             )
 
             for step in plan.plan:
+                # Pick next agent to execute the step
                 selected_agent = next(
                     agent for agent in self.agents if agent.id == step.agent_id
                 )
-                local_history.add_message(
-                    ChatMessageContent(
-                        role=AuthorRole.ASSISTANT,
-                        name=self.id,
-                        content=step.instructions,
-                    )
-                )
-
-                messages: list[ChatMessageContent] = []
-
-                # Channel required to communicate with agents
-                channel = await self._get_or_create_channel(
-                    selected_agent, local_history
+                # And add the step instructions to the history
+                step_instructions = ChatMessageContent(
+                    role=AuthorRole.ASSISTANT,
+                    name=self.id,
+                    content=step.instructions,
                 )
                 # TODO: when forking history, do we need to still yield intermediate messages?
-                async for message in channel.invoke_stream(selected_agent, messages):
+                async for message in selected_agent.invoke_stream(
+                    messages=[step_instructions], thread=local_thread
+                ):
                     yield message
 
                 for message in messages:

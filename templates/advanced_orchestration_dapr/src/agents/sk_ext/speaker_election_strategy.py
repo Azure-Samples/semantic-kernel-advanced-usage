@@ -9,7 +9,6 @@ from typing import Annotated
 from semantic_kernel.contents.history_reducer.chat_history_reducer import (
     ChatHistoryReducer,
 )
-from semantic_kernel.functions.kernel_arguments import KernelArguments
 from semantic_kernel.kernel_pydantic import KernelBaseModel
 from semantic_kernel.contents import ChatMessageContent
 from semantic_kernel.kernel import Kernel
@@ -39,6 +38,7 @@ You are a team orchestrator that uses a chat history to determine the next best 
 Your task is to return the agent_id of the speaker that is best suited to proceed based on the context provided in the chat history and the description of the agents, in JSON format as shown in the example output section
 - You MUST return agent_id value from the list of available agents.
 - The names are case-sensitive and should not be abbreviated or changed.
+- DO REMEMBER chat history is sorted from oldest to newest. LATEST message is the last one in the list.
 - DO NOT change the structure of the output, only the values.
 - You MUST provide a reason for the agent_id selection.
 - DO NOT output any additional formatting or text.
@@ -46,15 +46,12 @@ Your task is to return the agent_id of the speaker that is best suited to procee
 - When provided, you can also take a decision based on tools available to each agent
 - When provided, you can also take a decision based on the allowed transitions between agents.
 
-
 ### Example Output
 {{"agent_id": "agent_1", "reason": "Agent 1 is the best speaker for the next turn."}}
-
 
 ### Agents
 
 {agents}
-
 
 ### Chat History
 
@@ -106,23 +103,17 @@ class SpeakerElectionStrategy(SelectionStrategy):
                 history = reduced_history.messages
 
         # Flatten the history
+        import json
+
         messages = [
-            {
-                "role": str(message.role),
-                "content": message.content,
-                "name": message.name or "user",
-            }
-            for message in history
+            f"{idx+1}) {message.name or "user"} => {json.dumps(message.content)}"
+            for idx, message in enumerate(history)
             # For selection strategy, we only need messages from user and assistant
             if message.role in [AuthorRole.USER, AuthorRole.ASSISTANT]
+            and message.content not in ["", None]
         ]
 
         agents_info = self._generate_agents_info(agents)
-
-        # Invoke the function
-        arguments = KernelArguments()
-        arguments["agents"] = agents_info
-        arguments["history"] = messages
 
         execution_settings = {}
         # See https://devblogs.microsoft.com/semantic-kernel/using-json-schema-for-structured-output-in-python-for-openai-models/
@@ -131,13 +122,13 @@ class SpeakerElectionStrategy(SelectionStrategy):
         # Set temperature to 0 to ensure more deterministic results
         execution_settings["temperature"] = 0
 
-        input_prompt = prompt.format(agents=agents_info, history=messages)
+        input_prompt = prompt.format(agents=agents_info, history="\n".join(messages))
+        logger.info(f"SpeakerElectionStrategy input prompt: {input_prompt}")
         function = KernelFunctionFromPrompt(
             function_name="SpeakerElection", prompt=input_prompt
         )
         result = await function.invoke(
             kernel=self.kernel,
-            arguments=arguments,
             execution_settings=execution_settings,
         )
         logger.info(f"SpeakerElectionStrategy: {result}")
@@ -184,7 +175,7 @@ class SpeakerElectionStrategy(SelectionStrategy):
                 ]
             transitions_str = "\n".join(transitions)
 
-            agent_info = f"- agent_id: {agent.id}\n    - description: {agent.description}\n{tools_str}\n{transitions_str}\n\n"
+            agent_info = f"- agent_id: {agent.id}\n    - description: {agent.description}\n{tools_str}\n{transitions_str}"
             agents_info.append(agent_info)
 
         return "\n".join(agents_info)

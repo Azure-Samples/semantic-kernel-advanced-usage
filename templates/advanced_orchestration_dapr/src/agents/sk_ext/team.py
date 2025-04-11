@@ -63,11 +63,11 @@ class Team(TeamBase):
         # In case the agent is invoked multiple times
         self.is_complete = False
 
-        # Get the history of the thread
-        history = await self._build_history(thread)
-
         # TODO: check if it makes sense to have a termination strategy here
         for _ in range(self.termination_strategy.maximum_iterations):
+            # Get the history of the thread
+            history = await self._build_history(thread)
+
             # Perform next agent selection
             try:
                 selected_agent = await self.selection_strategy.next(
@@ -77,34 +77,21 @@ class Team(TeamBase):
                 logger.error(f"Failed to select agent: {ex}")
                 raise AgentChatException("Failed to select agent") from ex
 
-            # A Channel is required to communicate with agents
-            channel = await self._get_or_create_channel(
-                selected_agent, history.messages
-            )
-            # NOTE: an agent can produce multiple messages in a single invocation
-            async for is_visible, message in channel.invoke(selected_agent):
-                logger.info(f"Agent {selected_agent.id} sent message: {message}")
+            async for response in selected_agent.invoke(
+                thread=thread,
+            ):
+                message = response.message
+                logger.debug(f"Agent '{selected_agent.id}' sent message: {message}")
 
-                # Keep updating local history
-                # NOTE: this is a local history, not the one in the thread
-                # and it's key to ensure next agent selection is based on the latest messages
-                history.add_message(message)
-
-                # Update the thread with the new message
-                await thread.on_new_message(message)
-                if on_intermediate_message:
-                    await on_intermediate_message(message)
+                yield message
 
                 # Check for termination
+                # TODO check after each message or after each agent invocation?
                 if message.role == AuthorRole.ASSISTANT:
                     task = self.termination_strategy.should_terminate(
-                        selected_agent, history.messages
+                        selected_agent, thread._chat_history.messages
                     )
                     self.is_complete = await task
-
-                # Yield the message only when visible
-                if is_visible:
-                    yield message
 
             if self.is_complete:
                 break
@@ -121,30 +108,41 @@ class Team(TeamBase):
         kernel: "Kernel | None" = None,
         **kwargs: Any,
     ) -> AsyncIterable[AgentResponseItem[StreamingChatMessageContent]]:
-        thread = await self._ensure_thread_exists_with_messages(
-            messages=messages,
-            thread=thread,
-            construct_thread=lambda: ChatHistoryAgentThread(),
-            expected_type=ChatHistoryAgentThread,
-        )
-        assert thread.id is not None  # nosec
-
-        chat_history = await self._build_history(thread)
+        # In case the agent is invoked multiple times
+        self.is_complete = False
 
         # TODO: check if it makes sense to have a termination strategy here
         for _ in range(self.termination_strategy.maximum_iterations):
+            # Get the history of the thread
+            history = await self._build_history(thread)
+
+            # Perform next agent selection
             try:
                 selected_agent = await self.selection_strategy.next(
-                    self.agents, messages
+                    self.agents, history=history.messages
                 )
-            # TODO: possible handle a case when no agent is selected
             except Exception as ex:
                 logger.error(f"Failed to select agent: {ex}")
                 raise AgentChatException("Failed to select agent") from ex
 
-            messages: list[ChatMessageContent] = []
+            # NOTE: an agent can produce multiple messages in a single invocation
+            async for response in selected_agent.invoke(
+                thread=thread,
+            ):
+                message = response.message
+                logger.info(f"Agent {selected_agent.id} sent message: {message}")
 
-            # Channel required to communicate with agents
-            channel = await self._get_or_create_channel(selected_agent, chat_history)
-            async for message in channel.invoke_stream(selected_agent, messages):
                 yield message
+
+                # Update the thread with the new message
+                await thread.on_new_message(message)
+
+                # Check for termination
+                if message.role == AuthorRole.ASSISTANT:
+                    task = self.termination_strategy.should_terminate(
+                        selected_agent, history.messages
+                    )
+                    self.is_complete = await task
+
+            if self.is_complete:
+                break

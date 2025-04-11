@@ -9,7 +9,6 @@ if sys.version_info >= (3, 12):
     from typing import override  # pragma: no cover
 else:
     from typing_extensions import override  # pragma: no cover
-from pydantic import Field
 from semantic_kernel import Kernel
 from semantic_kernel.agents import (
     Agent,
@@ -17,7 +16,6 @@ from semantic_kernel.agents import (
     AgentResponseItem,
     ChatHistoryAgentThread,
 )
-from semantic_kernel.agents.group_chat.agent_chat_utils import KeyEncoder
 from semantic_kernel.utils.telemetry.agent_diagnostics.decorators import (
     trace_agent_invocation,
     trace_agent_get_response,
@@ -51,8 +49,6 @@ class TeamBase(Agent, ABC):
     description: str
     agents: list[Agent]
     channel_type: ClassVar[type[AgentChannel]] = ChatHistoryChannel
-    agent_channels: dict[str, AgentChannel] = Field(default_factory=dict)
-    channel_map: dict[Agent, str] = Field(default_factory=dict)
     is_complete: bool = False
 
     @trace_agent_get_response
@@ -272,32 +268,9 @@ class TeamBase(Agent, ABC):
 
         return ChatHistoryChannel(messages=messages, thread=thread)
 
-    def _get_agent_hash(self, agent: Agent):
-        """Get the hash of an agent."""
-        hash_value = self.channel_map.get(agent, None)
-        if hash_value is None:
-            hash_value = KeyEncoder.generate_hash(agent.get_channel_keys())
-            self.channel_map[agent] = hash_value
-
-        return hash_value
-
     async def _build_history(self, thread: ChatHistoryAgentThread) -> ChatHistory:
         """Build the history."""
         chat_history = ChatHistory()
         async for message in thread.get_messages():
             chat_history.add_message(message)
         return chat_history
-
-    async def _get_or_create_channel(
-        self, agent: Agent, messages: list[ChatMessageContent]
-    ) -> AgentChannel:
-        """Get or create a channel."""
-        channel_key = self._get_agent_hash(agent)
-        channel = self.agent_channels.get(channel_key, None)
-        if channel is None:
-            channel = await agent.create_channel()
-            self.agent_channels[channel_key] = channel
-
-            if len(messages) > 0:
-                await channel.receive(messages)
-        return channel
