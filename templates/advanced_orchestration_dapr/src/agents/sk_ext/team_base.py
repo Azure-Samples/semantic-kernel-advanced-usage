@@ -150,7 +150,6 @@ class TeamBase(Agent, ABC):
     async def _inner_invoke(
         self,
         thread: ChatHistoryAgentThread,
-        history: ChatHistory,
         on_intermediate_message: (
             Callable[[ChatMessageContent], Awaitable[None]] | None
         ) = None,
@@ -183,43 +182,14 @@ class TeamBase(Agent, ABC):
         )
         assert thread.id is not None  # nosec
 
-        # Accumulate intermediate results in a list
-        results: list[StreamingChatMessageContent] = []
         async for chunk in self._inner_invoke_stream(
             thread=thread,
             arguments=arguments,
             kernel=kernel,
             **kwargs,
         ):
-            results.append(chunk)
+            logger.info(f"Chunk: {chunk}")
             yield AgentResponseItem(message=chunk, thread=thread)
-
-        # Agents can send multiple messages in a single stream, so we need to aggregate them
-        # and send them as a single messages to the thread.
-        name = None
-        content = None
-        role = None
-        for chunk in results:
-            # First chunk or new message
-            if chunk.name != name:
-                # If this is not the first chunk, send the previous message to the thread
-                if content is not None:
-                    message = ChatMessageContent(
-                        role=role,
-                        name=name,
-                        content=content,
-                    )
-                    await thread.on_new_message(message)
-                    if on_intermediate_message:
-                        await on_intermediate_message(message)
-
-                # Reset the content for the new message
-                name = chunk.name
-                role = chunk.role
-                content = chunk.content
-            else:
-                # If this is not the first chunk, append the content to the previous message
-                content += chunk.content
 
     async def _inner_invoke_stream(
         self,

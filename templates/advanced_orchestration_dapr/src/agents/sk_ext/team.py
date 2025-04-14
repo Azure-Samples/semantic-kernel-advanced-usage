@@ -99,10 +99,6 @@ class Team(TeamBase):
     @override
     async def _inner_invoke_stream(
         self,
-        *,
-        messages: (
-            str | ChatMessageContent | list[str | ChatMessageContent] | None
-        ) = None,
         thread: AgentThread | None = None,
         arguments: KernelArguments | None = None,
         kernel: "Kernel | None" = None,
@@ -126,23 +122,28 @@ class Team(TeamBase):
                 raise AgentChatException("Failed to select agent") from ex
 
             # NOTE: an agent can produce multiple messages in a single invocation
-            async for response in selected_agent.invoke(
+            message = None
+            async for response in selected_agent.invoke_stream(
                 thread=thread,
             ):
-                message = response.message
-                logger.info(f"Agent {selected_agent.id} sent message: {message}")
+                chunk = response.message
+                logger.info(f"Agent {selected_agent.id} sent chunk: {chunk}")
 
-                yield message
+                yield chunk
 
-                # Update the thread with the new message
-                await thread.on_new_message(message)
+                if message is None:
+                    message = chunk
+                elif chunk.role == message.role:
+                    message += chunk
+                else:
+                    # Update the thread with the new message
+                    await thread.on_new_message(message)
 
-                # Check for termination
-                if message.role == AuthorRole.ASSISTANT:
-                    task = self.termination_strategy.should_terminate(
-                        selected_agent, history.messages
-                    )
-                    self.is_complete = await task
+            # Check for termination
+            task = self.termination_strategy.should_terminate(
+                selected_agent, history.messages
+            )
+            self.is_complete = await task
 
             if self.is_complete:
                 break
