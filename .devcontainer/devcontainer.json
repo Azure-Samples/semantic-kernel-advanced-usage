@@ -1,5 +1,5 @@
 {
-  "name": "Contoso Agents Dev Container",
+  "name": "SK Advanced Usage Dev Container",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {},
@@ -21,11 +21,14 @@
         "ms-python.python",
         "ms-azuretools.vscode-docker",
         "ms-azuretools.vscode-bicep",
-        "ms-vscode.azure-account",
         "ms-azuretools.azure-dev",
         "ms-dotnettools.vscode-dapr",
         "esbenp.prettier-vscode",
-        "ms-python.black-formatter"
+        "ms-python.black-formatter",
+        "vscode-icons-team.vscode-icons",
+        "teamsdevapp.vscode-ai-foundry",
+        "ms-azuretools.vscode-azurecontainerapps",
+        "ms-vscode.azurecli"
       ]
     }
   }

@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Process Visualizer</title>
+    <!-- Update React and Babel versions to support modern JavaScript features -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.22.9/babel.min.js"></script>
+    <!-- Import Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Import FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .step-connector {
+            position: absolute;
+            width: 2px;
+            background-color: #e2e8f0;
+            left: 20px;
+            z-index: -1;
+        }
+        
+        .transition-connector {
+            position: absolute;
+            background-color: #3b82f6;
+            height: 2px;
+            transition: width 0.5s ease-in-out;
+            z-index: 10;
+        }
+        
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Add highlight effect for active step */
+        .step-highlight {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+            transform: scale(1.05);
+        }
+        
+        /* Improved JSON formatting */
+        .json-key {
+            color: #0077aa;
+        }
+        
+        .json-string {
+            color: #669900;
+        }
+        
+        .json-number {
+            color: #aa5500;
+        }
+        
+        .json-boolean {
+            color: #1155cc;
+        }
+        
+        /* Enhanced transition history */
+        .history-item-active {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root" class="min-h-screen"></div>
+
+    <script type="text/babel">
+        // Root component
+        const App = () => {
+            const [steps, setSteps] = React.useState([]);
+            const [transitions, setTransitions] = React.useState([]);
+            const [activeStep, setActiveStep] = React.useState(null);
+            const [selectedTransition, setSelectedTransition] = React.useState(null);
+            const [processRunning, setProcessRunning] = React.useState(false);
+            const [processComplete, setProcessComplete] = React.useState(false);
+            const [connectionStatus, setConnectionStatus] = React.useState('disconnected');
+            const [status, setStatus] = React.useState('Waiting for process to start...');
+            const [nlQuery, setNlQuery] = React.useState('');
+            const [isSubmitting, setIsSubmitting] = React.useState(false);
+            const [transitionHistory, setTransitionHistory] = React.useState([]);
+            const [finalAnswer, setFinalAnswer] = React.useState('');
+            
+            const websocketRef = React.useRef(null);
+            
+            // Function to normalize step IDs between server and client
+            const normalizeStepId = (id) => {
+                // First, convert to lowercase if it's a string
+                if (typeof id !== 'string') return id;
+                
+                // Check if the ID matches our known step IDs regardless of case/format
+                const knownStepIds = {
+                    'process_start': 'process_start',
+                    'processstart': 'process_start',
+                    'tablenamestep': 'table_name_step',
+                    'table_name_step': 'table_name_step',
+                    'columnnamestep': 'column_name_step',
+                    'column_name_step': 'column_name_step',
+                    'sqlgenerationstep': 'sql_generation_step',
+                    'sql_generation_step': 'sql_generation_step',
+                    'businessrulesstep': 'business_rules_step',
+                    'business_rules_step': 'business_rules_step',
+                    'validationstep': 'validation_step',
+                    'validation_step': 'validation_step',
+                    'executionstep': 'execution_step',
+                    'execution_step': 'execution_step',
+                    'process_end': 'process_end',
+                    'processend': 'process_end'
+                };
+                
+                // Look up the normalized ID or return the original if not found
+                return knownStepIds[id.toLowerCase()] || id;
+            };
+
+            // Add debugging to help identify ID mapping issues
+            const logStepMapping = (serverStepId, normalizedId) => {
+                if (serverStepId !== normalizedId) {
+                    console.log(`Step ID mapping: ${serverStepId} -> ${normalizedId}`);
+                }
+            };
+
+            // Order of steps for ensuring proper flow
+            const stepOrder = [
+                'process_start',
+                'table_name_step',
+                'column_name_step',
+                'sql_generation_step',
+                'business_rules_step',
+                'validation_step',
+                'execution_step',
+                'process_end'
+            ];
+
+            // Connect to WebSocket
+            React.useEffect(() => {
+                const connectWebSocket = () => {
+                    // Use current window location for WebSocket connection
+                    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                    const wsUrl = `${wsProtocol}//${window.location.host}/ws`;
+                    console.log(`Connecting to WebSocket at: ${wsUrl}`);
+                    
+                    const ws = new WebSocket(wsUrl);
+                    
+                    ws.onopen = () => {
+                        console.log('WebSocket connected');
+                        setConnectionStatus('connected');
+                        setStatus('Connected to server. Ready to submit a query.');
+                        
+                        // Request full history on connect if needed
+                        if (processComplete) {
+                            ws.send('get_history');
+                        }
+                    };
+                    
+                    ws.onclose = () => {
+                        console.log('WebSocket disconnected');
+                        setConnectionStatus('disconnected');
+                        setStatus('Disconnected from server. Trying to reconnect...');
+                        
+                        // Try to reconnect in 2 seconds
+                        setTimeout(connectWebSocket, 2000);
+                    };
+                    
+                    ws.onerror = (error) => {
+                        console.error('WebSocket error:', error);
+                        setConnectionStatus('error');
+                        setStatus('Connection error. Trying to reconnect...');
+                    };
+                    
+                    ws.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+                        console.log('Received WebSocket message:', data);
+                        
+                        if (data.type === 'steps_configuration') {
+                            setSteps(data.steps.map(step => ({
+                                ...step,
+                                status: 'pending'
+                            })));
+                            setStatus('Process configuration received. Ready to submit a query.');
+                        }
+                        else if (data.type === 'step_start') {
+                            setProcessRunning(true);
+                            
+                            // Normalize step ID to match our steps array
+                            const normalizedStepId = normalizeStepId(data.step_id);
+                            logStepMapping(data.step_id, normalizedStepId);
+
+                            // Store step input data with unique ID
+                            const uniqueId = `step-start-${normalizedStepId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                            
+                            // Update transition history even if we can't find the step yet
+                            // (steps might not be loaded fully when events arrive)
+                            const newTransition = {
+                                id: uniqueId,
+                                step_id: normalizedStepId,
+                                step_name: data.step_name,
+                                input_data: data.input_data,
+                                type: 'input',
+                                timestamp: data.timestamp || new Date().toISOString()
+                            };
+                            
+                            // Add newest step starts at the top too
+                            setTransitionHistory(prev => [{
+                                id: uniqueId,
+                                type: 'step_start',
+                                step_name: data.step_name,
+                                step_id: normalizedStepId,
+                                timestamp: data.timestamp || new Date().toISOString(),
+                                data: data.input_data
+                            }, ...prev]);
+                            
+                            setSelectedTransition(newTransition);
+
+                            // Try to find this step in our steps array
+                            if (steps && steps.length > 0) {
+                                const step = steps.find(s => s.id === normalizedStepId);
+                                
+                                if (step) {
+                                    // Update step status
+                                    setSteps(prevSteps => {
+                                        const updatedSteps = [...prevSteps];
+                                        
+                                        // Get current step's index in the order
+                                        const stepIndex = stepOrder.indexOf(normalizedStepId);
+                                        
+                                        // Mark all steps appropriately
+                                        for (let i = 0; i < updatedSteps.length; i++) {
+                                            const currentStep = updatedSteps[i];
+                                            const currentStepIndex = stepOrder.indexOf(currentStep.id);
+                                            
+                                            // If this step comes before the current active step
+                                            if (currentStepIndex >= 0 && currentStepIndex < stepIndex) {
+                                                updatedSteps[i] = { ...currentStep, status: 'completed' };
+                                            } 
+                                            // If this is the active step
+                                            else if (currentStep.id === normalizedStepId) {
+                                                updatedSteps[i] = { ...currentStep, status: 'active' };
+                                            }
+                                            // Any other step
+                                            else {
+                                                updatedSteps[i] = { ...currentStep, status: 'pending' };
+                                            }
+                                        }
+                                        
+                                        return updatedSteps;
+                                    });
+                                    
+                                    setActiveStep(normalizedStepId);
+                                    setStatus(`Step started: ${data.step_name}`);
+                                    console.log(`Updated step ${normalizedStepId} to active`);
+                                } else {
+                                    console.log(`Step ${normalizedStepId} not found yet, but event recorded in history`);
+                                }
+                            } else {
+                                console.log('Steps not loaded yet, but event recorded in history');
+                            }
+                        }
+                        else if (data.type === 'step_transition') {
+                            // Normalize step IDs to match our steps array
+                            const normalizedFromStepId = normalizeStepId(data.from_step_id);
+                            const normalizedToStepId = data.to_step_id ? normalizeStepId(data.to_step_id) : null;
+                            
+                            logStepMapping(data.from_step_id, normalizedFromStepId);
+                            if (data.to_step_id) logStepMapping(data.to_step_id, normalizedToStepId);
+                            
+                            // Reset all steps and update their status based on where we are in the process
+                            setSteps(prevSteps => {
+                                const updatedSteps = [...prevSteps].map(s => ({
+                                    ...s,
+                                    status: 'pending'
+                                }));
+                                
+                                if (normalizedToStepId) {
+                                    // Get indices in the step order
+                                    const fromIndex = stepOrder.indexOf(normalizedFromStepId);
+                                    const toIndex = stepOrder.indexOf(normalizedToStepId);
+                                    
+                                    // Mark all steps up to the "from" step as completed
+                                    for (let i = 0; i < prevSteps.length; i++) {
+                                        const currentStep = prevSteps[i];
+                                        const currentStepIndex = stepOrder.indexOf(currentStep.id);
+                                        
+                                        // Mark all steps before "to" step as completed
+                                        if (currentStepIndex >= 0 && currentStepIndex < toIndex) {
+                                            updatedSteps[i].status = 'completed';
+                                        }
+                                        
+                                        // Set the "to" step as active
+                                        if (currentStep.id === normalizedToStepId) {
+                                            updatedSteps[i].status = 'active';
+                                        }
+                                    }
+                                    
+                                    console.log(`Updated step ${normalizedToStepId} to active`);
+                                } else {
+                                    // If transitioning to the end, mark all steps as completed
+                                    for (let i = 0; i < prevSteps.length; i++) {
+                                        const currentStep = prevSteps[i];
+                                        const currentStepIndex = stepOrder.indexOf(currentStep.id);
+                                        
+                                        // Mark all steps except the last one as completed
+                                        if (currentStepIndex >= 0 && currentStepIndex < stepOrder.length - 1) {
+                                            updatedSteps[i].status = 'completed';
+                                        }
+                                        
+                                        // Set the last step (process_end) as active
+                                        if (currentStep.id === 'process_end') {
+                                            updatedSteps[i].status = 'active';
+                                        }
+                                    }
+                                    
+                                    console.log(`Process complete, marking process_end as active`);
+                                }
+                                
+                                return updatedSteps;
+                            });
+                            
+                            // Set the active step
+                            if (normalizedToStepId) {
+                                setActiveStep(normalizedToStepId);
+                            } else {
+                                // If transitioning to the end
+                                setActiveStep('process_end');
+                                setProcessComplete(true);
+                                setProcessRunning(false);
+                                setStatus('Process completed');
+                                setIsSubmitting(false);
+                            }
+                            
+                            // Add transition with unique ID
+                            const newTransition = {
+                                id: `${normalizedFromStepId}-to-${normalizedToStepId || 'end'}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                from_step_id: normalizedFromStepId,
+                                to_step_id: normalizedToStepId,
+                                from_step: data.from_step,
+                                to_step: data.to_step,
+                                event: data.event,
+                                timestamp: data.timestamp || new Date().toISOString(),
+                                duration: data.duration,
+                                output_data: data.output_data,
+                                input_data: data.input_data
+                            };
+                            
+                            setTransitions(prev => [...prev, newTransition]);
+                            
+                            // Update transition history - add newest transitions at the top
+                            setTransitionHistory(prev => [{
+                                id: newTransition.id,
+                                type: 'transition',
+                                from_step: data.from_step,
+                                to_step: data.to_step || 'End',
+                                event: data.event || 'Default Completion',
+                                timestamp: data.timestamp || new Date().toISOString(),
+                                duration: data.duration,
+                                data: {
+                                    input: data.input_data,
+                                    output: data.output_data
+                                }
+                            }, ...prev]);
+                            
+                            setSelectedTransition({
+                                ...newTransition,
+                                type: 'transition'
+                            });
+                            
+                            setStatus(`Transition: ${data.from_step} → ${data.to_step || 'End'} via ${data.event || 'completion'}`);
+                        }
+                        else if (data.type === 'transition_history') {
+                            // Process full history
+                            const processedTransitions = [];
+                            const historyItems = [];
+                            
+                            // Ensure transitions is properly parsed if it's a string
+                            let transitionsData = data.transitions;
+                            if (typeof transitionsData === 'string') {
+                                try {
+                                    transitionsData = JSON.parse(transitionsData);
+                                } catch (e) {
+                                    console.error("Error parsing transitions data:", e);
+                                    transitionsData = [];
+                                }
+                            }
+                            
+                            if (Array.isArray(transitionsData)) {
+                                // Process each transition in the history
+                                for (const transition of transitionsData) {
+                                    // Safely extract step names with fallbacks
+                                    const stepName = transition.step_name || 'unknown';
+                                    const nextStep = transition.next_step || null;
+                                    
+                                    // Safely generate and normalize step IDs
+                                    const rawFromStepId = stepName ? stepName.replace(/\s+/g, '_').toLowerCase() : 'unknown';
+                                    const rawToStepId = nextStep ? nextStep.replace(/\s+/g, '_').toLowerCase() : null;
+                                    
+                                    // Apply normalization for consistent matching with the steps array
+                                    const fromStepId = normalizeStepId(rawFromStepId);
+                                    const toStepId = rawToStepId ? normalizeStepId(rawToStepId) : null;
+                                    
+                                    // Log mapping if there was a change
+                                    logStepMapping(rawFromStepId, fromStepId);
+                                    if (rawToStepId) logStepMapping(rawToStepId, toStepId);
+                                    
+                                    // Generate unique ID with timestamp and random number
+                                    const uniqueId = `${fromStepId}-to-${toStepId || 'end'}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                                    
+                                    const transitionObj = {
+                                        id: uniqueId,
+                                        from_step_id: fromStepId,
+                                        to_step_id: toStepId,
+                                        from_step: stepName,
+                                        to_step: nextStep,
+                                        event: transition.next_event,
+                                        timestamp: transition.timestamp,
+                                        duration: transition.duration,
+                                        input_data: transition.input_data,
+                                        output_data: transition.output_data
+                                    };
+                                    
+                                    processedTransitions.push(transitionObj);
+                                    
+                                    // Add to history with unique ID
+                                    historyItems.push({
+                                        id: uniqueId,
+                                        type: 'transition',
+                                        from_step: stepName,
+                                        to_step: nextStep || 'End',
+                                        event: transition.next_event || 'Default Completion',
+                                        timestamp: transition.timestamp,
+                                        duration: transition.duration,
+                                        data: {
+                                            input: transition.input_data,
+                                            output: transition.output_data
+                                        }
+                                    });
+                                }
+                                
+                                // Only update transitions if we have processed some
+                                if (processedTransitions.length > 0) {
+                                    // Append to existing transitions instead of replacing
+                                    setTransitions(prev => {
+                                        // Check for duplicates - use a Map with IDs based on from/to step
+                                        const transitionMap = new Map();
+                                        
+                                        // Add existing transitions to the map
+                                        prev.forEach(t => {
+                                            const key = `${t.from_step_id}-${t.to_step_id}`;
+                                            transitionMap.set(key, t);
+                                        });
+                                        
+                                        // Add new transitions, overwriting duplicates
+                                        processedTransitions.forEach(t => {
+                                            const key = `${t.from_step_id}-${t.to_step_id}`;
+                                            transitionMap.set(key, t);
+                                        });
+                                        
+                                        // Convert back to array
+                                        return Array.from(transitionMap.values());
+                                    });
+                                    
+                                    // Append to existing history instead of replacing
+                                    setTransitionHistory(prev => {
+                                        // Check for duplicates using a Map
+                                        const historyMap = new Map();
+                                        
+                                        // Add existing history items to the map
+                                        prev.forEach(h => {
+                                            // Use type and step info as key
+                                            const key = h.type === 'transition' ? 
+                                                `transition-${h.from_step}-${h.to_step}` : 
+                                                `step-${h.step_name}`;
+                                            historyMap.set(key, h);
+                                        });
+                                        
+                                        // Add new history items, overwriting duplicates
+                                        historyItems.forEach(h => {
+                                            const key = h.type === 'transition' ? 
+                                                `transition-${h.from_step}-${h.to_step}` : 
+                                                `step-${h.step_name}`;
+                                            historyMap.set(key, h);
+                                        });
+                                        
+                                        // Convert back to array and sort with most recent transitions first
+                                        return Array.from(historyMap.values())
+                                            .sort((a, b) => {
+                                                // Sort by timestamp if available
+                                                if (a.timestamp && b.timestamp) {
+                                                    return new Date(b.timestamp) - new Date(a.timestamp);
+                                                }
+                                                return 0;
+                                            });
+                                    });
+                                    
+                                    // Update active step based on last transition if we're still in process
+                                    if (!processComplete) {
+                                        const lastTransition = processedTransitions[processedTransitions.length - 1];
+                                        if (lastTransition.to_step_id) {
+                                            setActiveStep(lastTransition.to_step_id);
+                                            
+                                            // Update step statuses
+                                            setSteps(prevSteps => {
+                                                return prevSteps.map(step => {
+                                                    // Mark steps before the active step as completed
+                                                    const stepIndex = stepOrder.indexOf(step.id);
+                                                    const activeStepIndex = stepOrder.indexOf(lastTransition.to_step_id);
+                                                    
+                                                    if (stepIndex < activeStepIndex) {
+                                                        return { ...step, status: 'completed' };
+                                                    } 
+                                                    else if (step.id === lastTransition.to_step_id) {
+                                                        return { ...step, status: 'active' };
+                                                    }
+                                                    else {
+                                                        return { ...step, status: 'pending' };
+                                                    }
+                                                });
+                                            });
+                                        }
+                                    }
+                                    
+                                    // If showing transition details and we got new transitions, update the selected one
+                                    if (selectedTransition === null && processedTransitions.length > 0) {
+                                        setSelectedTransition({
+                                            ...processedTransitions[processedTransitions.length - 1],
+                                            type: 'transition'
+                                        });
+                                    }
+                                    
+                                    // If process is complete based on last transition
+                                    const lastTransition = processedTransitions[processedTransitions.length - 1];
+                                    if (lastTransition && !lastTransition.to_step_id) {
+                                        setProcessComplete(true);
+                                        setProcessRunning(false);
+                                        setStatus('Process completed');
+                                        setIsSubmitting(false);
+                                    } else if (lastTransition) {
+                                        setProcessRunning(true);
+                                        setStatus(`Process in progress: ${lastTransition.to_step || 'Unknown step'}`);
+                                    }
+                                }
+                            } else {
+                                console.error("Invalid transitions data format:", transitionsData);
+                            }
+                        }
+                        else if (data.type === 'process_started') {
+                            // Only reset the visualization state but keep the history
+                            setSteps(prevSteps => prevSteps.map(step => ({
+                                ...step,
+                                status: 'pending'
+                            })));
+                            
+                            // Keep transitions and history unless this is a new query submission
+                            if (data.query !== nlQuery) {
+                                // Only reset history if this is a new query
+                                setTransitions([]);
+                                setTransitionHistory([]);
+                            }
+                            
+                            setActiveStep(null);
+                            setSelectedTransition(null);
+                            setProcessComplete(false);
+                            setProcessRunning(true);
+                            setStatus(`Process started with query: ${data.query}`);
+                        }
+                        else if (data.type === 'process_completed') {
+                            setProcessComplete(true);
+                            setProcessRunning(false);
+                            setStatus('Process completed');
+                            setIsSubmitting(false);
+                            
+                            // Note: We're no longer clearing transition history here
+                        }
+                        else if (data.type === 'error') {
+                            setStatus(`Error: ${data.message}`);
+                            setIsSubmitting(false);
+                        }
+                        else if (data.type === 'reset') {
+                            // Only reset the UI state if the user explicitly clicked reset
+                            // but don't clear the history
+                            setSteps(prevSteps => prevSteps.map(step => ({
+                                ...step,
+                                status: 'pending'
+                            })));
+                            setActiveStep(null);
+                            setProcessComplete(false);
+                            setProcessRunning(false);
+                            setStatus('Process reset. Ready to submit a new query.');
+                            
+                            // Note: We're no longer clearing transition history here
+                        }
+                        else if (data.type === 'final_answer') {
+                            console.log('Received final answer:', data);
+                            setFinalAnswer(data.answer);
+                            setProcessComplete(true);
+                            setProcessRunning(false);
+                            setStatus('Process completed with answer');
+                            setIsSubmitting(false);
+                        }
+                    };
+                    
+                    websocketRef.current = ws;
+                };
+                
+                connectWebSocket();
+                
+                // Cleanup on unmount
+                return () => {
+                    if (websocketRef.current) {
+                        websocketRef.current.close();
+                    }
+                };
+            }, [processComplete]);
+            
+            const handleSubmitQuery = async () => {
+                if (!nlQuery.trim() || isSubmitting) return;
+                
+                setIsSubmitting(true);
+                setStatus('Submitting query...');
+                
+                try {
+                    // Reset the visualization for a new process
+                    setSteps(prevSteps => prevSteps.map(step => ({
+                        ...step,
+                        status: 'pending'
+                    })));
+                    setTransitions([]);
+                    setTransitionHistory([]);
+                    setActiveStep(null);
+                    setSelectedTransition(null);
+                    setProcessComplete(false);
+                    
+                    // Submit the query to the server
+                    const response = await fetch('/api/submit-query', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ query: nlQuery }),
+                    });
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(errorText || 'Failed to submit query');
+                    }
+                    
+                    const data = await response.json();
+                    setStatus(`Query submitted: ${nlQuery}`);
+                    console.log('Query submitted successfully:', data);
+                } catch (error) {
+                    console.error('Error submitting query:', error);
+                    setStatus(`Error submitting query: ${error.message}`);
+                    setIsSubmitting(false);
+                }
+            };
+            
+            const getStepIcon = (step) => {
+                switch (step.id) {
+                    case 'process_start':
+                        return 'fa-play';
+                    case 'table_name_step':
+                        return 'fa-table';
+                    case 'column_name_step':
+                        return 'fa-columns';
+                    case 'sql_generation_step':
+                        return 'fa-code';
+                    case 'business_rules_step':
+                        return 'fa-check-square';
+                    case 'validation_step':
+                        return 'fa-clipboard-check';
+                    case 'execution_step':
+                        return 'fa-database';
+                    case 'process_end':
+                        return 'fa-flag-checkered';
+                    default:
+                        return 'fa-circle';
+                }
+            };
+            
+            const getStepIconColor = (status) => {
+                switch (status) {
+                    case 'pending':
+                        return 'text-gray-400';
+                    case 'active':
+                        return 'text-blue-500';
+                    case 'completed':
+                        return 'text-green-500';
+                    default:
+                        return 'text-gray-400';
+                }
+            };
+            
+            const getStepBgColor = (status) => {
+                switch (status) {
+                    case 'pending':
+                        return 'bg-gray-100';
+                    case 'active':
+                        return 'bg-blue-100';
+                    case 'completed':
+                        return 'bg-green-100';
+                    default:
+                        return 'bg-gray-100';
+                }
+            };
+            
+            const resetProcess = () => {
+                console.log("RESET BUTTON CLICKED - Performing complete reset");
+                
+                // Initialize with empty arrays directly instead of setting to null first
+                setTransitions([]);
+                setTransitionHistory([]);
+                
+                setSteps(prevSteps => prevSteps.map(step => ({
+                    ...step,
+                    status: 'pending'
+                })));
+                
+                setActiveStep(null);
+                setSelectedTransition(null);
+                setProcessComplete(false);
+                setProcessRunning(false);
+                setStatus('Ready to submit a new query');
+                setNlQuery('');
+                setIsSubmitting(false);
+                // Clear the final answer when reset is clicked
+                setFinalAnswer('');
+                setTransitions([]);
+                setTransitionHistory([]);
+                
+                console.log('Resetting process state and clearing transitions and history');
+                // Force React to re-render by setting a key on root
+                const resetTimestamp = Date.now();
+                if (document.getElementById('root')) {
+                    document.getElementById('root').setAttribute('data-reset', resetTimestamp);
+                }
+                
+                // Send a reset command to the server
+                if (websocketRef.current && websocketRef.current.readyState === WebSocket.OPEN) {
+                    try {
+                        // Send reset command to server
+                        websocketRef.current.send(JSON.stringify({
+                            type: 'reset',
+                            command: 'clear_all_data',
+                            timestamp: new Date().toISOString()
+                        }));
+                        console.log('Sent reset command to server to clear StepTracker cache');
+                        
+                        // Close WebSocket connection to reset state
+                        const currentWs = websocketRef.current;
+                        
+                        // Only close if it exists and is open
+                        if (currentWs && currentWs.readyState === WebSocket.OPEN) {
+                            websocketRef.current = null;
+                            currentWs.onclose = null; // Remove event handlers to prevent recursion
+                            currentWs.onerror = null;
+                            currentWs.close();
+                            console.log('Closed WebSocket connection to force refresh');
+                        }
+                    } catch (e) {
+                        console.error('Error during WebSocket reset:', e);
+                    }
+                }
+                
+                // Ensure one final state refresh
+                window.setTimeout(() => {
+                    console.log('Final reset confirmation');
+                    setStatus('Ready for a new query');
+                }, 100);
+            };
+
+            // Format JSON data for display with syntax highlighting
+            const formatJsonData = (data) => {
+                if (!data) return '';
+                try {
+                    // Try to parse if it's a JSON string
+                    const jsonObj = typeof data === 'string' ? JSON.parse(data) : data;
+                    const jsonStr = JSON.stringify(jsonObj, null, 2);
+                    
+                    // Add syntax highlighting
+                    return jsonStr
+                        .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                            let cls = 'json-number';
+                            if (/^"/.test(match)) {
+                                if (/:$/.test(match)) {
+                                    cls = 'json-key';
+                                } else {
+                                    cls = 'json-string';
+                                }
+                            } else if (/true|false/.test(match)) {
+                                cls = 'json-boolean';
+                            } else if (/null/.test(match)) {
+                                cls = 'json-null';
+                            }
+                            return '<span class="' + cls + '">' + match + '</span>';
+                        });
+                } catch (e) {
+                    // If not valid JSON, return as is
+                    return data;
+                }
+            };
+
+            // Get transition time in readable format
+            const getTimeAgo = (timestamp) => {
+                if (!timestamp) return '';
+                
+                const date = new Date(timestamp);
+                const now = new Date();
+                const seconds = Math.floor((now - date) / 1000);
+                
+                if (seconds < 60) return `${seconds} seconds ago`;
+                
+                const minutes = Math.floor(seconds / 60);
+                if (minutes < 60) return `${minutes} min ago`;
+                
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) return `${hours} hours ago`;
+                
+                const days = Math.floor(hours / 24);
+                return `${days} days ago`;
+            };
+
+            // Fix area - replace optional chaining with safe property access
+            // This function safely accesses nested properties
+            const safeGet = (obj, path, defaultValue = undefined) => {
+                if (!obj) return defaultValue;
+                const keys = path.split('.');
+                let result = obj;
+                for (const key of keys) {
+                    if (result === null || result === undefined) return defaultValue;
+                    result = result[key];
+                }
+                return result !== undefined ? defaultValue : result;
+            };
+
+            // Render transition history with the fixed code
+            const renderTransitionHistory = () => {
+                return (
+                    <div className="transition-all overflow-y-auto max-h-[300px] mt-4">
+                        <h3 className="text-lg font-semibold mb-2">Process History</h3>
+                        <div className="space-y-2">
+                            {transitionHistory.map((historyItem) => (
+                                <div 
+                                    key={historyItem.id}
+                                    className={`p-3 rounded-lg border ${selectedTransition && selectedTransition.id === historyItem.id ? 'history-item-active' : 'border-gray-200'} cursor-pointer hover:bg-gray-50 transition-all`}
+                                    onClick={() => {
+                                        setSelectedTransition({
+                                            id: historyItem.id,
+                                            step_id: historyItem.type === 'step_start' ? historyItem.step_id : historyItem.from_step_id,
+                                            input_data: historyItem.type === 'step_start' ? 
+                                                historyItem.data : 
+                                                safeGet(historyItem, 'data.input'),
+                                            output_data: historyItem.type === 'step_start' ? 
+                                                null : 
+                                                safeGet(historyItem, 'data.output'),
+                                            timestamp: historyItem.timestamp,
+                                            duration: historyItem.duration,
+                                            type: 'transition'
+                                        });
+                                    }}
+                                >
+                                    {/* Rest of your rendering code */}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="container mx-auto px-4 py-8 max-w-[1920px]">
+                    <header className="mb-8">
+                        <h1 className="text-3xl font-bold text-blue-600 flex items-center">
+                            <i className="fas fa-project-diagram mr-3"></i>
+                            SQL Process Visualizer
+                        </h1>
+                        <div className="flex items-center mt-2">
+                            <span className={`inline-block w-3 h-3 rounded-full ${
+                                connectionStatus === 'connected' ? 'bg-green-500' : 
+                                connectionStatus === 'disconnected' ? 'bg-red-500' : 'bg-yellow-500'
+                            } mr-2 ${
+                                connectionStatus !== 'connected' ? 'animate-pulse' : ''
+                            }`}></span>
+                            <p className="text-gray-600">{status}</p>
+                        </div>
+                    </header>
+                    
+                    {/* Query Input Form */}
+                    <div className="mb-8 bg-white rounded-lg shadow-sm p-6">
+                        <h2 className="text-xl font-semibold mb-4">Natural Language Query</h2>
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <div className="flex-grow">
+                                    <textarea
+                                        className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Enter your query here... (e.g., 'Show me all patients with diabetes')"
+                                        value={nlQuery}
+                                        onChange={(e) => setNlQuery(e.target.value)}
+                                        rows={2}
+                                        disabled={isSubmitting || processRunning}
+                                    ></textarea>
+                                    <div className="mt-2 text-sm text-gray-500">
+                                        Enter a natural language query to convert to SQL.
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2 justify-end">
+                                    <button
+                                        className={`px-6 py-3 rounded-lg font-medium ${
+                                            isSubmitting || processRunning || !nlQuery.trim() ? 
+                                            'bg-gray-300 text-gray-500 cursor-not-allowed' :
+                                            'bg-blue-600 text-white hover:bg-blue-700'
+                                        }`}
+                                        onClick={handleSubmitQuery}
+                                        disabled={isSubmitting || processRunning || !nlQuery.trim()}
+                                    >
+                                        {isSubmitting ? (
+                                            <React.Fragment>
+                                                <i className="fas fa-circle-notch fa-spin mr-2"></i>
+                                                Processing...
+                                            </React.Fragment>
+                                        ) : (
+                                            <React.Fragment>
+                                                <i className="fas fa-play mr-2"></i>
+                                                Submit Query
+                                            </React.Fragment>
+                                        )}
+                                    </button>
+                                    
+                                    <button
+                                        className="px-6 py-2 rounded-lg font-medium border border-gray-300 text-gray-600 hover:bg-gray-100"
+                                        onClick={resetProcess}
+                                        disabled={isSubmitting}
+                                    >
+                                        <i className="fas fa-redo mr-2"></i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            {/* Final Answer Display Section */}
+                            <div className={`mt-4 ${finalAnswer ? 'block' : 'hidden'}`}>
+                                <h3 className="text-lg font-medium text-green-700 mb-2">Final Answer:</h3>
+                                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                    <p className="text-gray-800 whitespace-pre-line">{finalAnswer}</p>
+                                </div>
+                            </div>
+                            
+                            {/* Example queries */}
+                            {!processRunning && !isSubmitting && (
+                                <div className="mt-4">
+                                    <h3 className="text-sm font-medium text-gray-500 mb-2">Example Queries:</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        <button 
+                                            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-full"
+                                            onClick={() => setNlQuery("Find the medication adherence level distribution for elderly patients (age 65+)")}
+                                        >
+                                        Find the medication adherence level distribution for elderly patients (age 65+)
+                                        </button>
+                                        <button 
+                                            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-full"
+                                            onClick={() => setNlQuery("Find doctors who have treated more than 5 patients")}
+                                        >
+                                            Find doctors who have treated more than 5 patients
+                                        </button>
+                                        <button 
+                                            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-full"
+                                            onClick={() => setNlQuery("Show me high-risk patients with chronic conditions who are using wearable devices with low battery levels during the last month.")}
+                                        >
+                                            Show me high-risk patients with chronic conditions who are using wearable devices with low battery levels during the last month.
+                                        </button>
+                                        <button 
+                                            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-full"
+                                            onClick={() => setNlQuery("What's the medication adherence rate for elderly patients (age 65+) who use telehealth services for primary care, and how does their overall health index compare to patients who use in-person visits?")}
+                                        >
+                                            What's the medication adherence rate for elderly patients (age 65+) who use telehealth services for primary care, and how does their overall health index compare to patients who use in-person visits?
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {/* Column 1: Process Visualization */}
+                        <div className="lg:col-span-1">
+                            <div className="bg-white rounded-lg shadow-sm p-6 h-[80vh] overflow-auto">
+                                <h2 className="text-xl font-semibold mb-6">Process Flow</h2>
+                                
+                                <div className="relative">
+                                    {/* Vertical connector */}
+                                    {steps.length > 0 && (
+                                        <div 
+                                            className="step-connector" 
+                                            style={{ 
+                                                top: 30, 
+                                                height: `${(steps.length * 90) - 60}px`
+                                            }}
+                                        ></div>
+                                    )}
+                                    
+                                    {/* Steps */}
+                                    {steps.map((step, index) => (
+                                        <div 
+                                            key={step.id}
+                                            className={`relative mb-12 transition-all cursor-pointer ${
+                                                activeStep === step.id ? 'step-highlight' : ''
+                                            } ${
+                                                (selectedTransition && 
+                                                (selectedTransition.from_step_id === step.id || 
+                                                selectedTransition.to_step_id === step.id || 
+                                                selectedTransition.step_id === step.id)) ? 
+                                                'scale-105' : ''
+                                            }`}
+                                            onClick={() => {
+                                                // Find the most recent transition related to this step
+                                                const stepTransitions = transitions.filter(t => 
+                                                    t.from_step_id === step.id || t.to_step_id === step.id
+                                                );
+                                                
+                                                if (stepTransitions.length > 0) {
+                                                    // Get the most recent transition for this step
+                                                    const latestTransition = stepTransitions[stepTransitions.length - 1];
+                                                    setSelectedTransition({
+                                                        ...latestTransition,
+                                                        type: 'transition'
+                                                    });
+                                                }
+                                            }}
+                                        >
+                                            <div className="flex items-start gap-4">
+                                                <div className={`relative z-10 h-10 w-10 flex items-center justify-center rounded-full ${
+                                                    getStepBgColor(step.status)
+                                                } ${
+                                                    step.status === 'active' ? 'animate-pulse' : ''
+                                                }`}>
+                                                    <i className={`fas ${getStepIcon(step)} ${getStepIconColor(step.status)}`}></i>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="font-semibold">{step.name}</h3>
+                                                    <p className="text-sm text-gray-600">{step.description}</p>
+                                                    
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Column 2: Transition Details */}
+                        <div className="lg:col-span-1">
+                            <div className="bg-white rounded-lg shadow-sm p-6 h-[80vh] overflow-auto">
+                                <h2 className="text-xl font-semibold mb-4">Transition Details</h2>
+                                
+                                {selectedTransition ? (
+                                    <div>
+                                        <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div>
+                                                    <h3 className="text-sm font-medium text-gray-500">Step</h3>
+                                                    <p className="font-semibold">
+                                                        {selectedTransition.type === 'input' ? 
+                                                        selectedTransition.step_name : 
+                                                        `${selectedTransition.from_step} → ${selectedTransition.to_step || 'End'}`}
+                                                    </p>
+                                                </div>
+                                                
+                                                {selectedTransition.type === 'transition' && (
+                                                    <div>
+                                                        <h3 className="text-sm font-medium text-gray-500">Event</h3>
+                                                        <p className="font-semibold">
+                                                            {selectedTransition.event || 'Default Completion'}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                
+                                                {selectedTransition.type === 'transition' && selectedTransition.duration && (
+                                                    <div>
+                                                        <h3 className="text-sm font-medium text-gray-500">Duration</h3>
+                                                        <p className="font-semibold">
+                                                            {typeof selectedTransition.duration === 'number' ? 
+                                                              selectedTransition.duration.toFixed(3) + 's' : 
+                                                              selectedTransition.duration}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                
+                                                {selectedTransition.timestamp && (
+                                                    <div>
+                                                        <h3 className="text-sm font-medium text-gray-500">Timestamp</h3>
+                                                        <p className="font-semibold">
+                                                            {new Date(selectedTransition.timestamp).toLocaleTimeString()}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="mt-6">
+                                            <h3 className="text-lg font-medium mb-2">
+                                                {selectedTransition.type === 'input' ? 'Input Data' : 'Data'}
+                                            </h3>
+                                            
+                                            <div className="grid grid-cols-1 gap-4">
+                                                {selectedTransition.type === 'transition' && selectedTransition.input_data && (
+                                                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                                                        <h4 className="text-sm font-semibold text-blue-800 mb-2">Input Data</h4>
+                                                        <pre className="text-xs whitespace-pre-wrap overflow-auto max-h-[300px] p-2 bg-white rounded"
+                                                             dangerouslySetInnerHTML={{ __html: formatJsonData(selectedTransition.input_data) }}>
+                                                        </pre>
+                                                    </div>
+                                                )}
+                                                
+                                                {selectedTransition.type === 'input' && selectedTransition.input_data && (
+                                                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                                                        <h4 className="text-sm font-semibold text-blue-800 mb-2">Step Input</h4>
+                                                        <pre className="text-xs whitespace-pre-wrap overflow-auto max-h-[300px] p-2 bg-white rounded"
+                                                             dangerouslySetInnerHTML={{ __html: formatJsonData(selectedTransition.input_data) }}>
+                                                        </pre>
+                                                    </div>
+                                                )}
+                                                
+                                                {selectedTransition.type === 'transition' && selectedTransition.output_data && (
+                                                    <div className="bg-green-50 rounded-lg p-4 border border-green-100">
+                                                        <h4 className="text-sm font-semibold text-green-800 mb-2">Output Data</h4>
+                                                        <pre className="text-xs whitespace-pre-wrap overflow-auto max-h-[300px] p-2 bg-white rounded"
+                                                             dangerouslySetInnerHTML={{ __html: formatJsonData(selectedTransition.output_data) }}>
+                                                        </pre>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center h-[60vh] text-gray-400">
+                                        <i className="fas fa-info-circle text-4xl mb-4"></i>
+                                        <p>Select a step or transition to view details</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        
+                        {/* Column 3: Transition History */}
+                        <div className="lg:col-span-1">
+                            <div className="bg-white rounded-lg shadow-sm p-6 h-[80vh] overflow-auto">
+                                <h2 className="text-xl font-semibold mb-4">Transition History</h2>
+                                
+                                {transitionHistory.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {transitionHistory.map((historyItem, index) => (
+                                            <div 
+                                                key={historyItem.id || `history-${index}`}
+                                                className={`p-4 rounded-lg border ${
+                                                    selectedTransition && selectedTransition.id === historyItem.id ? 
+                                                    'history-item-active' : 'border-gray-200'
+                                                } hover:border-blue-300 cursor-pointer transition-all`}
+                                                onClick={() => {
+                                                    // Find the corresponding transition or create a new one
+                                                    if (historyItem.type === 'step_start') {
+                                                        setSelectedTransition({
+                                                            id: historyItem.id,
+                                                            step_name: historyItem.step_name,
+                                                            step_id: historyItem.step_id,
+                                                            input_data: historyItem.data,
+                                                            type: 'input',
+                                                            timestamp: historyItem.timestamp
+                                                        });
+                                                    } else {
+                                                        const transition = transitions.find(t => t.id === historyItem.id);
+                                                        if (transition) {
+                                                            setSelectedTransition({
+                                                                ...transition,
+                                                                type: 'transition'
+                                                            });
+                                                        } else {
+                                                            setSelectedTransition({
+                                                                id: historyItem.id,
+                                                                from_step: historyItem.from_step,
+                                                                to_step: historyItem.to_step,
+                                                                event: historyItem.event,
+                                                                timestamp: historyItem.timestamp,
+                                                                duration: historyItem.duration,
+                                                                input_data: historyItem.data?.input,
+                                                                output_data: historyItem.data?.output,
+                                                                type: 'transition'
+                                                            });
+                                                        }
+                                                    }
+                                                }}
+                                            >
+                                                <div className="flex justify-between items-start">
+                                                    <div className="flex items-center gap-2">
+                                                        {historyItem.type === 'step_start' ? (
+                                                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                                <i className="fas fa-play text-blue-600"></i>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                                                                <i className="fas fa-arrow-right text-green-600"></i>
+                                                            </div>
+                                                        )}
+                                                        <div>
+                                                            {historyItem.type === 'step_start' ? (
+                                                                <h3 className="font-medium">Started: {historyItem.step_name}</h3>
+                                                            ) : (
+                                                                <h3 className="font-medium">
+                                                                    Transition: {historyItem.from_step} → {historyItem.to_step}
+                                                                </h3>
+                                                            )}
+                                                            <div className="flex items-center gap-3 text-sm text-gray-500">
+                                                                <span>{new Date(historyItem.timestamp).toLocaleTimeString()}</span>
+                                                                <span>•</span>
+                                                                <span>{getTimeAgo(historyItem.timestamp)}</span>
+                                                                {historyItem.duration && (
+                                                                    <>
+                                                                        <span>•</span>
+                                                                        <span>
+                                                                            Duration: {typeof historyItem.duration === 'number' ? 
+                                                                                historyItem.duration.toFixed(2) + 's' : 
+                                                                                historyItem.duration}
+                                                                        </span>
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {historyItem.event && (
+                                                        <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                                            {historyItem.event}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                
+                                                {/* Preview of data - safely accessing nested properties */}
+                                                <div className="mt-2 text-xs text-gray-600 truncate">
+                                                    {historyItem.type === 'step_start' && historyItem.data && (
+                                                        <div className="bg-gray-50 p-2 rounded">
+                                                            Input: {typeof historyItem.data === 'object' ? 
+                                                                JSON.stringify(historyItem.data).slice(0, 100) + '...' : 
+                                                                String(historyItem.data).slice(0, 100) + '...'}
+                                                        </div>
+                                                    )}
+                                                    {historyItem.type === 'transition' && (
+                                                        <div className="flex flex-col gap-1">
+                                                            {historyItem.data && historyItem.data.input && (
+                                                                <div className="bg-gray-50 p-2 rounded">
+                                                                    Input: {typeof historyItem.data.input === 'object' ? 
+                                                                        JSON.stringify(historyItem.data.input).slice(0, 50) + '...' : 
+                                                                        String(historyItem.data.input).slice(0, 50) + '...'}
+                                                                </div>
+                                                            )}
+                                                            {historyItem.data && historyItem.data.output && (
+                                                                <div className="bg-gray-50 p-2 rounded">
+                                                                    Output: {typeof historyItem.data.output === 'object' ? 
+                                                                        JSON.stringify(historyItem.data.output).slice(0, 50) + '...' : 
+                                                                        String(historyItem.data.output).slice(0, 50) + '...'}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-6 text-gray-500">
+                                        No transitions recorded yet.
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the app
+        const rootElement = document.getElementById('root');
+        ReactDOM.createRoot(rootElement).render(<App />);
+    </script>
+</body>
+</html>

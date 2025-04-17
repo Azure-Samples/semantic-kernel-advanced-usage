@@ -11,6 +11,7 @@ from src.models.events import SQLEvents
 from src.models.step_models import SQLGenerationStepInput, BusinessRulesStepInput, TableNamesStepInput, SQLGenerateResult
 from src.utils.chat_helpers import call_chat_completion_structured_outputs
 from src.utils.db_helpers import write_to_file
+from src.utils.step_tracker import get_tracker
 from src.constants.data_model import json_rules, global_database_model
 from src.constants.prompts import sql_generation_prompt, few_shot_examples
 
@@ -70,6 +71,11 @@ class SQLGenerationStep(KernelProcessStep):
     async def generate_sql(self, context: KernelProcessStepContext, data: SQLGenerationStepInput, kernel: Kernel):
         """Kernel function to generate SQL based on the selected tables/columns and emit the appropriate event."""
         global issue_history
+        
+        # Start tracking this step
+        tracker = get_tracker()
+        tracker.start_step("SQLGenerationStep", data)
+        
         print("Running SQLGenerationStep...")
 
         sql_generation_result = await self._generate_sql(kernel=kernel, user_query=data.user_query, data=data)
@@ -85,6 +91,9 @@ class SQLGenerationStep(KernelProcessStep):
             )
             await context.emit_event(process_event=SQLEvents.SQLGenerationStepFailed, data=result)
             print("Emitted event: SQLGenerationStepFailed.")
+            
+            # End tracking with transition back to TableNameStep
+            tracker.end_step(next_step="TableNameStep", next_event=SQLEvents.SQLGenerationStepFailed, output_data=result)
         else: 
             # Build model instance for business rules validation
             result = BusinessRulesStepInput(
@@ -95,3 +104,6 @@ class SQLGenerationStep(KernelProcessStep):
 
             await context.emit_event(process_event=SQLEvents.SQLGenerationStepDone, data=result)
             print("Emitted event: SQLGenerationStepDone.")
+            
+            # End tracking with transition to BusinessRulesStep
+            tracker.end_step(next_step="BusinessRulesStep", next_event=SQLEvents.SQLGenerationStepDone, output_data=result)

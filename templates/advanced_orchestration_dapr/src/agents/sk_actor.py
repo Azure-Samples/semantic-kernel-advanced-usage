@@ -6,7 +6,6 @@ from semantic_kernel.contents.chat_message_content import ChatMessageContent
 from semantic_kernel.agents import Agent
 
 from telco.telco_team import telco_team
-from opentelemetry import trace
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)  # Ensure logging level is set as required
@@ -54,48 +53,42 @@ class SKAgentActor(Actor, SKAgentActorInterface):
         return self.history.model_dump()
 
     async def invoke(self, input_message: str) -> list[ChatMessageContent]:
-        tracer = trace.get_tracer(__name__)
-        with tracer.start_as_current_span("sk_actor.invoke") as span:
-            span.set_attribute("operation_Id", str(self.id))
-            try:
-                # Option 1: Add as baggage so that it propagates with the context.
-                # baggage.set_baggage("operation_Id", self.id)
+        try:
+            logger.info(
+                f"Invoking actor {self.id} with input message: {input_message}"
+            )
+            self.history.add_user_message(input_message)
+            results: list[ChatMessageContent] = []
 
-                logger.info(
-                    f"Invoking actor {self.id} with input message: {input_message}"
+            async for result in self.agent.invoke(history=self.history):
+                logger.debug(
+                    f"Received result from agent for actor {self.id}: {result}"
                 )
-                self.history.add_user_message(input_message)
-                results: list[ChatMessageContent] = []
+                results.append(result)
 
-                async for result in self.agent.invoke(history=self.history):
-                    logger.debug(
-                        f"Received result from agent for actor {self.id}: {result}"
-                    )
-                    results.append(result)
+            logger.debug(f"Saving conversation state for actor {self.id}")
 
-                logger.debug(f"Saving conversation state for actor {self.id}")
+            # Fix to avoid ChatHistory serialization issue
+            dumped_history = remove_metadata(self.history.model_dump(), "arguments")
 
-                # Fix to avoid ChatHistory serialization issue
-                dumped_history = remove_metadata(self.history.model_dump(), "arguments")
+            await self._state_manager.set_state("history", dumped_history)
+            await self._state_manager.save_state()
+            logger.info(f"State saved successfully for actor {self.id}")
 
-                await self._state_manager.set_state("history", dumped_history)
-                await self._state_manager.save_state()
-                logger.info(f"State saved successfully for actor {self.id}")
+            # Exclude from results all messages with text "PAUSE"
+            # In this implementation, user interruptions are handled by a specifc agent
+            # whose only response is "PAUSE". This is a simple way to handle interruptions,
+            # and we opt not to show this to the user.
+            results = [
+                msg.model_dump() for msg in results if "PAUSE" not in msg.content
+            ]
 
-                # Exclude from results all messages with text "PAUSE"
-                # In this implementation, user interruptions are handled by a specifc agent
-                # whose only response is "PAUSE". This is a simple way to handle interruptions,
-                # and we opt not to show this to the user.
-                results = [
-                    msg.model_dump() for msg in results if "PAUSE" not in msg.content
-                ]
-
-                return results
-            except Exception as e:
-                logger.error(
-                    f"Error occurred in invoke for actor {self.id}: {e}", exc_info=True
-                )
-                raise
+            return results
+        except Exception as e:
+            logger.error(
+                f"Error occurred in invoke for actor {self.id}: {e}", exc_info=True
+            )
+            raise
 
 
 def remove_metadata(data, key: str):

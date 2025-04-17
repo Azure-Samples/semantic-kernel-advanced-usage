@@ -11,9 +11,10 @@ from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
 from semantic_kernel.kernel import Kernel
 
 SERVICE_ID = "default"
-REASONING_EFFORT = "low"
+REASONING_EFFORT = os.environ.get("REASONING_EFFORT", "medium")
 
-async def initialize_kernel():
+
+async def initialize_kernel() -> Kernel:
     """Initialize the kernel with the chat completion service."""
     kernel = Kernel()
     chat_service = AzureChatCompletion(service_id=SERVICE_ID)
@@ -21,7 +22,7 @@ async def initialize_kernel():
     print("AzureChatCompletion service registered with kernel.")
     return kernel
 
-async def call_chat_completion(kernel, user_query: str) -> str:
+async def call_chat_completion(kernel, user_query: str, reasoning_effort=REASONING_EFFORT) -> str:
     """
     Call the chat completion service and return the response as a string.
     
@@ -39,7 +40,8 @@ async def call_chat_completion(kernel, user_query: str) -> str:
     print(f"Model used: {os.environ['AZURE_OPENAI_CHAT_DEPLOYMENT_NAME']}")
     if (os.environ['AZURE_OPENAI_CHAT_DEPLOYMENT_NAME'] == "o1") or \
        (os.environ['AZURE_OPENAI_CHAT_DEPLOYMENT_NAME'] == "o3-mini"):
-        settings.reasoning_effort = REASONING_EFFORT
+        settings.reasoning_effort = reasoning_effort
+        print("Using reasoning effort:", settings.reasoning_effort)
 
     chat_history = ChatHistory()
     chat_history.add_user_message(user_query)
@@ -51,7 +53,7 @@ async def call_chat_completion(kernel, user_query: str) -> str:
     answer = response[0].content
     return answer
 
-async def call_chat_completion_structured_outputs(kernel, user_query: str, response_format: any) -> any:
+async def call_chat_completion_structured_outputs(kernel, user_query: str, response_format: any, reasoning_effort=REASONING_EFFORT) -> any:
     """
     Call the chat completion service and return the response as a structured output.
     
@@ -71,7 +73,8 @@ async def call_chat_completion_structured_outputs(kernel, user_query: str, respo
     print(f"Model used: {os.environ['AZURE_OPENAI_CHAT_DEPLOYMENT_NAME']}")
     if (os.environ['AZURE_OPENAI_CHAT_DEPLOYMENT_NAME'] == "o1") or \
        (os.environ['AZURE_OPENAI_CHAT_DEPLOYMENT_NAME'] == "o3-mini"):
-        settings.reasoning_effort = REASONING_EFFORT
+        settings.reasoning_effort = reasoning_effort
+        print("Using reasoning effort:", settings.reasoning_effort)
 
     chat_history = ChatHistory()
     chat_history.add_user_message(user_query)

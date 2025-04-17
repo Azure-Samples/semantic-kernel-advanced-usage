@@ -10,7 +10,8 @@ from semantic_kernel.functions import kernel_function
 from src.models.events import SQLEvents
 from src.models.step_models import TableNamesStepInput, ColumnNamesStepInput, GetTableNames
 from src.utils.chat_helpers import call_chat_completion_structured_outputs
-from src.constants.data_model import json_rules, table_descriptions, global_database_model
+from src.utils.step_tracker import get_tracker
+from src.constants.data_model import json_rules, table_descriptions
 from src.constants.prompts import get_table_names_prompt_template
 
 console = Console()
@@ -43,9 +44,16 @@ class TableNameStep(KernelProcessStep):
     @kernel_function(name="get_table_names")
     async def get_table_names(self, context: KernelProcessStepContext, data: TableNamesStepInput, kernel: Kernel):
         """Kernel function to extract table names from user query and emit the appropriate event."""
+        tracker = get_tracker()
+        # Using the async version of start_step
+        await tracker.start_step_async("TableNameStep", data)
+        
         print("Running TableNameStep...")
         print(f"Received user query: {data.user_query}")
         result = await self._get_table_names(kernel=kernel, data=data)
 
         await context.emit_event(process_event=SQLEvents.TableNameStepDone, data=result)
         print("Emitted event: TableNameStepDone.")
+        
+        # Using the async version of end_step
+        await tracker.end_step_async(next_step="ColumnNameStep", next_event=SQLEvents.TableNameStepDone, output_data=result)

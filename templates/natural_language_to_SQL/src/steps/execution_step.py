@@ -9,6 +9,7 @@ from semantic_kernel.functions import kernel_function
 from src.models.events import SQLEvents
 from src.models.step_models import ExecutionStepInput, Execution2TableNames
 from src.utils.db_helpers import SQLite_exec_sql
+from src.utils.step_tracker import get_tracker
 
 console = Console()
 
@@ -16,6 +17,10 @@ class ExecutionStep(KernelProcessStep):
     """Execute SQL statement and emit appropriate event."""
     @kernel_function(name="execute_sql")
     async def execute_sql(self, context: KernelProcessStepContext, data: ExecutionStepInput, kernel: Kernel):
+        # Start tracking this step
+        tracker = get_tracker()
+        tracker.start_step("ExecutionStep", data)
+        
         print("Running ExecutionStep...")
         print(f"SQL statement to execute: {data.sql_statement}")
 
@@ -32,6 +37,9 @@ class ExecutionStep(KernelProcessStep):
 
             print("Emitted event: ExecutionSuccess.")
             await context.emit_event(process_event=SQLEvents.ExecutionSuccess, data=response)
+            
+            # End tracking with process completion
+            tracker.end_step(next_step="Process End", next_event=SQLEvents.ExecutionSuccess, output_data=response)
 
         except Exception as e:
             error_description = f"Execution error: {str(e)}"
@@ -48,3 +56,6 @@ class ExecutionStep(KernelProcessStep):
             with open("response.json", "w") as f:
                 json.dump(resp_dd, f, indent=4)
             print("Emitted event: ExecutionError.")
+            
+            # End tracking with error transition back to TableNameStep
+            tracker.end_step(next_step="TableNameStep", next_event=SQLEvents.ExecutionError, output_data=result)

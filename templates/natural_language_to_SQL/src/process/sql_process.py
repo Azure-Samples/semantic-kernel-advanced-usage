@@ -18,6 +18,7 @@ from src.steps import (
     ValidationStep,
     ExecutionStep
 )
+from src.utils.step_tracker import get_tracker
 from rich.console import Console
 console = Console()
 
@@ -28,17 +29,32 @@ class SqlProcess():
     def __init__(self, kernel):
         self.kernel = kernel
         self.process = self.get_sql_process()
+        # Initialize the step tracker with this process
+        self.tracker = get_tracker().set_process(self.process)
 
     
     async def start(self, query):
         console.print(f"[green]Processing query:[/green] {query}")
         initial_input = TableNamesStepInput(user_query=query)
+        
+        # Reset tracker for a fresh start
+        self.tracker.reset()
+        
+        # Start tracking the process start - using the async version
+        await self.tracker.start_step_async("Process Start", initial_input)
     
         state = await start(
                 process=self.process,
                 kernel=self.kernel,
                 initial_event=KernelProcessEvent(id=SQLEvents.StartProcess, data=initial_input)
             )
+            
+        # End the process tracking - using the async version
+        await self.tracker.end_step_async(next_step="Process End")
+        
+        # Print the complete transition history
+        self.tracker.print_transition_history()
+        
         console.print("\n[green]Process completed![/green]")
         return state
 

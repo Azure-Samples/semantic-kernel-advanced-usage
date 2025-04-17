@@ -258,6 +258,11 @@ few_shot_examples ="""
 ### Example #1
 User Query: from which counties do our providers come from?
 Generated Query: SELECT DISTINCT G.COUNTY FROM D_HC_Providers_v3 AS P JOIN D_HC_Geography_v3 AS G ON P.ZIP_CODE = G.ZIP_CODE;
+
+# ### Example #2
+# User Query: Find the medication adherence level distribution for elderly patients (age 65+)
+# Generated Query: SELECT PMS.ADHERENCE_LEVEL, COUNT(DISTINCT PDS.PATIENT_ID) AS PATIENT_COUNT FROM HC_Patient_Daily_Summary_v3 AS PDS JOIN HC_Patient_Medication_Summary_v3 AS PMS ON PDS.PATIENT_ID = PMS.PATIENT_ID WHERE PDS."INSURANCE_REC.PATIENT_AGE_GROUP_CD" = \'65+\' GROUP BY PMS.ADHERENCE_LEVEL;
+
 """
 # ### Example #2
 # User Query: What is the average wellness index for patients with chronic conditions?
@@ -277,6 +282,6 @@ Generated Query: SELECT DISTINCT G.COUNTY FROM D_HC_Providers_v3 AS P JOIN D_HC_
 
 # ### Example #6
 # User Query: Find the medication adherence level distribution for elderly patients (age 65+)
-# Generated Query: SELECT ADHERENCE_LEVEL, COUNT(*) AS PATIENT_COUNT FROM HC_Patient_Medication_Summary_v3 MED JOIN HC_Patient_Daily_Summary_v3 PDS ON MED.PATIENT_ID = PDS.PATIENT_ID WHERE PDS.INSURANCE_REC.PATIENT_AGE_GROUP_CD = '65+' GROUP BY ADHERENCE_LEVEL ORDER BY PATIENT_COUNT DESC;
+# Generated Query: SELECT PMS.ADHERENCE_LEVEL, COUNT(DISTINCT PDS.PATIENT_ID) AS PATIENT_COUNT FROM HC_Patient_Daily_Summary_v3 AS PDS JOIN HC_Patient_Medication_Summary_v3 AS PMS ON PDS.PATIENT_ID = PMS.PATIENT_ID WHERE PDS."INSURANCE_REC.PATIENT_AGE_GROUP_CD" = \'65+\' GROUP BY PMS.ADHERENCE_LEVEL;
 
 # """

@@ -10,6 +10,7 @@ from semantic_kernel.functions import kernel_function
 from src.models.events import SQLEvents
 from src.models.step_models import ColumnNamesStepInput, SQLGenerationStepInput, GetColumnNames
 from src.utils.chat_helpers import call_chat_completion_structured_outputs
+from src.utils.step_tracker import get_tracker
 from src.constants.data_model import json_rules, global_database_model
 from src.constants.prompts import get_table_column_names_prompt_template
 
@@ -50,9 +51,14 @@ class ColumnNameStep(KernelProcessStep):
     @kernel_function(name="get_column_names")
     async def get_column_names(self, context: KernelProcessStepContext, data: ColumnNamesStepInput, kernel: Kernel):
         """Kernel function to extract column names based on the selected tables and emit the appropriate event."""
+        tracker = get_tracker()
+        tracker.start_step("ColumnNameStep", data)
+        
         print("Running ColumnNameStep...")
 
         result = await self._get_column_names(kernel=kernel, data=data)
         
         await context.emit_event(process_event=SQLEvents.ColumnNameStepDone, data=result)
         print("Emitted event: ColumnNameStepDone.")
+        
+        tracker.end_step(next_step="SQLGenerationStep", next_event=SQLEvents.ColumnNameStepDone, output_data=result)
