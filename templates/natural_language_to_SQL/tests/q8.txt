@@ -1,0 +1,85 @@
+Q8. How many Distinct Jobtitle are there?
+
+Ground Truth:
+``` sql:
+SELECT COUNT(DISTINCT E.JobTitle) AS JobTitles FROM HumanResources.Employee E
+```
+
+Output:
+
+Generated SQL:
+SELECT COUNT(DISTINCT E.JobTitle) AS DistinctJobTitleCount FROM HumanResources.Employee E
+
+ python src\main.py "How many Distinct Jobtitle are available in Employee table"                                                                                                                               
+AzureChatCompletion service registered with kernel.                                                                                     
+SQL Process initialized
+Processing query: How many Distinct Jobtitle are available in Employee table
+Executing TableNameStep...
+Running TableNameStep...
+Received user query: How many Distinct Jobtitle are available in Employee table
+Model used: o1
+Extracted table names:
+
+GetTableNames(table_names=[ValidTableName(table_name='HumanResources.Employee')])
+Executing ColumnNameStep...
+Running ColumnNameStep...
+Model used: o1
+Extracted column names:
+
+GetColumnNames(
+    table_column_list=[TableColumns(table_name='HumanResources.Employee', column_names=['BusinessEntityID', 'JobTitle'])],
+    table_column_names=[TableColumns(table_name='HumanResources.Employee', column_names=['BusinessEntityID', 'JobTitle'])]
+)
+Executing SQLGenerationStep...
+Running SQLGenerationStep...
+Writing file to full path: C:\Users\wknupp\Documents\Code\semantic-kernel-advanced-usage\templates\natural_language_to_SQL\output_prompts\prompt_0.txt
+Model used: o1
+Generated SQL statement:
+
+SQLGenerateResult(
+    sql_statement='SELECT COUNT(DISTINCT E.JobTitle) AS DistinctJobTitleCount FROM HumanResources.Employee E',
+    result='SELECT COUNT(DISTINCT E.JobTitle) AS DistinctJobTitleCount FROM HumanResources.Employee E',
+    status='OK',
+    reason=''
+)
+Executing BusinessRulesStep...
+Running BusinessRulesStep...
+Model used: o1
+Applied business rules:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ValidationStep...
+Running ValidationStep...
+SQL statement to validate: SELECT COUNT(DISTINCT E.JobTitle) AS DistinctJobTitleCount FROM HumanResources.Employee E
+Model used: o1
+SQL validation results:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ExecutionStep...
+Running ExecutionStep...
+SQL statement to execute: SELECT COUNT(DISTINCT E.JobTitle) AS DistinctJobTitleCount FROM HumanResources.Employee E
+Azure CLI token authentication failed: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]TCP Provider: Timeout error [258].  (258) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Unable to complete login process due to delay in login response (258)')
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 1/4, Auth method: Azure CLI Credential Token, Auth retry: 1)
+Unknown error occurred with method Azure CLI Credential Token (Retry 1/4): cannot access local variable 'conn' where it is not associated with a value
+Azure CLI token authentication failed: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]TCP Provider: Timeout error [258].  (258) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Unable to complete login process due to delay in login response (258)')
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 2/4, Auth method: Azure CLI Credential Token, Auth retry: 2)
+Unknown error occurred with method Azure CLI Credential Token (Retry 2/4): cannot access local variable 'conn' where it is not associated with a value
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 3/4, Auth method: Azure CLI Credential Token, Auth retry: 3)
+* Running SQL in Azure SQL [SELECT COUNT(DISTINCT E.JobTitle) AS DistinctJobTitleCount FROM HumanResources.Employee E]...
+
+(67,)
+{'result': [{'DistinctJobTitleCount': 67}]}
+SQL execution succeeded.
+resp_dd
+{'query': 'How many Distinct Jobtitle are available in Employee table', 'response': {'result': [{'DistinctJobTitleCount': 67}]}}
+Execution success completed.
+SQL executed successfully!
+
+Process completed!
+SQL Result:
+{'result': [{'DistinctJobTitleCount': 67}]}
+Model used: o1
+Final Answer:
+There are 67 distinct job titles in the Employee table.
+
+Assessment:  The generated SQL is 100% correct.

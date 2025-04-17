@@ -1,0 +1,11 @@
+{
+    "query": "How many Distinct Jobtitle are there?",
+    "response": {
+        "result": [
+            {
+                "CountDistinctJobTitle": 67
+            }
+        ]
+    },
+    "filename": "C:\\Users\\wknupp\\Documents\\Code\\semantic-kernel-advanced-usage\\templates\\natural_language_to_SQL\\responses\\response_20250417_124716_how_many_distinct_99eed83e.json"
+}

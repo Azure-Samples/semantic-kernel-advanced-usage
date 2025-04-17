@@ -3,19 +3,18 @@ sys.path.append("../../")
 
 import json
 from rich.console import Console
-from semantic_kernel.processes.kernel_process import KernelProcessStep, KernelProcessStepContext
 from semantic_kernel.kernel import Kernel
-from semantic_kernel.functions import kernel_function
 
 from src.models.events import SQLEvents
 from src.models.step_models import ColumnNamesStepInput, SQLGenerationStepInput, GetColumnNames
 from src.utils.chat_helpers import call_chat_completion_structured_outputs
 from src.constants.data_model import json_rules, global_database_model
 from src.constants.prompts import get_table_column_names_prompt_template
+from src.steps.table_name_step import StepOutput
 
 console = Console()
 
-class ColumnNameStep(KernelProcessStep):
+class ColumnNameStep:
 
     async def _get_column_names(self, kernel: Kernel, data: ColumnNamesStepInput) -> SQLGenerationStepInput:
         """Process the table names and extract relevant column names."""
@@ -47,12 +46,11 @@ class ColumnNameStep(KernelProcessStep):
         )
         return result
 
-    @kernel_function(name="get_column_names")
-    async def get_column_names(self, context: KernelProcessStepContext, data: ColumnNamesStepInput, kernel: Kernel):
-        """Kernel function to extract column names based on the selected tables and emit the appropriate event."""
+    async def invoke(self, kernel: Kernel, data: ColumnNamesStepInput):
+        """Process the step and return the output with an event ID."""
         print("Running ColumnNameStep...")
 
         result = await self._get_column_names(kernel=kernel, data=data)
         
-        await context.emit_event(process_event=SQLEvents.ColumnNameStepDone, data=result)
-        print("Emitted event: ColumnNameStepDone.")
+        # Return a step output with event ID
+        return StepOutput(id=SQLEvents.ColumnNameStepDone, data=result)

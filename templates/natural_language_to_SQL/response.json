@@ -1,0 +1,12 @@
+{
+    "query": "What is the financial health of the company, including revenue, expenses, and profit margins for the year preceeding the latest sale",
+    "response": {
+        "result": [
+            {
+                "total_revenue": 55189049.324,
+                "total_expense": 43252662.4965,
+                "profit_margin": 0.2162
+            }
+        ]
+    }
+}

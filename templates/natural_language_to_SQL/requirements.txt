@@ -1,4 +1,15 @@
 openai>=1.30.5
 requests>=2.32.3
-python-dotenv>=1.0.1
-semantic-kernel>=1.22.0
+python-dotenv
+semantic_kernel==1.28.0
+#semantic_kernel==0.4.1.dev0
+matplotlib
+pydantic==2.7.2
+pydantic-settings>=2.5.2
+pyarrow
+numpy
+pandas
+pytest
+rich
+chainlit
+pyodbc

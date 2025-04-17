@@ -1,0 +1,78 @@
+{
+    "query": "List the top 10 performing sales employees, their years of employment , the number os sales they made, the revenue they contributed, ordered by the commission they earned in the last full financial year preceeding the last sale recorded overall",
+    "response": {
+        "result": [
+            {
+                "BusinessEntityID": 289,
+                "YearsOfEmployment": 13,
+                "NumberOfSales": 170,
+                "RevenueContributed": 4630339.2509,
+                "CommissionEarned": 92606.7859
+            },
+            {
+                "BusinessEntityID": 276,
+                "YearsOfEmployment": 14,
+                "NumberOfSales": 162,
+                "RevenueContributed": 4637217.833,
+                "CommissionEarned": 69558.2672
+            },
+            {
+                "BusinessEntityID": 277,
+                "YearsOfEmployment": 14,
+                "NumberOfSales": 185,
+                "RevenueContributed": 3827980.3627,
+                "CommissionEarned": 57419.7054
+            },
+            {
+                "BusinessEntityID": 275,
+                "YearsOfEmployment": 14,
+                "NumberOfSales": 175,
+                "RevenueContributed": 4490942.2011,
+                "CommissionEarned": 53891.3063
+            },
+            {
+                "BusinessEntityID": 290,
+                "YearsOfEmployment": 13,
+                "NumberOfSales": 94,
+                "RevenueContributed": 2987333.7048,
+                "CommissionEarned": 47797.3389
+            },
+            {
+                "BusinessEntityID": 282,
+                "YearsOfEmployment": 14,
+                "NumberOfSales": 86,
+                "RevenueContributed": 2112546.1213,
+                "CommissionEarned": 31688.192
+            },
+            {
+                "BusinessEntityID": 284,
+                "YearsOfEmployment": 13,
+                "NumberOfSales": 82,
+                "RevenueContributed": 1433786.4111,
+                "CommissionEarned": 27241.9419
+            },
+            {
+                "BusinessEntityID": 281,
+                "YearsOfEmployment": 14,
+                "NumberOfSales": 98,
+                "RevenueContributed": 2695240.5743,
+                "CommissionEarned": 26952.4065
+            },
+            {
+                "BusinessEntityID": 288,
+                "YearsOfEmployment": 12,
+                "NumberOfSales": 86,
+                "RevenueContributed": 1407493.9446,
+                "CommissionEarned": 25334.8908
+            },
+            {
+                "BusinessEntityID": 279,
+                "YearsOfEmployment": 14,
+                "NumberOfSales": 159,
+                "RevenueContributed": 2467043.2031,
+                "CommissionEarned": 24670.432
+            }
+        ]
+    },
+    "filename": "C:\\Users\\wknupp\\Documents\\Code\\semantic-kernel-advanced-usage\\templates\\natural_language_to_SQL\\responses\\response_20250415_180912_list_the_top_fbf86f53.json"
+}

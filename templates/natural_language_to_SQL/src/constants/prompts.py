@@ -140,7 +140,7 @@ You are an advanced SQL query generator. Your task is to transform the following
 
 The query **MUST COMPLY** with the following conditions:
 - **Be fully functional** for answering the user's question using the provided schema.
-- The SQL query must be compatible with the SQL dialect of **SQLITE DATABASE**
+- The SQL query must be compatible with the SQL dialect of **AZURE SQL DATABASE**
 - **You MUST respect the described Business Rules** to generate the SQL query.
 - **Do not invent tables, columns, or relationships** that do not exist in the schema.
 - Some columns contain exact enumerated values that must be used precisely, selecting the best semantic match from the user's question.
@@ -227,7 +227,7 @@ You **MUST** validate the SQL Query against the user question. If the user is as
 
 You **MUST** ensure that each column in the SQL statement belongs to the right table. You **MUST** ensure that each column is used in the right context. You **MUST** ensure that each column is used with the right alias. You **MUST** ensure that each column is used with the right aggregation function.
 
-The SQL query must be compatible with the SQL dialect of **SQLITE DATABASE**.
+The SQL query must be compatible with the SQL dialect of **AZURE SQL DATABASE**.
 
 **VERY IMPORTANT**: When validating the SQL statement, do not generate an issue unless absolutely necessary, and you know for sure that there is a structural or fundamental problem with the query. If you are not sure, or if the issue is minor, then do not generate an issue.
 

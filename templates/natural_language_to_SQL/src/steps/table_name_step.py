@@ -3,19 +3,23 @@ sys.path.append("../../")
 
 import json
 from rich.console import Console
-from semantic_kernel.processes.kernel_process import KernelProcessStep, KernelProcessStepContext
+from dataclasses import dataclass
 from semantic_kernel.kernel import Kernel
-from semantic_kernel.functions import kernel_function
 
 from src.models.events import SQLEvents
 from src.models.step_models import TableNamesStepInput, ColumnNamesStepInput, GetTableNames
 from src.utils.chat_helpers import call_chat_completion_structured_outputs
-from src.constants.data_model import json_rules, table_descriptions, global_database_model
+from src.constants.data_model import json_rules, table_descriptions
 from src.constants.prompts import get_table_names_prompt_template
 
 console = Console()
 
-class TableNameStep(KernelProcessStep):
+@dataclass
+class StepOutput:
+    id: str  # Event ID
+    data: any  # Output data
+
+class TableNameStep:
     
     async def _get_table_names(self, kernel: Kernel, data: TableNamesStepInput) -> ColumnNamesStepInput:
         """Process the user query and extract relevant table names."""
@@ -40,12 +44,11 @@ class TableNameStep(KernelProcessStep):
         )
         return result
 
-    @kernel_function(name="get_table_names")
-    async def get_table_names(self, context: KernelProcessStepContext, data: TableNamesStepInput, kernel: Kernel):
-        """Kernel function to extract table names from user query and emit the appropriate event."""
+    async def invoke(self, kernel: Kernel, data: TableNamesStepInput):
+        """Process the step and return the output with an event ID."""
         print("Running TableNameStep...")
         print(f"Received user query: {data.user_query}")
         result = await self._get_table_names(kernel=kernel, data=data)
 
-        await context.emit_event(process_event=SQLEvents.TableNameStepDone, data=result)
-        print("Emitted event: TableNameStepDone.")
+        # Return a step output with event ID
+        return StepOutput(id=SQLEvents.TableNameStepDone, data=result)

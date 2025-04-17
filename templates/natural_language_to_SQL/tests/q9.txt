@@ -1,0 +1,1552 @@
+Q9:  Use employee table and calculate the ages of each employee at the time of hiring
+
+
+Ground Truth SQL:
+```sql:
+
+SELECT NationalIDNumber, BirthDate, HireDate, YEAR(HireDate) - YEAR(BirthDate) AS AgeTimeofHire
+FROM HumanResources. Employee
+```
+
+Output:
+
+Generated SQL:
+
+SELECT E.BusinessEntityID,E.BirthDate,E.HireDate,DATEDIFF(year,E.BirthDate,E.HireDate) AS AgeAtHire FROM HumanResources.Employee AS E
+
+python src\main.py "Use employee table and calculate the ages of each employee at the time of hiring"           
+AzureChatCompletion service registered with kernel.
+SQL Process initialized
+Processing query: Use employee table and calculate the ages of each employee at the time of hiring
+Executing TableNameStep...
+Running TableNameStep...
+Received user query: Use employee table and calculate the ages of each employee at the time of hiring
+Model used: o1
+Extracted table names:
+
+GetTableNames(table_names=[ValidTableName(table_name='HumanResources.Employee')])
+Executing ColumnNameStep...
+Running ColumnNameStep...
+Model used: o1
+Extracted column names:
+
+GetColumnNames(
+    table_column_list=[TableColumns(table_name='HumanResources.Employee', column_names=['BusinessEntityID', 'BirthDate', 'HireDate'])],
+    table_column_names=[TableColumns(table_name='HumanResources.Employee', column_names=['BusinessEntityID', 'BirthDate', 'HireDate'])]
+)
+Executing SQLGenerationStep...
+Running SQLGenerationStep...
+Writing file to full path: C:\Users\wknupp\Documents\Code\semantic-kernel-advanced-usage\templates\natural_language_to_SQL\output_prompts\prompt_0.txt
+Model used: o1
+Generated SQL statement:
+
+SQLGenerateResult(
+    sql_statement='SELECT E.BusinessEntityID,E.BirthDate,E.HireDate,DATEDIFF(year,E.BirthDate,E.HireDate) AS AgeAtHire FROM HumanResources.Employee AS 
+E',
+    result='SELECT E.BusinessEntityID,E.BirthDate,E.HireDate,DATEDIFF(year,E.BirthDate,E.HireDate) AS AgeAtHire FROM HumanResources.Employee AS E',
+    status='OK',
+    reason=''
+)
+Executing BusinessRulesStep...
+Running BusinessRulesStep...
+Model used: o1
+Applied business rules:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ValidationStep...
+Running ValidationStep...
+SQL statement to validate: SELECT E.BusinessEntityID,E.BirthDate,E.HireDate,DATEDIFF(year,E.BirthDate,E.HireDate) AS AgeAtHire FROM HumanResources.Employee AS E
+Model used: o1
+SQL validation results:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ExecutionStep...
+Running ExecutionStep...
+SQL statement to execute: SELECT E.BusinessEntityID,E.BirthDate,E.HireDate,DATEDIFF(year,E.BirthDate,E.HireDate) AS AgeAtHire FROM HumanResources.Employee AS E
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 1/4, Auth method: Azure CLI Credential Token, Auth retry: 1)
+* Running SQL in Azure SQL [SELECT E.BusinessEntityID,E.BirthDate,E.HireDate,DATEDIFF(year,E.BirthDate,E.HireDate) AS AgeAtHire FROM HumanResources.Employee AS E]...
+
+(1, datetime.date(1969, 1, 29), datetime.date(2009, 1, 14), 40)
+(2, datetime.date(1971, 8, 1), datetime.date(2008, 1, 31), 37)
+(3, datetime.date(1974, 11, 12), datetime.date(2007, 11, 11), 33)
+(4, datetime.date(1974, 12, 23), datetime.date(2007, 12, 5), 33)
+(5, datetime.date(1952, 9, 27), datetime.date(2008, 1, 6), 56)
+(6, datetime.date(1959, 3, 11), datetime.date(2008, 1, 24), 49)
+(7, datetime.date(1987, 2, 24), datetime.date(2009, 2, 8), 22)
+(8, datetime.date(1986, 6, 5), datetime.date(2008, 12, 29), 22)
+(9, datetime.date(1979, 1, 21), datetime.date(2009, 1, 16), 30)
+(10, datetime.date(1984, 11, 30), datetime.date(2009, 5, 3), 25)
+(11, datetime.date(1978, 1, 17), datetime.date(2010, 12, 5), 32)
+(12, datetime.date(1959, 7, 29), datetime.date(2007, 12, 11), 48)
+(13, datetime.date(1989, 5, 28), datetime.date(2010, 12, 23), 21)
+(14, datetime.date(1979, 6, 16), datetime.date(2010, 12, 30), 31)
+(15, datetime.date(1961, 5, 2), datetime.date(2011, 1, 18), 50)
+(16, datetime.date(1975, 3, 19), datetime.date(2007, 12, 20), 32)
+(17, datetime.date(1987, 5, 3), datetime.date(2007, 1, 26), 20)
+(18, datetime.date(1978, 3, 6), datetime.date(2011, 2, 7), 33)
+(19, datetime.date(1978, 1, 29), datetime.date(2011, 2, 14), 33)
+(20, datetime.date(1975, 3, 17), datetime.date(2011, 1, 7), 36)
+(21, datetime.date(1986, 2, 4), datetime.date(2009, 3, 2), 23)
+(22, datetime.date(1987, 5, 21), datetime.date(2008, 12, 12), 21)
+(23, datetime.date(1962, 9, 13), datetime.date(2009, 1, 12), 47)
+(24, datetime.date(1979, 6, 18), datetime.date(2009, 1, 18), 30)
+(25, datetime.date(1983, 1, 7), datetime.date(2009, 2, 3), 26)
+(26, datetime.date(1982, 11, 3), datetime.date(2008, 12, 1), 26)
+(27, datetime.date(1956, 10, 8), datetime.date(2008, 2, 27), 52)
+(28, datetime.date(1988, 3, 13), datetime.date(2006, 6, 30), 18)
+(29, datetime.date(1979, 9, 25), datetime.date(2009, 1, 23), 30)
+(30, datetime.date(1989, 9, 28), datetime.date(2009, 1, 29), 20)
+(31, datetime.date(1986, 5, 20), datetime.date(2009, 1, 4), 23)
+(32, datetime.date(1977, 7, 10), datetime.date(2008, 12, 29), 31)
+(33, datetime.date(1976, 12, 26), datetime.date(2008, 12, 17), 32)
+(34, datetime.date(1987, 6, 10), datetime.date(2009, 2, 16), 22)
+(35, datetime.date(1977, 1, 10), datetime.date(2009, 2, 8), 32)
+(36, datetime.date(1984, 7, 31), datetime.date(2009, 2, 10), 25)
+(37, datetime.date(1986, 8, 7), datetime.date(2009, 3, 7), 23)
+(38, datetime.date(1966, 12, 14), datetime.date(2010, 1, 16), 44)
+(39, datetime.date(1971, 9, 11), datetime.date(2010, 2, 5), 39)
+(40, datetime.date(1956, 1, 16), datetime.date(2007, 12, 26), 51)
+(41, datetime.date(1973, 8, 27), datetime.date(2009, 1, 21), 36)
+(42, datetime.date(1984, 7, 25), datetime.date(2008, 12, 27), 24)
+(43, datetime.date(1988, 11, 19), datetime.date(2009, 1, 2), 21)
+(44, datetime.date(1990, 5, 17), datetime.date(2008, 12, 8), 18)
+(45, datetime.date(1986, 1, 10), datetime.date(2009, 2, 26), 23)
+(46, datetime.date(1976, 2, 10), datetime.date(2009, 2, 8), 33)
+(47, datetime.date(1988, 9, 6), datetime.date(2009, 2, 22), 21)
+(48, datetime.date(1956, 6, 4), datetime.date(2008, 1, 6), 52)
+(49, datetime.date(1956, 3, 26), datetime.date(2008, 1, 7), 52)
+(50, datetime.date(1956, 8, 30), datetime.date(2008, 2, 2), 52)
+(51, datetime.date(1956, 7, 11), datetime.date(2008, 2, 20), 52)
+(52, datetime.date(1956, 4, 4), datetime.date(2008, 3, 10), 52)
+(53, datetime.date(1956, 3, 29), datetime.date(2008, 3, 28), 52)
+(54, datetime.date(1986, 9, 10), datetime.date(2010, 1, 1), 24)
+(55, datetime.date(1956, 4, 1), datetime.date(2008, 2, 8), 52)
+(56, datetime.date(1988, 7, 6), datetime.date(2009, 2, 5), 21)
+(57, datetime.date(1971, 7, 24), datetime.date(2009, 2, 23), 38)
+(58, datetime.date(1986, 5, 30), datetime.date(2008, 12, 5), 22)
+(59, datetime.date(1979, 8, 16), datetime.date(2008, 12, 24), 29)
+(60, datetime.date(1977, 2, 3), datetime.date(2009, 1, 11), 32)
+(61, datetime.date(1989, 8, 9), datetime.date(2009, 1, 18), 20)
+(62, datetime.date(1956, 8, 7), datetime.date(2008, 3, 17), 52)
+(63, datetime.date(1955, 1, 30), datetime.date(2010, 1, 29), 55)
+(64, datetime.date(1973, 9, 5), datetime.date(2010, 2, 23), 37)
+(65, datetime.date(1970, 4, 28), datetime.date(2010, 2, 23), 40)
+(66, datetime.date(1970, 3, 7), datetime.date(2009, 12, 22), 39)
+(67, datetime.date(1976, 2, 11), datetime.date(2009, 3, 5), 33)
+(68, datetime.date(1971, 9, 2), datetime.date(2009, 12, 3), 38)
+(69, datetime.date(1991, 4, 6), datetime.date(2009, 2, 15), 18)
+(70, datetime.date(1984, 12, 29), datetime.date(2008, 12, 15), 24)
+(71, datetime.date(1989, 1, 29), datetime.date(2009, 2, 15), 20)
+(72, datetime.date(1977, 5, 14), datetime.date(2008, 12, 1), 31)
+(73, datetime.date(1983, 10, 19), datetime.date(2008, 12, 19), 25)
+(74, datetime.date(1989, 11, 6), datetime.date(2009, 1, 7), 20)
+(75, datetime.date(1982, 6, 27), datetime.date(2009, 1, 26), 27)
+(76, datetime.date(1988, 10, 17), datetime.date(2009, 2, 12), 21)
+(77, datetime.date(1983, 5, 13), datetime.date(2009, 3, 3), 26)
+(78, datetime.date(1987, 8, 27), datetime.date(2008, 12, 15), 21)
+(79, datetime.date(1966, 12, 8), datetime.date(2010, 1, 24), 44)
+(80, datetime.date(1970, 12, 3), datetime.date(2010, 1, 17), 40)
+(81, datetime.date(1971, 3, 9), datetime.date(2009, 12, 29), 38)
+(82, datetime.date(1973, 8, 29), datetime.date(2010, 3, 3), 37)
+(83, datetime.date(1973, 12, 23), datetime.date(2010, 2, 12), 37)
+(84, datetime.date(1952, 3, 2), datetime.date(2010, 2, 5), 58)
+(85, datetime.date(1970, 12, 23), datetime.date(2009, 12, 11), 39)
+(86, datetime.date(1972, 6, 13), datetime.date(2009, 1, 5), 37)
+(87, datetime.date(1984, 4, 11), datetime.date(2008, 12, 22), 24)
+(88, datetime.date(1966, 12, 17), datetime.date(2009, 12, 18), 43)
+(89, datetime.date(1986, 9, 10), datetime.date(2010, 2, 1), 24)
+(90, datetime.date(1986, 9, 7), datetime.date(2010, 2, 20), 24)
+(91, datetime.date(1986, 9, 13), datetime.date(2010, 1, 12), 24)
+(92, datetime.date(1986, 10, 1), datetime.date(2010, 3, 10), 24)
+(93, datetime.date(1980, 4, 28), datetime.date(2008, 12, 27), 28)
+(94, datetime.date(1972, 11, 25), datetime.date(2008, 12, 12), 36)
+(95, datetime.date(1986, 9, 8), datetime.date(2008, 12, 19), 22)
+(96, datetime.date(1990, 1, 25), datetime.date(2009, 3, 2), 19)
+(97, datetime.date(1986, 3, 21), datetime.date(2009, 2, 10), 23)
+(98, datetime.date(1978, 6, 26), datetime.date(2009, 2, 11), 31)
+(99, datetime.date(1979, 3, 29), datetime.date(2009, 1, 6), 30)
+(100, datetime.date(1973, 1, 24), datetime.date(2009, 1, 12), 36)
+(101, datetime.date(1971, 8, 30), datetime.date(2009, 1, 25), 38)
+(102, datetime.date(1983, 10, 26), datetime.date(2008, 12, 3), 25)
+(103, datetime.date(1986, 9, 22), datetime.date(2009, 12, 6), 23)
+(104, datetime.date(1986, 9, 19), datetime.date(2009, 12, 25), 23)
+(105, datetime.date(1986, 9, 19), datetime.date(2009, 12, 25), 23)
+(106, datetime.date(1986, 9, 28), datetime.date(2010, 2, 27), 24)
+(107, datetime.date(1986, 10, 1), datetime.date(2010, 2, 8), 24)
+(108, datetime.date(1989, 2, 5), datetime.date(2008, 12, 8), 19)
+(109, datetime.date(1978, 1, 26), datetime.date(2008, 12, 7), 30)
+(110, datetime.date(1979, 7, 6), datetime.date(2008, 12, 14), 29)
+(111, datetime.date(1978, 2, 25), datetime.date(2008, 12, 17), 30)
+(112, datetime.date(1978, 5, 31), datetime.date(2009, 1, 1), 31)
+(113, datetime.date(1987, 7, 17), datetime.date(2008, 12, 25), 21)
+(114, datetime.date(1978, 5, 7), datetime.date(2009, 1, 13), 31)
+(115, datetime.date(1991, 5, 31), datetime.date(2009, 1, 20), 18)
+(116, datetime.date(1974, 5, 3), datetime.date(2009, 1, 31), 35)
+(117, datetime.date(1990, 8, 4), datetime.date(2009, 2, 18), 19)
+(118, datetime.date(1971, 6, 13), datetime.date(2009, 2, 13), 38)
+(119, datetime.date(1989, 6, 15), datetime.date(2009, 2, 25), 20)
+(120, datetime.date(1987, 6, 6), datetime.date(2009, 3, 4), 22)
+(121, datetime.date(1972, 9, 9), datetime.date(2009, 1, 2), 37)
+(122, datetime.date(1978, 2, 17), datetime.date(2008, 12, 7), 30)
+(123, datetime.date(1977, 3, 18), datetime.date(2008, 12, 7), 31)
+(124, datetime.date(1984, 4, 30), datetime.date(2008, 12, 26), 24)
+(125, datetime.date(1973, 11, 11), datetime.date(2009, 1, 20), 36)
+(126, datetime.date(1985, 5, 4), datetime.date(2009, 2, 26), 24)
+(127, datetime.date(1983, 7, 2), datetime.date(2009, 1, 3), 26)
+(128, datetime.date(1980, 11, 13), datetime.date(2008, 12, 4), 28)
+(129, datetime.date(1988, 5, 16), datetime.date(2008, 12, 22), 20)
+(130, datetime.date(1973, 8, 4), datetime.date(2009, 2, 13), 36)
+(131, datetime.date(1990, 10, 7), datetime.date(2009, 2, 15), 19)
+(132, datetime.date(1986, 4, 9), datetime.date(2009, 2, 22), 23)
+(133, datetime.date(1991, 1, 4), datetime.date(2009, 1, 10), 18)
+(134, datetime.date(1985, 1, 19), datetime.date(2009, 1, 14), 24)
+(135, datetime.date(1982, 1, 3), datetime.date(2008, 12, 4), 26)
+(136, datetime.date(1970, 11, 12), datetime.date(2009, 12, 11), 39)
+(137, datetime.date(1974, 9, 5), datetime.date(2009, 2, 23), 35)
+(138, datetime.date(1987, 11, 22), datetime.date(2009, 2, 4), 22)
+(139, datetime.date(1971, 10, 23), datetime.date(2010, 1, 6), 39)
+(140, datetime.date(1953, 4, 30), datetime.date(2010, 1, 22), 57)
+(141, datetime.date(1974, 9, 10), datetime.date(2010, 1, 24), 36)
+(142, datetime.date(1970, 4, 4), datetime.date(2010, 3, 4), 40)
+(143, datetime.date(1971, 9, 5), datetime.date(2010, 2, 13), 39)
+(144, datetime.date(1990, 11, 4), datetime.date(2009, 1, 17), 19)
+(145, datetime.date(1981, 8, 18), datetime.date(2009, 1, 27), 28)
+(146, datetime.date(1989, 6, 25), datetime.date(2008, 12, 7), 19)
+(147, datetime.date(1975, 11, 5), datetime.date(2008, 12, 26), 33)
+(148, datetime.date(1988, 12, 7), datetime.date(2009, 1, 14), 21)
+(149, datetime.date(1983, 10, 20), datetime.date(2009, 1, 31), 26)
+(150, datetime.date(1982, 9, 18), datetime.date(2009, 2, 26), 27)
+(151, datetime.date(1977, 9, 13), datetime.date(2009, 2, 19), 32)
+(152, datetime.date(1977, 4, 6), datetime.date(2009, 2, 1), 32)
+(153, datetime.date(1974, 10, 16), datetime.date(2008, 12, 16), 34)
+(154, datetime.date(1967, 3, 2), datetime.date(2008, 12, 23), 41)
+(155, datetime.date(1989, 2, 15), datetime.date(2009, 1, 4), 20)
+(156, datetime.date(1974, 9, 23), datetime.date(2009, 1, 11), 35)
+(157, datetime.date(1977, 10, 5), datetime.date(2009, 2, 3), 32)
+(158, datetime.date(1986, 12, 8), datetime.date(2009, 3, 7), 23)
+(159, datetime.date(1984, 12, 8), datetime.date(2009, 2, 16), 25)
+(160, datetime.date(1977, 1, 15), datetime.date(2009, 1, 21), 32)
+(161, datetime.date(1985, 2, 6), datetime.date(2008, 12, 15), 23)
+(162, datetime.date(1980, 12, 25), datetime.date(2009, 1, 3), 29)
+(163, datetime.date(1990, 4, 13), datetime.date(2009, 2, 8), 19)
+(164, datetime.date(1988, 9, 24), datetime.date(2009, 3, 6), 21)
+(165, datetime.date(1988, 12, 16), datetime.date(2009, 1, 22), 21)
+(166, datetime.date(1983, 6, 22), datetime.date(2009, 2, 21), 26)
+(167, datetime.date(1979, 11, 2), datetime.date(2008, 12, 2), 29)
+(168, datetime.date(1984, 8, 25), datetime.date(2008, 12, 7), 24)
+(169, datetime.date(1983, 4, 2), datetime.date(2008, 12, 14), 25)
+(170, datetime.date(1977, 4, 16), datetime.date(2008, 12, 21), 31)
+(171, datetime.date(1981, 8, 3), datetime.date(2009, 1, 2), 28)
+(172, datetime.date(1986, 10, 24), datetime.date(2009, 1, 16), 23)
+(173, datetime.date(1987, 7, 15), datetime.date(2009, 1, 21), 22)
+(174, datetime.date(1986, 1, 5), datetime.date(2009, 1, 27), 23)
+(175, datetime.date(1989, 1, 8), datetime.date(2009, 2, 2), 20)
+(176, datetime.date(1985, 9, 23), datetime.date(2009, 2, 14), 24)
+(177, datetime.date(1982, 2, 11), datetime.date(2009, 2, 21), 27)
+(178, datetime.date(1982, 3, 24), datetime.date(2009, 3, 3), 27)
+(179, datetime.date(1974, 11, 15), datetime.date(2009, 3, 5), 35)
+(180, datetime.date(1984, 11, 18), datetime.date(2009, 2, 20), 25)
+(181, datetime.date(1984, 11, 17), datetime.date(2008, 12, 9), 24)
+(182, datetime.date(1986, 12, 1), datetime.date(2008, 12, 28), 22)
+(183, datetime.date(1979, 7, 2), datetime.date(2009, 1, 22), 30)
+(184, datetime.date(1986, 4, 5), datetime.date(2009, 2, 9), 23)
+(185, datetime.date(1975, 12, 21), datetime.date(2009, 2, 28), 34)
+(186, datetime.date(1990, 5, 24), datetime.date(2009, 2, 8), 19)
+(187, datetime.date(1989, 4, 15), datetime.date(2008, 12, 9), 19)
+(188, datetime.date(1985, 11, 24), datetime.date(2008, 12, 27), 23)
+(189, datetime.date(1972, 7, 24), datetime.date(2009, 1, 15), 37)
+(190, datetime.date(1985, 2, 28), datetime.date(2009, 2, 2), 24)
+(191, datetime.date(1988, 3, 14), datetime.date(2009, 2, 26), 21)
+(192, datetime.date(1983, 2, 28), datetime.date(2009, 3, 5), 26)
+(193, datetime.date(1988, 12, 5), datetime.date(2008, 12, 6), 20)
+(194, datetime.date(1989, 6, 25), datetime.date(2008, 12, 12), 19)
+(195, datetime.date(1985, 12, 25), datetime.date(2008, 12, 17), 23)
+(196, datetime.date(1980, 10, 4), datetime.date(2008, 12, 24), 28)
+(197, datetime.date(1977, 10, 4), datetime.date(2008, 12, 31), 31)
+(198, datetime.date(1988, 11, 26), datetime.date(2009, 1, 4), 21)
+(199, datetime.date(1987, 2, 10), datetime.date(2009, 1, 12), 22)
+(200, datetime.date(1987, 9, 6), datetime.date(2009, 1, 17), 22)
+(201, datetime.date(1977, 2, 10), datetime.date(2009, 1, 29), 32)
+(202, datetime.date(1989, 11, 10), datetime.date(2009, 2, 5), 20)
+(203, datetime.date(1981, 5, 28), datetime.date(2009, 2, 24), 28)
+(204, datetime.date(1988, 5, 10), datetime.date(2009, 3, 8), 21)
+(205, datetime.date(1980, 7, 18), datetime.date(2009, 2, 26), 29)
+(206, datetime.date(1962, 9, 13), datetime.date(2008, 12, 2), 46)
+(207, datetime.date(1970, 10, 18), datetime.date(2008, 12, 2), 38)
+(208, datetime.date(1987, 2, 10), datetime.date(2009, 1, 8), 22)
+(209, datetime.date(1990, 11, 1), datetime.date(2009, 1, 27), 19)
+(210, datetime.date(1969, 9, 17), datetime.date(2009, 2, 20), 40)
+(211, datetime.date(1977, 10, 26), datetime.date(2009, 2, 28), 32)
+(212, datetime.date(1976, 3, 18), datetime.date(2008, 12, 9), 32)
+(213, datetime.date(1966, 12, 5), datetime.date(2010, 2, 23), 44)
+(214, datetime.date(1989, 3, 28), datetime.date(2009, 2, 2), 20)
+(215, datetime.date(1986, 4, 30), datetime.date(2009, 1, 15), 23)
+(216, datetime.date(1976, 3, 6), datetime.date(2008, 12, 28), 32)
+(217, datetime.date(1976, 1, 30), datetime.date(2009, 1, 4), 33)
+(218, datetime.date(1990, 4, 28), datetime.date(2008, 12, 16), 18)
+(219, datetime.date(1987, 3, 12), datetime.date(2009, 1, 22), 22)
+(220, datetime.date(1975, 12, 25), datetime.date(2009, 2, 9), 34)
+(221, datetime.date(1987, 5, 26), datetime.date(2009, 3, 6), 22)
+(222, datetime.date(1968, 9, 17), datetime.date(2008, 12, 12), 40)
+(223, datetime.date(1987, 12, 22), datetime.date(2009, 1, 26), 22)
+(224, datetime.date(1981, 11, 6), datetime.date(2009, 1, 7), 28)
+(225, datetime.date(1984, 3, 29), datetime.date(2009, 2, 13), 25)
+(226, datetime.date(1984, 8, 11), datetime.date(2009, 3, 3), 25)
+(227, datetime.date(1971, 2, 18), datetime.date(2009, 12, 2), 38)
+(228, datetime.date(1976, 1, 18), datetime.date(2008, 12, 14), 32)
+(229, datetime.date(1970, 7, 31), datetime.date(2010, 2, 16), 40)
+(230, datetime.date(1971, 12, 17), datetime.date(2010, 3, 5), 39)
+(231, datetime.date(1954, 4, 24), datetime.date(2010, 3, 7), 56)
+(232, datetime.date(1970, 12, 3), datetime.date(2010, 1, 27), 40)
+(233, datetime.date(1971, 8, 27), datetime.date(2009, 12, 21), 38)
+(234, datetime.date(1976, 1, 6), datetime.date(2009, 1, 31), 33)
+(235, datetime.date(1976, 2, 11), datetime.date(2008, 12, 6), 32)
+(236, datetime.date(1976, 4, 16), datetime.date(2009, 2, 25), 33)
+(237, datetime.date(1977, 4, 17), datetime.date(2009, 2, 6), 32)
+(238, datetime.date(1984, 8, 1), datetime.date(2009, 1, 1), 25)
+(239, datetime.date(1984, 11, 20), datetime.date(2008, 12, 25), 24)
+(240, datetime.date(1978, 7, 18), datetime.date(2008, 12, 13), 30)
+(241, datetime.date(1983, 7, 8), datetime.date(2009, 1, 30), 26)
+(242, datetime.date(1976, 3, 6), datetime.date(2008, 12, 18), 32)
+(243, datetime.date(1976, 2, 23), datetime.date(2009, 1, 6), 33)
+(244, datetime.date(1984, 9, 20), datetime.date(2009, 1, 24), 25)
+(245, datetime.date(1976, 1, 4), datetime.date(2009, 2, 18), 33)
+(246, datetime.date(1977, 2, 14), datetime.date(2009, 2, 11), 32)
+(247, datetime.date(1979, 3, 9), datetime.date(2009, 3, 1), 30)
+(248, datetime.date(1979, 7, 1), datetime.date(2009, 3, 8), 30)
+(249, datetime.date(1984, 10, 11), datetime.date(2008, 12, 25), 24)
+(250, datetime.date(1978, 2, 10), datetime.date(2011, 2, 25), 33)
+(251, datetime.date(1984, 8, 17), datetime.date(2009, 2, 10), 25)
+(252, datetime.date(1974, 8, 21), datetime.date(2009, 2, 28), 35)
+(253, datetime.date(1970, 11, 30), datetime.date(2009, 12, 17), 39)
+(254, datetime.date(1970, 11, 24), datetime.date(2010, 1, 4), 40)
+(255, datetime.date(1966, 11, 29), datetime.date(2010, 1, 11), 44)
+(256, datetime.date(1952, 5, 12), datetime.date(2010, 1, 23), 58)
+(257, datetime.date(1972, 9, 17), datetime.date(2010, 1, 27), 38)
+(258, datetime.date(1971, 1, 4), datetime.date(2010, 1, 31), 39)
+(259, datetime.date(1973, 6, 3), datetime.date(2010, 3, 9), 37)
+(260, datetime.date(1978, 1, 29), datetime.date(2010, 12, 6), 32)
+(261, datetime.date(1978, 1, 17), datetime.date(2010, 12, 25), 32)
+(262, datetime.date(1964, 6, 21), datetime.date(2009, 1, 12), 45)
+(263, datetime.date(1975, 12, 13), datetime.date(2008, 12, 11), 33)
+(264, datetime.date(1984, 3, 25), datetime.date(2009, 2, 4), 25)
+(265, datetime.date(1977, 3, 27), datetime.date(2008, 12, 4), 31)
+(266, datetime.date(1980, 5, 28), datetime.date(2009, 2, 23), 29)
+(267, datetime.date(1978, 5, 19), datetime.date(2009, 2, 16), 31)
+(268, datetime.date(1988, 3, 13), datetime.date(2009, 2, 3), 21)
+(269, datetime.date(1987, 5, 26), datetime.date(2009, 1, 11), 22)
+(270, datetime.date(1975, 5, 17), datetime.date(2009, 1, 17), 34)
+(271, datetime.date(1976, 1, 6), datetime.date(2009, 1, 22), 33)
+(272, datetime.date(1985, 1, 30), datetime.date(2008, 12, 23), 23)
+(273, datetime.date(1977, 6, 6), datetime.date(2011, 2, 15), 34)
+(274, datetime.date(1951, 10, 17), datetime.date(2011, 1, 4), 60)
+(275, datetime.date(1968, 12, 25), datetime.date(2011, 5, 31), 43)
+(276, datetime.date(1980, 2, 27), datetime.date(2011, 5, 31), 31)
+(277, datetime.date(1962, 8, 29), datetime.date(2011, 5, 31), 49)
+(278, datetime.date(1975, 2, 4), datetime.date(2011, 5, 31), 36)
+(279, datetime.date(1974, 1, 18), datetime.date(2011, 5, 31), 37)
+(280, datetime.date(1974, 12, 6), datetime.date(2011, 5, 31), 37)
+(281, datetime.date(1968, 3, 9), datetime.date(2011, 5, 31), 43)
+(282, datetime.date(1963, 12, 11), datetime.date(2011, 5, 31), 48)
+(283, datetime.date(1974, 2, 11), datetime.date(2011, 5, 31), 37)
+(284, datetime.date(1978, 1, 5), datetime.date(2012, 9, 30), 34)
+(285, datetime.date(1975, 1, 11), datetime.date(2013, 3, 14), 38)
+(286, datetime.date(1977, 2, 14), datetime.date(2013, 5, 30), 36)
+(287, datetime.date(1957, 9, 20), datetime.date(2012, 4, 16), 55)
+(288, datetime.date(1975, 7, 9), datetime.date(2013, 5, 30), 38)
+(289, datetime.date(1968, 3, 17), datetime.date(2012, 5, 30), 44)
+(290, datetime.date(1975, 9, 30), datetime.date(2012, 5, 30), 37)
+{
+    'result': [
+        {'BusinessEntityID': 1, 'BirthDate': datetime.date(1969, 1, 29), 'HireDate': datetime.date(2009, 1, 14), 'AgeAtHire': 40},
+        {'BusinessEntityID': 2, 'BirthDate': datetime.date(1971, 8, 1), 'HireDate': datetime.date(2008, 1, 31), 'AgeAtHire': 37},
+        {'BusinessEntityID': 3, 'BirthDate': datetime.date(1974, 11, 12), 'HireDate': datetime.date(2007, 11, 11), 'AgeAtHire': 33},
+        {'BusinessEntityID': 4, 'BirthDate': datetime.date(1974, 12, 23), 'HireDate': datetime.date(2007, 12, 5), 'AgeAtHire': 33},
+        {'BusinessEntityID': 5, 'BirthDate': datetime.date(1952, 9, 27), 'HireDate': datetime.date(2008, 1, 6), 'AgeAtHire': 56},
+        {'BusinessEntityID': 6, 'BirthDate': datetime.date(1959, 3, 11), 'HireDate': datetime.date(2008, 1, 24), 'AgeAtHire': 49},
+        {'BusinessEntityID': 7, 'BirthDate': datetime.date(1987, 2, 24), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 22},
+        {'BusinessEntityID': 8, 'BirthDate': datetime.date(1986, 6, 5), 'HireDate': datetime.date(2008, 12, 29), 'AgeAtHire': 22},
+        {'BusinessEntityID': 9, 'BirthDate': datetime.date(1979, 1, 21), 'HireDate': datetime.date(2009, 1, 16), 'AgeAtHire': 30},
+        {'BusinessEntityID': 10, 'BirthDate': datetime.date(1984, 11, 30), 'HireDate': datetime.date(2009, 5, 3), 'AgeAtHire': 25},
+        {'BusinessEntityID': 11, 'BirthDate': datetime.date(1978, 1, 17), 'HireDate': datetime.date(2010, 12, 5), 'AgeAtHire': 32},
+        {'BusinessEntityID': 12, 'BirthDate': datetime.date(1959, 7, 29), 'HireDate': datetime.date(2007, 12, 11), 'AgeAtHire': 48},
+        {'BusinessEntityID': 13, 'BirthDate': datetime.date(1989, 5, 28), 'HireDate': datetime.date(2010, 12, 23), 'AgeAtHire': 21},
+        {'BusinessEntityID': 14, 'BirthDate': datetime.date(1979, 6, 16), 'HireDate': datetime.date(2010, 12, 30), 'AgeAtHire': 31},
+        {'BusinessEntityID': 15, 'BirthDate': datetime.date(1961, 5, 2), 'HireDate': datetime.date(2011, 1, 18), 'AgeAtHire': 50},
+        {'BusinessEntityID': 16, 'BirthDate': datetime.date(1975, 3, 19), 'HireDate': datetime.date(2007, 12, 20), 'AgeAtHire': 32},
+        {'BusinessEntityID': 17, 'BirthDate': datetime.date(1987, 5, 3), 'HireDate': datetime.date(2007, 1, 26), 'AgeAtHire': 20},
+        {'BusinessEntityID': 18, 'BirthDate': datetime.date(1978, 3, 6), 'HireDate': datetime.date(2011, 2, 7), 'AgeAtHire': 33},
+        {'BusinessEntityID': 19, 'BirthDate': datetime.date(1978, 1, 29), 'HireDate': datetime.date(2011, 2, 14), 'AgeAtHire': 33},
+        {'BusinessEntityID': 20, 'BirthDate': datetime.date(1975, 3, 17), 'HireDate': datetime.date(2011, 1, 7), 'AgeAtHire': 36},
+        {'BusinessEntityID': 21, 'BirthDate': datetime.date(1986, 2, 4), 'HireDate': datetime.date(2009, 3, 2), 'AgeAtHire': 23},
+        {'BusinessEntityID': 22, 'BirthDate': datetime.date(1987, 5, 21), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 21},
+        {'BusinessEntityID': 23, 'BirthDate': datetime.date(1962, 9, 13), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 47},
+        {'BusinessEntityID': 24, 'BirthDate': datetime.date(1979, 6, 18), 'HireDate': datetime.date(2009, 1, 18), 'AgeAtHire': 30},
+        {'BusinessEntityID': 25, 'BirthDate': datetime.date(1983, 1, 7), 'HireDate': datetime.date(2009, 2, 3), 'AgeAtHire': 26},
+        {'BusinessEntityID': 26, 'BirthDate': datetime.date(1982, 11, 3), 'HireDate': datetime.date(2008, 12, 1), 'AgeAtHire': 26},
+        {'BusinessEntityID': 27, 'BirthDate': datetime.date(1956, 10, 8), 'HireDate': datetime.date(2008, 2, 27), 'AgeAtHire': 52},
+        {'BusinessEntityID': 28, 'BirthDate': datetime.date(1988, 3, 13), 'HireDate': datetime.date(2006, 6, 30), 'AgeAtHire': 18},
+        {'BusinessEntityID': 29, 'BirthDate': datetime.date(1979, 9, 25), 'HireDate': datetime.date(2009, 1, 23), 'AgeAtHire': 30},
+        {'BusinessEntityID': 30, 'BirthDate': datetime.date(1989, 9, 28), 'HireDate': datetime.date(2009, 1, 29), 'AgeAtHire': 20},
+        {'BusinessEntityID': 31, 'BirthDate': datetime.date(1986, 5, 20), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 23},
+        {'BusinessEntityID': 32, 'BirthDate': datetime.date(1977, 7, 10), 'HireDate': datetime.date(2008, 12, 29), 'AgeAtHire': 31},
+        {'BusinessEntityID': 33, 'BirthDate': datetime.date(1976, 12, 26), 'HireDate': datetime.date(2008, 12, 17), 'AgeAtHire': 32},
+        {'BusinessEntityID': 34, 'BirthDate': datetime.date(1987, 6, 10), 'HireDate': datetime.date(2009, 2, 16), 'AgeAtHire': 22},
+        {'BusinessEntityID': 35, 'BirthDate': datetime.date(1977, 1, 10), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 32},
+        {'BusinessEntityID': 36, 'BirthDate': datetime.date(1984, 7, 31), 'HireDate': datetime.date(2009, 2, 10), 'AgeAtHire': 25},
+        {'BusinessEntityID': 37, 'BirthDate': datetime.date(1986, 8, 7), 'HireDate': datetime.date(2009, 3, 7), 'AgeAtHire': 23},
+        {'BusinessEntityID': 38, 'BirthDate': datetime.date(1966, 12, 14), 'HireDate': datetime.date(2010, 1, 16), 'AgeAtHire': 44},
+        {'BusinessEntityID': 39, 'BirthDate': datetime.date(1971, 9, 11), 'HireDate': datetime.date(2010, 2, 5), 'AgeAtHire': 39},
+        {'BusinessEntityID': 40, 'BirthDate': datetime.date(1956, 1, 16), 'HireDate': datetime.date(2007, 12, 26), 'AgeAtHire': 51},
+        {'BusinessEntityID': 41, 'BirthDate': datetime.date(1973, 8, 27), 'HireDate': datetime.date(2009, 1, 21), 'AgeAtHire': 36},
+        {'BusinessEntityID': 42, 'BirthDate': datetime.date(1984, 7, 25), 'HireDate': datetime.date(2008, 12, 27), 'AgeAtHire': 24},
+        {'BusinessEntityID': 43, 'BirthDate': datetime.date(1988, 11, 19), 'HireDate': datetime.date(2009, 1, 2), 'AgeAtHire': 21},
+        {'BusinessEntityID': 44, 'BirthDate': datetime.date(1990, 5, 17), 'HireDate': datetime.date(2008, 12, 8), 'AgeAtHire': 18},
+        {'BusinessEntityID': 45, 'BirthDate': datetime.date(1986, 1, 10), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 23},
+        {'BusinessEntityID': 46, 'BirthDate': datetime.date(1976, 2, 10), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 33},
+        {'BusinessEntityID': 47, 'BirthDate': datetime.date(1988, 9, 6), 'HireDate': datetime.date(2009, 2, 22), 'AgeAtHire': 21},
+        {'BusinessEntityID': 48, 'BirthDate': datetime.date(1956, 6, 4), 'HireDate': datetime.date(2008, 1, 6), 'AgeAtHire': 52},
+        {'BusinessEntityID': 49, 'BirthDate': datetime.date(1956, 3, 26), 'HireDate': datetime.date(2008, 1, 7), 'AgeAtHire': 52},
+        {'BusinessEntityID': 50, 'BirthDate': datetime.date(1956, 8, 30), 'HireDate': datetime.date(2008, 2, 2), 'AgeAtHire': 52},
+        {'BusinessEntityID': 51, 'BirthDate': datetime.date(1956, 7, 11), 'HireDate': datetime.date(2008, 2, 20), 'AgeAtHire': 52},
+        {'BusinessEntityID': 52, 'BirthDate': datetime.date(1956, 4, 4), 'HireDate': datetime.date(2008, 3, 10), 'AgeAtHire': 52},
+        {'BusinessEntityID': 53, 'BirthDate': datetime.date(1956, 3, 29), 'HireDate': datetime.date(2008, 3, 28), 'AgeAtHire': 52},
+        {'BusinessEntityID': 54, 'BirthDate': datetime.date(1986, 9, 10), 'HireDate': datetime.date(2010, 1, 1), 'AgeAtHire': 24},
+        {'BusinessEntityID': 55, 'BirthDate': datetime.date(1956, 4, 1), 'HireDate': datetime.date(2008, 2, 8), 'AgeAtHire': 52},
+        {'BusinessEntityID': 56, 'BirthDate': datetime.date(1988, 7, 6), 'HireDate': datetime.date(2009, 2, 5), 'AgeAtHire': 21},
+        {'BusinessEntityID': 57, 'BirthDate': datetime.date(1971, 7, 24), 'HireDate': datetime.date(2009, 2, 23), 'AgeAtHire': 38},
+        {'BusinessEntityID': 58, 'BirthDate': datetime.date(1986, 5, 30), 'HireDate': datetime.date(2008, 12, 5), 'AgeAtHire': 22},
+        {'BusinessEntityID': 59, 'BirthDate': datetime.date(1979, 8, 16), 'HireDate': datetime.date(2008, 12, 24), 'AgeAtHire': 29},
+        {'BusinessEntityID': 60, 'BirthDate': datetime.date(1977, 2, 3), 'HireDate': datetime.date(2009, 1, 11), 'AgeAtHire': 32},
+        {'BusinessEntityID': 61, 'BirthDate': datetime.date(1989, 8, 9), 'HireDate': datetime.date(2009, 1, 18), 'AgeAtHire': 20},
+        {'BusinessEntityID': 62, 'BirthDate': datetime.date(1956, 8, 7), 'HireDate': datetime.date(2008, 3, 17), 'AgeAtHire': 52},
+        {'BusinessEntityID': 63, 'BirthDate': datetime.date(1955, 1, 30), 'HireDate': datetime.date(2010, 1, 29), 'AgeAtHire': 55},
+        {'BusinessEntityID': 64, 'BirthDate': datetime.date(1973, 9, 5), 'HireDate': datetime.date(2010, 2, 23), 'AgeAtHire': 37},
+        {'BusinessEntityID': 65, 'BirthDate': datetime.date(1970, 4, 28), 'HireDate': datetime.date(2010, 2, 23), 'AgeAtHire': 40},
+        {'BusinessEntityID': 66, 'BirthDate': datetime.date(1970, 3, 7), 'HireDate': datetime.date(2009, 12, 22), 'AgeAtHire': 39},
+        {'BusinessEntityID': 67, 'BirthDate': datetime.date(1976, 2, 11), 'HireDate': datetime.date(2009, 3, 5), 'AgeAtHire': 33},
+        {'BusinessEntityID': 68, 'BirthDate': datetime.date(1971, 9, 2), 'HireDate': datetime.date(2009, 12, 3), 'AgeAtHire': 38},
+        {'BusinessEntityID': 69, 'BirthDate': datetime.date(1991, 4, 6), 'HireDate': datetime.date(2009, 2, 15), 'AgeAtHire': 18},
+        {'BusinessEntityID': 70, 'BirthDate': datetime.date(1984, 12, 29), 'HireDate': datetime.date(2008, 12, 15), 'AgeAtHire': 24},
+        {'BusinessEntityID': 71, 'BirthDate': datetime.date(1989, 1, 29), 'HireDate': datetime.date(2009, 2, 15), 'AgeAtHire': 20},
+        {'BusinessEntityID': 72, 'BirthDate': datetime.date(1977, 5, 14), 'HireDate': datetime.date(2008, 12, 1), 'AgeAtHire': 31},
+        {'BusinessEntityID': 73, 'BirthDate': datetime.date(1983, 10, 19), 'HireDate': datetime.date(2008, 12, 19), 'AgeAtHire': 25},
+        {'BusinessEntityID': 74, 'BirthDate': datetime.date(1989, 11, 6), 'HireDate': datetime.date(2009, 1, 7), 'AgeAtHire': 20},
+        {'BusinessEntityID': 75, 'BirthDate': datetime.date(1982, 6, 27), 'HireDate': datetime.date(2009, 1, 26), 'AgeAtHire': 27},
+        {'BusinessEntityID': 76, 'BirthDate': datetime.date(1988, 10, 17), 'HireDate': datetime.date(2009, 2, 12), 'AgeAtHire': 21},
+        {'BusinessEntityID': 77, 'BirthDate': datetime.date(1983, 5, 13), 'HireDate': datetime.date(2009, 3, 3), 'AgeAtHire': 26},
+        {'BusinessEntityID': 78, 'BirthDate': datetime.date(1987, 8, 27), 'HireDate': datetime.date(2008, 12, 15), 'AgeAtHire': 21},
+        {'BusinessEntityID': 79, 'BirthDate': datetime.date(1966, 12, 8), 'HireDate': datetime.date(2010, 1, 24), 'AgeAtHire': 44},
+        {'BusinessEntityID': 80, 'BirthDate': datetime.date(1970, 12, 3), 'HireDate': datetime.date(2010, 1, 17), 'AgeAtHire': 40},
+        {'BusinessEntityID': 81, 'BirthDate': datetime.date(1971, 3, 9), 'HireDate': datetime.date(2009, 12, 29), 'AgeAtHire': 38},
+        {'BusinessEntityID': 82, 'BirthDate': datetime.date(1973, 8, 29), 'HireDate': datetime.date(2010, 3, 3), 'AgeAtHire': 37},
+        {'BusinessEntityID': 83, 'BirthDate': datetime.date(1973, 12, 23), 'HireDate': datetime.date(2010, 2, 12), 'AgeAtHire': 37},
+        {'BusinessEntityID': 84, 'BirthDate': datetime.date(1952, 3, 2), 'HireDate': datetime.date(2010, 2, 5), 'AgeAtHire': 58},
+        {'BusinessEntityID': 85, 'BirthDate': datetime.date(1970, 12, 23), 'HireDate': datetime.date(2009, 12, 11), 'AgeAtHire': 39},
+        {'BusinessEntityID': 86, 'BirthDate': datetime.date(1972, 6, 13), 'HireDate': datetime.date(2009, 1, 5), 'AgeAtHire': 37},
+        {'BusinessEntityID': 87, 'BirthDate': datetime.date(1984, 4, 11), 'HireDate': datetime.date(2008, 12, 22), 'AgeAtHire': 24},
+        {'BusinessEntityID': 88, 'BirthDate': datetime.date(1966, 12, 17), 'HireDate': datetime.date(2009, 12, 18), 'AgeAtHire': 43},
+        {'BusinessEntityID': 89, 'BirthDate': datetime.date(1986, 9, 10), 'HireDate': datetime.date(2010, 2, 1), 'AgeAtHire': 24},
+        {'BusinessEntityID': 90, 'BirthDate': datetime.date(1986, 9, 7), 'HireDate': datetime.date(2010, 2, 20), 'AgeAtHire': 24},
+        {'BusinessEntityID': 91, 'BirthDate': datetime.date(1986, 9, 13), 'HireDate': datetime.date(2010, 1, 12), 'AgeAtHire': 24},
+        {'BusinessEntityID': 92, 'BirthDate': datetime.date(1986, 10, 1), 'HireDate': datetime.date(2010, 3, 10), 'AgeAtHire': 24},
+        {'BusinessEntityID': 93, 'BirthDate': datetime.date(1980, 4, 28), 'HireDate': datetime.date(2008, 12, 27), 'AgeAtHire': 28},
+        {'BusinessEntityID': 94, 'BirthDate': datetime.date(1972, 11, 25), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 36},
+        {'BusinessEntityID': 95, 'BirthDate': datetime.date(1986, 9, 8), 'HireDate': datetime.date(2008, 12, 19), 'AgeAtHire': 22},
+        {'BusinessEntityID': 96, 'BirthDate': datetime.date(1990, 1, 25), 'HireDate': datetime.date(2009, 3, 2), 'AgeAtHire': 19},
+        {'BusinessEntityID': 97, 'BirthDate': datetime.date(1986, 3, 21), 'HireDate': datetime.date(2009, 2, 10), 'AgeAtHire': 23},
+        {'BusinessEntityID': 98, 'BirthDate': datetime.date(1978, 6, 26), 'HireDate': datetime.date(2009, 2, 11), 'AgeAtHire': 31},
+        {'BusinessEntityID': 99, 'BirthDate': datetime.date(1979, 3, 29), 'HireDate': datetime.date(2009, 1, 6), 'AgeAtHire': 30},
+        {'BusinessEntityID': 100, 'BirthDate': datetime.date(1973, 1, 24), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 36},
+        {'BusinessEntityID': 101, 'BirthDate': datetime.date(1971, 8, 30), 'HireDate': datetime.date(2009, 1, 25), 'AgeAtHire': 38},
+        {'BusinessEntityID': 102, 'BirthDate': datetime.date(1983, 10, 26), 'HireDate': datetime.date(2008, 12, 3), 'AgeAtHire': 25},
+        {'BusinessEntityID': 103, 'BirthDate': datetime.date(1986, 9, 22), 'HireDate': datetime.date(2009, 12, 6), 'AgeAtHire': 23},
+        {'BusinessEntityID': 104, 'BirthDate': datetime.date(1986, 9, 19), 'HireDate': datetime.date(2009, 12, 25), 'AgeAtHire': 23},
+        {'BusinessEntityID': 105, 'BirthDate': datetime.date(1986, 9, 19), 'HireDate': datetime.date(2009, 12, 25), 'AgeAtHire': 23},
+        {'BusinessEntityID': 106, 'BirthDate': datetime.date(1986, 9, 28), 'HireDate': datetime.date(2010, 2, 27), 'AgeAtHire': 24},
+        {'BusinessEntityID': 107, 'BirthDate': datetime.date(1986, 10, 1), 'HireDate': datetime.date(2010, 2, 8), 'AgeAtHire': 24},
+        {'BusinessEntityID': 108, 'BirthDate': datetime.date(1989, 2, 5), 'HireDate': datetime.date(2008, 12, 8), 'AgeAtHire': 19},
+        {'BusinessEntityID': 109, 'BirthDate': datetime.date(1978, 1, 26), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 30},
+        {'BusinessEntityID': 110, 'BirthDate': datetime.date(1979, 7, 6), 'HireDate': datetime.date(2008, 12, 14), 'AgeAtHire': 29},
+        {'BusinessEntityID': 111, 'BirthDate': datetime.date(1978, 2, 25), 'HireDate': datetime.date(2008, 12, 17), 'AgeAtHire': 30},
+        {'BusinessEntityID': 112, 'BirthDate': datetime.date(1978, 5, 31), 'HireDate': datetime.date(2009, 1, 1), 'AgeAtHire': 31},
+        {'BusinessEntityID': 113, 'BirthDate': datetime.date(1987, 7, 17), 'HireDate': datetime.date(2008, 12, 25), 'AgeAtHire': 21},
+        {'BusinessEntityID': 114, 'BirthDate': datetime.date(1978, 5, 7), 'HireDate': datetime.date(2009, 1, 13), 'AgeAtHire': 31},
+        {'BusinessEntityID': 115, 'BirthDate': datetime.date(1991, 5, 31), 'HireDate': datetime.date(2009, 1, 20), 'AgeAtHire': 18},
+        {'BusinessEntityID': 116, 'BirthDate': datetime.date(1974, 5, 3), 'HireDate': datetime.date(2009, 1, 31), 'AgeAtHire': 35},
+        {'BusinessEntityID': 117, 'BirthDate': datetime.date(1990, 8, 4), 'HireDate': datetime.date(2009, 2, 18), 'AgeAtHire': 19},
+        {'BusinessEntityID': 118, 'BirthDate': datetime.date(1971, 6, 13), 'HireDate': datetime.date(2009, 2, 13), 'AgeAtHire': 38},
+        {'BusinessEntityID': 119, 'BirthDate': datetime.date(1989, 6, 15), 'HireDate': datetime.date(2009, 2, 25), 'AgeAtHire': 20},
+        {'BusinessEntityID': 120, 'BirthDate': datetime.date(1987, 6, 6), 'HireDate': datetime.date(2009, 3, 4), 'AgeAtHire': 22},
+        {'BusinessEntityID': 121, 'BirthDate': datetime.date(1972, 9, 9), 'HireDate': datetime.date(2009, 1, 2), 'AgeAtHire': 37},
+        {'BusinessEntityID': 122, 'BirthDate': datetime.date(1978, 2, 17), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 30},
+        {'BusinessEntityID': 123, 'BirthDate': datetime.date(1977, 3, 18), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 31},
+        {'BusinessEntityID': 124, 'BirthDate': datetime.date(1984, 4, 30), 'HireDate': datetime.date(2008, 12, 26), 'AgeAtHire': 24},
+        {'BusinessEntityID': 125, 'BirthDate': datetime.date(1973, 11, 11), 'HireDate': datetime.date(2009, 1, 20), 'AgeAtHire': 36},
+        {'BusinessEntityID': 126, 'BirthDate': datetime.date(1985, 5, 4), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 24},
+        {'BusinessEntityID': 127, 'BirthDate': datetime.date(1983, 7, 2), 'HireDate': datetime.date(2009, 1, 3), 'AgeAtHire': 26},
+        {'BusinessEntityID': 128, 'BirthDate': datetime.date(1980, 11, 13), 'HireDate': datetime.date(2008, 12, 4), 'AgeAtHire': 28},
+        {'BusinessEntityID': 129, 'BirthDate': datetime.date(1988, 5, 16), 'HireDate': datetime.date(2008, 12, 22), 'AgeAtHire': 20},
+        {'BusinessEntityID': 130, 'BirthDate': datetime.date(1973, 8, 4), 'HireDate': datetime.date(2009, 2, 13), 'AgeAtHire': 36},
+        {'BusinessEntityID': 131, 'BirthDate': datetime.date(1990, 10, 7), 'HireDate': datetime.date(2009, 2, 15), 'AgeAtHire': 19},
+        {'BusinessEntityID': 132, 'BirthDate': datetime.date(1986, 4, 9), 'HireDate': datetime.date(2009, 2, 22), 'AgeAtHire': 23},
+        {'BusinessEntityID': 133, 'BirthDate': datetime.date(1991, 1, 4), 'HireDate': datetime.date(2009, 1, 10), 'AgeAtHire': 18},
+        {'BusinessEntityID': 134, 'BirthDate': datetime.date(1985, 1, 19), 'HireDate': datetime.date(2009, 1, 14), 'AgeAtHire': 24},
+        {'BusinessEntityID': 135, 'BirthDate': datetime.date(1982, 1, 3), 'HireDate': datetime.date(2008, 12, 4), 'AgeAtHire': 26},
+        {'BusinessEntityID': 136, 'BirthDate': datetime.date(1970, 11, 12), 'HireDate': datetime.date(2009, 12, 11), 'AgeAtHire': 39},
+        {'BusinessEntityID': 137, 'BirthDate': datetime.date(1974, 9, 5), 'HireDate': datetime.date(2009, 2, 23), 'AgeAtHire': 35},
+        {'BusinessEntityID': 138, 'BirthDate': datetime.date(1987, 11, 22), 'HireDate': datetime.date(2009, 2, 4), 'AgeAtHire': 22},
+        {'BusinessEntityID': 139, 'BirthDate': datetime.date(1971, 10, 23), 'HireDate': datetime.date(2010, 1, 6), 'AgeAtHire': 39},
+        {'BusinessEntityID': 140, 'BirthDate': datetime.date(1953, 4, 30), 'HireDate': datetime.date(2010, 1, 22), 'AgeAtHire': 57},
+        {'BusinessEntityID': 141, 'BirthDate': datetime.date(1974, 9, 10), 'HireDate': datetime.date(2010, 1, 24), 'AgeAtHire': 36},
+        {'BusinessEntityID': 142, 'BirthDate': datetime.date(1970, 4, 4), 'HireDate': datetime.date(2010, 3, 4), 'AgeAtHire': 40},
+        {'BusinessEntityID': 143, 'BirthDate': datetime.date(1971, 9, 5), 'HireDate': datetime.date(2010, 2, 13), 'AgeAtHire': 39},
+        {'BusinessEntityID': 144, 'BirthDate': datetime.date(1990, 11, 4), 'HireDate': datetime.date(2009, 1, 17), 'AgeAtHire': 19},
+        {'BusinessEntityID': 145, 'BirthDate': datetime.date(1981, 8, 18), 'HireDate': datetime.date(2009, 1, 27), 'AgeAtHire': 28},
+        {'BusinessEntityID': 146, 'BirthDate': datetime.date(1989, 6, 25), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 19},
+        {'BusinessEntityID': 147, 'BirthDate': datetime.date(1975, 11, 5), 'HireDate': datetime.date(2008, 12, 26), 'AgeAtHire': 33},
+        {'BusinessEntityID': 148, 'BirthDate': datetime.date(1988, 12, 7), 'HireDate': datetime.date(2009, 1, 14), 'AgeAtHire': 21},
+        {'BusinessEntityID': 149, 'BirthDate': datetime.date(1983, 10, 20), 'HireDate': datetime.date(2009, 1, 31), 'AgeAtHire': 26},
+        {'BusinessEntityID': 150, 'BirthDate': datetime.date(1982, 9, 18), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 27},
+        {'BusinessEntityID': 151, 'BirthDate': datetime.date(1977, 9, 13), 'HireDate': datetime.date(2009, 2, 19), 'AgeAtHire': 32},
+        {'BusinessEntityID': 152, 'BirthDate': datetime.date(1977, 4, 6), 'HireDate': datetime.date(2009, 2, 1), 'AgeAtHire': 32},
+        {'BusinessEntityID': 153, 'BirthDate': datetime.date(1974, 10, 16), 'HireDate': datetime.date(2008, 12, 16), 'AgeAtHire': 34},
+        {'BusinessEntityID': 154, 'BirthDate': datetime.date(1967, 3, 2), 'HireDate': datetime.date(2008, 12, 23), 'AgeAtHire': 41},
+        {'BusinessEntityID': 155, 'BirthDate': datetime.date(1989, 2, 15), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 20},
+        {'BusinessEntityID': 156, 'BirthDate': datetime.date(1974, 9, 23), 'HireDate': datetime.date(2009, 1, 11), 'AgeAtHire': 35},
+        {'BusinessEntityID': 157, 'BirthDate': datetime.date(1977, 10, 5), 'HireDate': datetime.date(2009, 2, 3), 'AgeAtHire': 32},
+        {'BusinessEntityID': 158, 'BirthDate': datetime.date(1986, 12, 8), 'HireDate': datetime.date(2009, 3, 7), 'AgeAtHire': 23},
+        {'BusinessEntityID': 159, 'BirthDate': datetime.date(1984, 12, 8), 'HireDate': datetime.date(2009, 2, 16), 'AgeAtHire': 25},
+        {'BusinessEntityID': 160, 'BirthDate': datetime.date(1977, 1, 15), 'HireDate': datetime.date(2009, 1, 21), 'AgeAtHire': 32},
+        {'BusinessEntityID': 161, 'BirthDate': datetime.date(1985, 2, 6), 'HireDate': datetime.date(2008, 12, 15), 'AgeAtHire': 23},
+        {'BusinessEntityID': 162, 'BirthDate': datetime.date(1980, 12, 25), 'HireDate': datetime.date(2009, 1, 3), 'AgeAtHire': 29},
+        {'BusinessEntityID': 163, 'BirthDate': datetime.date(1990, 4, 13), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 19},
+        {'BusinessEntityID': 164, 'BirthDate': datetime.date(1988, 9, 24), 'HireDate': datetime.date(2009, 3, 6), 'AgeAtHire': 21},
+        {'BusinessEntityID': 165, 'BirthDate': datetime.date(1988, 12, 16), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 21},
+        {'BusinessEntityID': 166, 'BirthDate': datetime.date(1983, 6, 22), 'HireDate': datetime.date(2009, 2, 21), 'AgeAtHire': 26},
+        {'BusinessEntityID': 167, 'BirthDate': datetime.date(1979, 11, 2), 'HireDate': datetime.date(2008, 12, 2), 'AgeAtHire': 29},
+        {'BusinessEntityID': 168, 'BirthDate': datetime.date(1984, 8, 25), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 24},
+        {'BusinessEntityID': 169, 'BirthDate': datetime.date(1983, 4, 2), 'HireDate': datetime.date(2008, 12, 14), 'AgeAtHire': 25},
+        {'BusinessEntityID': 170, 'BirthDate': datetime.date(1977, 4, 16), 'HireDate': datetime.date(2008, 12, 21), 'AgeAtHire': 31},
+        {'BusinessEntityID': 171, 'BirthDate': datetime.date(1981, 8, 3), 'HireDate': datetime.date(2009, 1, 2), 'AgeAtHire': 28},
+        {'BusinessEntityID': 172, 'BirthDate': datetime.date(1986, 10, 24), 'HireDate': datetime.date(2009, 1, 16), 'AgeAtHire': 23},
+        {'BusinessEntityID': 173, 'BirthDate': datetime.date(1987, 7, 15), 'HireDate': datetime.date(2009, 1, 21), 'AgeAtHire': 22},
+        {'BusinessEntityID': 174, 'BirthDate': datetime.date(1986, 1, 5), 'HireDate': datetime.date(2009, 1, 27), 'AgeAtHire': 23},
+        {'BusinessEntityID': 175, 'BirthDate': datetime.date(1989, 1, 8), 'HireDate': datetime.date(2009, 2, 2), 'AgeAtHire': 20},
+        {'BusinessEntityID': 176, 'BirthDate': datetime.date(1985, 9, 23), 'HireDate': datetime.date(2009, 2, 14), 'AgeAtHire': 24},
+        {'BusinessEntityID': 177, 'BirthDate': datetime.date(1982, 2, 11), 'HireDate': datetime.date(2009, 2, 21), 'AgeAtHire': 27},
+        {'BusinessEntityID': 178, 'BirthDate': datetime.date(1982, 3, 24), 'HireDate': datetime.date(2009, 3, 3), 'AgeAtHire': 27},
+        {'BusinessEntityID': 179, 'BirthDate': datetime.date(1974, 11, 15), 'HireDate': datetime.date(2009, 3, 5), 'AgeAtHire': 35},
+        {'BusinessEntityID': 180, 'BirthDate': datetime.date(1984, 11, 18), 'HireDate': datetime.date(2009, 2, 20), 'AgeAtHire': 25},
+        {'BusinessEntityID': 181, 'BirthDate': datetime.date(1984, 11, 17), 'HireDate': datetime.date(2008, 12, 9), 'AgeAtHire': 24},
+        {'BusinessEntityID': 182, 'BirthDate': datetime.date(1986, 12, 1), 'HireDate': datetime.date(2008, 12, 28), 'AgeAtHire': 22},
+        {'BusinessEntityID': 183, 'BirthDate': datetime.date(1979, 7, 2), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 30},
+        {'BusinessEntityID': 184, 'BirthDate': datetime.date(1986, 4, 5), 'HireDate': datetime.date(2009, 2, 9), 'AgeAtHire': 23},
+        {'BusinessEntityID': 185, 'BirthDate': datetime.date(1975, 12, 21), 'HireDate': datetime.date(2009, 2, 28), 'AgeAtHire': 34},
+        {'BusinessEntityID': 186, 'BirthDate': datetime.date(1990, 5, 24), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 19},
+        {'BusinessEntityID': 187, 'BirthDate': datetime.date(1989, 4, 15), 'HireDate': datetime.date(2008, 12, 9), 'AgeAtHire': 19},
+        {'BusinessEntityID': 188, 'BirthDate': datetime.date(1985, 11, 24), 'HireDate': datetime.date(2008, 12, 27), 'AgeAtHire': 23},
+        {'BusinessEntityID': 189, 'BirthDate': datetime.date(1972, 7, 24), 'HireDate': datetime.date(2009, 1, 15), 'AgeAtHire': 37},
+        {'BusinessEntityID': 190, 'BirthDate': datetime.date(1985, 2, 28), 'HireDate': datetime.date(2009, 2, 2), 'AgeAtHire': 24},
+        {'BusinessEntityID': 191, 'BirthDate': datetime.date(1988, 3, 14), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 21},
+        {'BusinessEntityID': 192, 'BirthDate': datetime.date(1983, 2, 28), 'HireDate': datetime.date(2009, 3, 5), 'AgeAtHire': 26},
+        {'BusinessEntityID': 193, 'BirthDate': datetime.date(1988, 12, 5), 'HireDate': datetime.date(2008, 12, 6), 'AgeAtHire': 20},
+        {'BusinessEntityID': 194, 'BirthDate': datetime.date(1989, 6, 25), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 19},
+        {'BusinessEntityID': 195, 'BirthDate': datetime.date(1985, 12, 25), 'HireDate': datetime.date(2008, 12, 17), 'AgeAtHire': 23},
+        {'BusinessEntityID': 196, 'BirthDate': datetime.date(1980, 10, 4), 'HireDate': datetime.date(2008, 12, 24), 'AgeAtHire': 28},
+        {'BusinessEntityID': 197, 'BirthDate': datetime.date(1977, 10, 4), 'HireDate': datetime.date(2008, 12, 31), 'AgeAtHire': 31},
+        {'BusinessEntityID': 198, 'BirthDate': datetime.date(1988, 11, 26), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 21},
+        {'BusinessEntityID': 199, 'BirthDate': datetime.date(1987, 2, 10), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 22},
+        {'BusinessEntityID': 200, 'BirthDate': datetime.date(1987, 9, 6), 'HireDate': datetime.date(2009, 1, 17), 'AgeAtHire': 22},
+        {'BusinessEntityID': 201, 'BirthDate': datetime.date(1977, 2, 10), 'HireDate': datetime.date(2009, 1, 29), 'AgeAtHire': 32},
+        {'BusinessEntityID': 202, 'BirthDate': datetime.date(1989, 11, 10), 'HireDate': datetime.date(2009, 2, 5), 'AgeAtHire': 20},
+        {'BusinessEntityID': 203, 'BirthDate': datetime.date(1981, 5, 28), 'HireDate': datetime.date(2009, 2, 24), 'AgeAtHire': 28},
+        {'BusinessEntityID': 204, 'BirthDate': datetime.date(1988, 5, 10), 'HireDate': datetime.date(2009, 3, 8), 'AgeAtHire': 21},
+        {'BusinessEntityID': 205, 'BirthDate': datetime.date(1980, 7, 18), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 29},
+        {'BusinessEntityID': 206, 'BirthDate': datetime.date(1962, 9, 13), 'HireDate': datetime.date(2008, 12, 2), 'AgeAtHire': 46},
+        {'BusinessEntityID': 207, 'BirthDate': datetime.date(1970, 10, 18), 'HireDate': datetime.date(2008, 12, 2), 'AgeAtHire': 38},
+        {'BusinessEntityID': 208, 'BirthDate': datetime.date(1987, 2, 10), 'HireDate': datetime.date(2009, 1, 8), 'AgeAtHire': 22},
+        {'BusinessEntityID': 209, 'BirthDate': datetime.date(1990, 11, 1), 'HireDate': datetime.date(2009, 1, 27), 'AgeAtHire': 19},
+        {'BusinessEntityID': 210, 'BirthDate': datetime.date(1969, 9, 17), 'HireDate': datetime.date(2009, 2, 20), 'AgeAtHire': 40},
+        {'BusinessEntityID': 211, 'BirthDate': datetime.date(1977, 10, 26), 'HireDate': datetime.date(2009, 2, 28), 'AgeAtHire': 32},
+        {'BusinessEntityID': 212, 'BirthDate': datetime.date(1976, 3, 18), 'HireDate': datetime.date(2008, 12, 9), 'AgeAtHire': 32},
+        {'BusinessEntityID': 213, 'BirthDate': datetime.date(1966, 12, 5), 'HireDate': datetime.date(2010, 2, 23), 'AgeAtHire': 44},
+        {'BusinessEntityID': 214, 'BirthDate': datetime.date(1989, 3, 28), 'HireDate': datetime.date(2009, 2, 2), 'AgeAtHire': 20},
+        {'BusinessEntityID': 215, 'BirthDate': datetime.date(1986, 4, 30), 'HireDate': datetime.date(2009, 1, 15), 'AgeAtHire': 23},
+        {'BusinessEntityID': 216, 'BirthDate': datetime.date(1976, 3, 6), 'HireDate': datetime.date(2008, 12, 28), 'AgeAtHire': 32},
+        {'BusinessEntityID': 217, 'BirthDate': datetime.date(1976, 1, 30), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 33},
+        {'BusinessEntityID': 218, 'BirthDate': datetime.date(1990, 4, 28), 'HireDate': datetime.date(2008, 12, 16), 'AgeAtHire': 18},
+        {'BusinessEntityID': 219, 'BirthDate': datetime.date(1987, 3, 12), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 22},
+        {'BusinessEntityID': 220, 'BirthDate': datetime.date(1975, 12, 25), 'HireDate': datetime.date(2009, 2, 9), 'AgeAtHire': 34},
+        {'BusinessEntityID': 221, 'BirthDate': datetime.date(1987, 5, 26), 'HireDate': datetime.date(2009, 3, 6), 'AgeAtHire': 22},
+        {'BusinessEntityID': 222, 'BirthDate': datetime.date(1968, 9, 17), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 40},
+        {'BusinessEntityID': 223, 'BirthDate': datetime.date(1987, 12, 22), 'HireDate': datetime.date(2009, 1, 26), 'AgeAtHire': 22},
+        {'BusinessEntityID': 224, 'BirthDate': datetime.date(1981, 11, 6), 'HireDate': datetime.date(2009, 1, 7), 'AgeAtHire': 28},
+        {'BusinessEntityID': 225, 'BirthDate': datetime.date(1984, 3, 29), 'HireDate': datetime.date(2009, 2, 13), 'AgeAtHire': 25},
+        {'BusinessEntityID': 226, 'BirthDate': datetime.date(1984, 8, 11), 'HireDate': datetime.date(2009, 3, 3), 'AgeAtHire': 25},
+        {'BusinessEntityID': 227, 'BirthDate': datetime.date(1971, 2, 18), 'HireDate': datetime.date(2009, 12, 2), 'AgeAtHire': 38},
+        {'BusinessEntityID': 228, 'BirthDate': datetime.date(1976, 1, 18), 'HireDate': datetime.date(2008, 12, 14), 'AgeAtHire': 32},
+        {'BusinessEntityID': 229, 'BirthDate': datetime.date(1970, 7, 31), 'HireDate': datetime.date(2010, 2, 16), 'AgeAtHire': 40},
+        {'BusinessEntityID': 230, 'BirthDate': datetime.date(1971, 12, 17), 'HireDate': datetime.date(2010, 3, 5), 'AgeAtHire': 39},
+        {'BusinessEntityID': 231, 'BirthDate': datetime.date(1954, 4, 24), 'HireDate': datetime.date(2010, 3, 7), 'AgeAtHire': 56},
+        {'BusinessEntityID': 232, 'BirthDate': datetime.date(1970, 12, 3), 'HireDate': datetime.date(2010, 1, 27), 'AgeAtHire': 40},
+        {'BusinessEntityID': 233, 'BirthDate': datetime.date(1971, 8, 27), 'HireDate': datetime.date(2009, 12, 21), 'AgeAtHire': 38},
+        {'BusinessEntityID': 234, 'BirthDate': datetime.date(1976, 1, 6), 'HireDate': datetime.date(2009, 1, 31), 'AgeAtHire': 33},
+        {'BusinessEntityID': 235, 'BirthDate': datetime.date(1976, 2, 11), 'HireDate': datetime.date(2008, 12, 6), 'AgeAtHire': 32},
+        {'BusinessEntityID': 236, 'BirthDate': datetime.date(1976, 4, 16), 'HireDate': datetime.date(2009, 2, 25), 'AgeAtHire': 33},
+        {'BusinessEntityID': 237, 'BirthDate': datetime.date(1977, 4, 17), 'HireDate': datetime.date(2009, 2, 6), 'AgeAtHire': 32},
+        {'BusinessEntityID': 238, 'BirthDate': datetime.date(1984, 8, 1), 'HireDate': datetime.date(2009, 1, 1), 'AgeAtHire': 25},
+        {'BusinessEntityID': 239, 'BirthDate': datetime.date(1984, 11, 20), 'HireDate': datetime.date(2008, 12, 25), 'AgeAtHire': 24},
+        {'BusinessEntityID': 240, 'BirthDate': datetime.date(1978, 7, 18), 'HireDate': datetime.date(2008, 12, 13), 'AgeAtHire': 30},
+        {'BusinessEntityID': 241, 'BirthDate': datetime.date(1983, 7, 8), 'HireDate': datetime.date(2009, 1, 30), 'AgeAtHire': 26},
+        {'BusinessEntityID': 242, 'BirthDate': datetime.date(1976, 3, 6), 'HireDate': datetime.date(2008, 12, 18), 'AgeAtHire': 32},
+        {'BusinessEntityID': 243, 'BirthDate': datetime.date(1976, 2, 23), 'HireDate': datetime.date(2009, 1, 6), 'AgeAtHire': 33},
+        {'BusinessEntityID': 244, 'BirthDate': datetime.date(1984, 9, 20), 'HireDate': datetime.date(2009, 1, 24), 'AgeAtHire': 25},
+        {'BusinessEntityID': 245, 'BirthDate': datetime.date(1976, 1, 4), 'HireDate': datetime.date(2009, 2, 18), 'AgeAtHire': 33},
+        {'BusinessEntityID': 246, 'BirthDate': datetime.date(1977, 2, 14), 'HireDate': datetime.date(2009, 2, 11), 'AgeAtHire': 32},
+        {'BusinessEntityID': 247, 'BirthDate': datetime.date(1979, 3, 9), 'HireDate': datetime.date(2009, 3, 1), 'AgeAtHire': 30},
+        {'BusinessEntityID': 248, 'BirthDate': datetime.date(1979, 7, 1), 'HireDate': datetime.date(2009, 3, 8), 'AgeAtHire': 30},
+        {'BusinessEntityID': 249, 'BirthDate': datetime.date(1984, 10, 11), 'HireDate': datetime.date(2008, 12, 25), 'AgeAtHire': 24},
+        {'BusinessEntityID': 250, 'BirthDate': datetime.date(1978, 2, 10), 'HireDate': datetime.date(2011, 2, 25), 'AgeAtHire': 33},
+        {'BusinessEntityID': 251, 'BirthDate': datetime.date(1984, 8, 17), 'HireDate': datetime.date(2009, 2, 10), 'AgeAtHire': 25},
+        {'BusinessEntityID': 252, 'BirthDate': datetime.date(1974, 8, 21), 'HireDate': datetime.date(2009, 2, 28), 'AgeAtHire': 35},
+        {'BusinessEntityID': 253, 'BirthDate': datetime.date(1970, 11, 30), 'HireDate': datetime.date(2009, 12, 17), 'AgeAtHire': 39},
+        {'BusinessEntityID': 254, 'BirthDate': datetime.date(1970, 11, 24), 'HireDate': datetime.date(2010, 1, 4), 'AgeAtHire': 40},
+        {'BusinessEntityID': 255, 'BirthDate': datetime.date(1966, 11, 29), 'HireDate': datetime.date(2010, 1, 11), 'AgeAtHire': 44},
+        {'BusinessEntityID': 256, 'BirthDate': datetime.date(1952, 5, 12), 'HireDate': datetime.date(2010, 1, 23), 'AgeAtHire': 58},
+        {'BusinessEntityID': 257, 'BirthDate': datetime.date(1972, 9, 17), 'HireDate': datetime.date(2010, 1, 27), 'AgeAtHire': 38},
+        {'BusinessEntityID': 258, 'BirthDate': datetime.date(1971, 1, 4), 'HireDate': datetime.date(2010, 1, 31), 'AgeAtHire': 39},
+        {'BusinessEntityID': 259, 'BirthDate': datetime.date(1973, 6, 3), 'HireDate': datetime.date(2010, 3, 9), 'AgeAtHire': 37},
+        {'BusinessEntityID': 260, 'BirthDate': datetime.date(1978, 1, 29), 'HireDate': datetime.date(2010, 12, 6), 'AgeAtHire': 32},
+        {'BusinessEntityID': 261, 'BirthDate': datetime.date(1978, 1, 17), 'HireDate': datetime.date(2010, 12, 25), 'AgeAtHire': 32},
+        {'BusinessEntityID': 262, 'BirthDate': datetime.date(1964, 6, 21), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 45},
+        {'BusinessEntityID': 263, 'BirthDate': datetime.date(1975, 12, 13), 'HireDate': datetime.date(2008, 12, 11), 'AgeAtHire': 33},
+        {'BusinessEntityID': 264, 'BirthDate': datetime.date(1984, 3, 25), 'HireDate': datetime.date(2009, 2, 4), 'AgeAtHire': 25},
+        {'BusinessEntityID': 265, 'BirthDate': datetime.date(1977, 3, 27), 'HireDate': datetime.date(2008, 12, 4), 'AgeAtHire': 31},
+        {'BusinessEntityID': 266, 'BirthDate': datetime.date(1980, 5, 28), 'HireDate': datetime.date(2009, 2, 23), 'AgeAtHire': 29},
+        {'BusinessEntityID': 267, 'BirthDate': datetime.date(1978, 5, 19), 'HireDate': datetime.date(2009, 2, 16), 'AgeAtHire': 31},
+        {'BusinessEntityID': 268, 'BirthDate': datetime.date(1988, 3, 13), 'HireDate': datetime.date(2009, 2, 3), 'AgeAtHire': 21},
+        {'BusinessEntityID': 269, 'BirthDate': datetime.date(1987, 5, 26), 'HireDate': datetime.date(2009, 1, 11), 'AgeAtHire': 22},
+        {'BusinessEntityID': 270, 'BirthDate': datetime.date(1975, 5, 17), 'HireDate': datetime.date(2009, 1, 17), 'AgeAtHire': 34},
+        {'BusinessEntityID': 271, 'BirthDate': datetime.date(1976, 1, 6), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 33},
+        {'BusinessEntityID': 272, 'BirthDate': datetime.date(1985, 1, 30), 'HireDate': datetime.date(2008, 12, 23), 'AgeAtHire': 23},
+        {'BusinessEntityID': 273, 'BirthDate': datetime.date(1977, 6, 6), 'HireDate': datetime.date(2011, 2, 15), 'AgeAtHire': 34},
+        {'BusinessEntityID': 274, 'BirthDate': datetime.date(1951, 10, 17), 'HireDate': datetime.date(2011, 1, 4), 'AgeAtHire': 60},
+        {'BusinessEntityID': 275, 'BirthDate': datetime.date(1968, 12, 25), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 43},
+        {'BusinessEntityID': 276, 'BirthDate': datetime.date(1980, 2, 27), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 31},
+        {'BusinessEntityID': 277, 'BirthDate': datetime.date(1962, 8, 29), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 49},
+        {'BusinessEntityID': 278, 'BirthDate': datetime.date(1975, 2, 4), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 36},
+        {'BusinessEntityID': 279, 'BirthDate': datetime.date(1974, 1, 18), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 37},
+        {'BusinessEntityID': 280, 'BirthDate': datetime.date(1974, 12, 6), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 37},
+        {'BusinessEntityID': 281, 'BirthDate': datetime.date(1968, 3, 9), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 43},
+        {'BusinessEntityID': 282, 'BirthDate': datetime.date(1963, 12, 11), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 48},
+        {'BusinessEntityID': 283, 'BirthDate': datetime.date(1974, 2, 11), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 37},
+        {'BusinessEntityID': 284, 'BirthDate': datetime.date(1978, 1, 5), 'HireDate': datetime.date(2012, 9, 30), 'AgeAtHire': 34},
+        {'BusinessEntityID': 285, 'BirthDate': datetime.date(1975, 1, 11), 'HireDate': datetime.date(2013, 3, 14), 'AgeAtHire': 38},
+        {'BusinessEntityID': 286, 'BirthDate': datetime.date(1977, 2, 14), 'HireDate': datetime.date(2013, 5, 30), 'AgeAtHire': 36},
+        {'BusinessEntityID': 287, 'BirthDate': datetime.date(1957, 9, 20), 'HireDate': datetime.date(2012, 4, 16), 'AgeAtHire': 55},
+        {'BusinessEntityID': 288, 'BirthDate': datetime.date(1975, 7, 9), 'HireDate': datetime.date(2013, 5, 30), 'AgeAtHire': 38},
+        {'BusinessEntityID': 289, 'BirthDate': datetime.date(1968, 3, 17), 'HireDate': datetime.date(2012, 5, 30), 'AgeAtHire': 44},
+        {'BusinessEntityID': 290, 'BirthDate': datetime.date(1975, 9, 30), 'HireDate': datetime.date(2012, 5, 30), 'AgeAtHire': 37}
+    ]
+}
+SQL execution succeeded.
+resp_dd
+{
+    'query': 'Use employee table and calculate the ages of each employee at the time of hiring',
+    'response': {
+        'result': [
+            {'BusinessEntityID': 1, 'BirthDate': datetime.date(1969, 1, 29), 'HireDate': datetime.date(2009, 1, 14), 'AgeAtHire': 40},
+            {'BusinessEntityID': 2, 'BirthDate': datetime.date(1971, 8, 1), 'HireDate': datetime.date(2008, 1, 31), 'AgeAtHire': 37},
+            {'BusinessEntityID': 3, 'BirthDate': datetime.date(1974, 11, 12), 'HireDate': datetime.date(2007, 11, 11), 'AgeAtHire': 33},
+            {'BusinessEntityID': 4, 'BirthDate': datetime.date(1974, 12, 23), 'HireDate': datetime.date(2007, 12, 5), 'AgeAtHire': 33},
+            {'BusinessEntityID': 5, 'BirthDate': datetime.date(1952, 9, 27), 'HireDate': datetime.date(2008, 1, 6), 'AgeAtHire': 56},
+            {'BusinessEntityID': 6, 'BirthDate': datetime.date(1959, 3, 11), 'HireDate': datetime.date(2008, 1, 24), 'AgeAtHire': 49},
+            {'BusinessEntityID': 7, 'BirthDate': datetime.date(1987, 2, 24), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 22},
+            {'BusinessEntityID': 8, 'BirthDate': datetime.date(1986, 6, 5), 'HireDate': datetime.date(2008, 12, 29), 'AgeAtHire': 22},
+            {'BusinessEntityID': 9, 'BirthDate': datetime.date(1979, 1, 21), 'HireDate': datetime.date(2009, 1, 16), 'AgeAtHire': 30},
+            {'BusinessEntityID': 10, 'BirthDate': datetime.date(1984, 11, 30), 'HireDate': datetime.date(2009, 5, 3), 'AgeAtHire': 25},
+            {'BusinessEntityID': 11, 'BirthDate': datetime.date(1978, 1, 17), 'HireDate': datetime.date(2010, 12, 5), 'AgeAtHire': 32},
+            {'BusinessEntityID': 12, 'BirthDate': datetime.date(1959, 7, 29), 'HireDate': datetime.date(2007, 12, 11), 'AgeAtHire': 48},
+            {'BusinessEntityID': 13, 'BirthDate': datetime.date(1989, 5, 28), 'HireDate': datetime.date(2010, 12, 23), 'AgeAtHire': 21},
+            {'BusinessEntityID': 14, 'BirthDate': datetime.date(1979, 6, 16), 'HireDate': datetime.date(2010, 12, 30), 'AgeAtHire': 31},
+            {'BusinessEntityID': 15, 'BirthDate': datetime.date(1961, 5, 2), 'HireDate': datetime.date(2011, 1, 18), 'AgeAtHire': 50},
+            {'BusinessEntityID': 16, 'BirthDate': datetime.date(1975, 3, 19), 'HireDate': datetime.date(2007, 12, 20), 'AgeAtHire': 32},
+            {'BusinessEntityID': 17, 'BirthDate': datetime.date(1987, 5, 3), 'HireDate': datetime.date(2007, 1, 26), 'AgeAtHire': 20},
+            {'BusinessEntityID': 18, 'BirthDate': datetime.date(1978, 3, 6), 'HireDate': datetime.date(2011, 2, 7), 'AgeAtHire': 33},
+            {'BusinessEntityID': 19, 'BirthDate': datetime.date(1978, 1, 29), 'HireDate': datetime.date(2011, 2, 14), 'AgeAtHire': 33},
+            {'BusinessEntityID': 20, 'BirthDate': datetime.date(1975, 3, 17), 'HireDate': datetime.date(2011, 1, 7), 'AgeAtHire': 36},
+            {'BusinessEntityID': 21, 'BirthDate': datetime.date(1986, 2, 4), 'HireDate': datetime.date(2009, 3, 2), 'AgeAtHire': 23},
+            {'BusinessEntityID': 22, 'BirthDate': datetime.date(1987, 5, 21), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 21},
+            {'BusinessEntityID': 23, 'BirthDate': datetime.date(1962, 9, 13), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 47},
+            {'BusinessEntityID': 24, 'BirthDate': datetime.date(1979, 6, 18), 'HireDate': datetime.date(2009, 1, 18), 'AgeAtHire': 30},
+            {'BusinessEntityID': 25, 'BirthDate': datetime.date(1983, 1, 7), 'HireDate': datetime.date(2009, 2, 3), 'AgeAtHire': 26},
+            {'BusinessEntityID': 26, 'BirthDate': datetime.date(1982, 11, 3), 'HireDate': datetime.date(2008, 12, 1), 'AgeAtHire': 26},
+            {'BusinessEntityID': 27, 'BirthDate': datetime.date(1956, 10, 8), 'HireDate': datetime.date(2008, 2, 27), 'AgeAtHire': 52},
+            {'BusinessEntityID': 28, 'BirthDate': datetime.date(1988, 3, 13), 'HireDate': datetime.date(2006, 6, 30), 'AgeAtHire': 18},
+            {'BusinessEntityID': 29, 'BirthDate': datetime.date(1979, 9, 25), 'HireDate': datetime.date(2009, 1, 23), 'AgeAtHire': 30},
+            {'BusinessEntityID': 30, 'BirthDate': datetime.date(1989, 9, 28), 'HireDate': datetime.date(2009, 1, 29), 'AgeAtHire': 20},
+            {'BusinessEntityID': 31, 'BirthDate': datetime.date(1986, 5, 20), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 23},
+            {'BusinessEntityID': 32, 'BirthDate': datetime.date(1977, 7, 10), 'HireDate': datetime.date(2008, 12, 29), 'AgeAtHire': 31},
+            {'BusinessEntityID': 33, 'BirthDate': datetime.date(1976, 12, 26), 'HireDate': datetime.date(2008, 12, 17), 'AgeAtHire': 32},
+            {'BusinessEntityID': 34, 'BirthDate': datetime.date(1987, 6, 10), 'HireDate': datetime.date(2009, 2, 16), 'AgeAtHire': 22},
+            {'BusinessEntityID': 35, 'BirthDate': datetime.date(1977, 1, 10), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 32},
+            {'BusinessEntityID': 36, 'BirthDate': datetime.date(1984, 7, 31), 'HireDate': datetime.date(2009, 2, 10), 'AgeAtHire': 25},
+            {'BusinessEntityID': 37, 'BirthDate': datetime.date(1986, 8, 7), 'HireDate': datetime.date(2009, 3, 7), 'AgeAtHire': 23},
+            {'BusinessEntityID': 38, 'BirthDate': datetime.date(1966, 12, 14), 'HireDate': datetime.date(2010, 1, 16), 'AgeAtHire': 44},
+            {'BusinessEntityID': 39, 'BirthDate': datetime.date(1971, 9, 11), 'HireDate': datetime.date(2010, 2, 5), 'AgeAtHire': 39},
+            {'BusinessEntityID': 40, 'BirthDate': datetime.date(1956, 1, 16), 'HireDate': datetime.date(2007, 12, 26), 'AgeAtHire': 51},
+            {'BusinessEntityID': 41, 'BirthDate': datetime.date(1973, 8, 27), 'HireDate': datetime.date(2009, 1, 21), 'AgeAtHire': 36},
+            {'BusinessEntityID': 42, 'BirthDate': datetime.date(1984, 7, 25), 'HireDate': datetime.date(2008, 12, 27), 'AgeAtHire': 24},
+            {'BusinessEntityID': 43, 'BirthDate': datetime.date(1988, 11, 19), 'HireDate': datetime.date(2009, 1, 2), 'AgeAtHire': 21},
+            {'BusinessEntityID': 44, 'BirthDate': datetime.date(1990, 5, 17), 'HireDate': datetime.date(2008, 12, 8), 'AgeAtHire': 18},
+            {'BusinessEntityID': 45, 'BirthDate': datetime.date(1986, 1, 10), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 23},
+            {'BusinessEntityID': 46, 'BirthDate': datetime.date(1976, 2, 10), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 33},
+            {'BusinessEntityID': 47, 'BirthDate': datetime.date(1988, 9, 6), 'HireDate': datetime.date(2009, 2, 22), 'AgeAtHire': 21},
+            {'BusinessEntityID': 48, 'BirthDate': datetime.date(1956, 6, 4), 'HireDate': datetime.date(2008, 1, 6), 'AgeAtHire': 52},
+            {'BusinessEntityID': 49, 'BirthDate': datetime.date(1956, 3, 26), 'HireDate': datetime.date(2008, 1, 7), 'AgeAtHire': 52},
+            {'BusinessEntityID': 50, 'BirthDate': datetime.date(1956, 8, 30), 'HireDate': datetime.date(2008, 2, 2), 'AgeAtHire': 52},
+            {'BusinessEntityID': 51, 'BirthDate': datetime.date(1956, 7, 11), 'HireDate': datetime.date(2008, 2, 20), 'AgeAtHire': 52},
+            {'BusinessEntityID': 52, 'BirthDate': datetime.date(1956, 4, 4), 'HireDate': datetime.date(2008, 3, 10), 'AgeAtHire': 52},
+            {'BusinessEntityID': 53, 'BirthDate': datetime.date(1956, 3, 29), 'HireDate': datetime.date(2008, 3, 28), 'AgeAtHire': 52},
+            {'BusinessEntityID': 54, 'BirthDate': datetime.date(1986, 9, 10), 'HireDate': datetime.date(2010, 1, 1), 'AgeAtHire': 24},
+            {'BusinessEntityID': 55, 'BirthDate': datetime.date(1956, 4, 1), 'HireDate': datetime.date(2008, 2, 8), 'AgeAtHire': 52},
+            {'BusinessEntityID': 56, 'BirthDate': datetime.date(1988, 7, 6), 'HireDate': datetime.date(2009, 2, 5), 'AgeAtHire': 21},
+            {'BusinessEntityID': 57, 'BirthDate': datetime.date(1971, 7, 24), 'HireDate': datetime.date(2009, 2, 23), 'AgeAtHire': 38},
+            {'BusinessEntityID': 58, 'BirthDate': datetime.date(1986, 5, 30), 'HireDate': datetime.date(2008, 12, 5), 'AgeAtHire': 22},
+            {'BusinessEntityID': 59, 'BirthDate': datetime.date(1979, 8, 16), 'HireDate': datetime.date(2008, 12, 24), 'AgeAtHire': 29},
+            {'BusinessEntityID': 60, 'BirthDate': datetime.date(1977, 2, 3), 'HireDate': datetime.date(2009, 1, 11), 'AgeAtHire': 32},
+            {'BusinessEntityID': 61, 'BirthDate': datetime.date(1989, 8, 9), 'HireDate': datetime.date(2009, 1, 18), 'AgeAtHire': 20},
+            {'BusinessEntityID': 62, 'BirthDate': datetime.date(1956, 8, 7), 'HireDate': datetime.date(2008, 3, 17), 'AgeAtHire': 52},
+            {'BusinessEntityID': 63, 'BirthDate': datetime.date(1955, 1, 30), 'HireDate': datetime.date(2010, 1, 29), 'AgeAtHire': 55},
+            {'BusinessEntityID': 64, 'BirthDate': datetime.date(1973, 9, 5), 'HireDate': datetime.date(2010, 2, 23), 'AgeAtHire': 37},
+            {'BusinessEntityID': 65, 'BirthDate': datetime.date(1970, 4, 28), 'HireDate': datetime.date(2010, 2, 23), 'AgeAtHire': 40},
+            {'BusinessEntityID': 66, 'BirthDate': datetime.date(1970, 3, 7), 'HireDate': datetime.date(2009, 12, 22), 'AgeAtHire': 39},
+            {'BusinessEntityID': 67, 'BirthDate': datetime.date(1976, 2, 11), 'HireDate': datetime.date(2009, 3, 5), 'AgeAtHire': 33},
+            {'BusinessEntityID': 68, 'BirthDate': datetime.date(1971, 9, 2), 'HireDate': datetime.date(2009, 12, 3), 'AgeAtHire': 38},
+            {'BusinessEntityID': 69, 'BirthDate': datetime.date(1991, 4, 6), 'HireDate': datetime.date(2009, 2, 15), 'AgeAtHire': 18},
+            {'BusinessEntityID': 70, 'BirthDate': datetime.date(1984, 12, 29), 'HireDate': datetime.date(2008, 12, 15), 'AgeAtHire': 24},
+            {'BusinessEntityID': 71, 'BirthDate': datetime.date(1989, 1, 29), 'HireDate': datetime.date(2009, 2, 15), 'AgeAtHire': 20},
+            {'BusinessEntityID': 72, 'BirthDate': datetime.date(1977, 5, 14), 'HireDate': datetime.date(2008, 12, 1), 'AgeAtHire': 31},
+            {'BusinessEntityID': 73, 'BirthDate': datetime.date(1983, 10, 19), 'HireDate': datetime.date(2008, 12, 19), 'AgeAtHire': 25},
+            {'BusinessEntityID': 74, 'BirthDate': datetime.date(1989, 11, 6), 'HireDate': datetime.date(2009, 1, 7), 'AgeAtHire': 20},
+            {'BusinessEntityID': 75, 'BirthDate': datetime.date(1982, 6, 27), 'HireDate': datetime.date(2009, 1, 26), 'AgeAtHire': 27},
+            {'BusinessEntityID': 76, 'BirthDate': datetime.date(1988, 10, 17), 'HireDate': datetime.date(2009, 2, 12), 'AgeAtHire': 21},
+            {'BusinessEntityID': 77, 'BirthDate': datetime.date(1983, 5, 13), 'HireDate': datetime.date(2009, 3, 3), 'AgeAtHire': 26},
+            {'BusinessEntityID': 78, 'BirthDate': datetime.date(1987, 8, 27), 'HireDate': datetime.date(2008, 12, 15), 'AgeAtHire': 21},
+            {'BusinessEntityID': 79, 'BirthDate': datetime.date(1966, 12, 8), 'HireDate': datetime.date(2010, 1, 24), 'AgeAtHire': 44},
+            {'BusinessEntityID': 80, 'BirthDate': datetime.date(1970, 12, 3), 'HireDate': datetime.date(2010, 1, 17), 'AgeAtHire': 40},
+            {'BusinessEntityID': 81, 'BirthDate': datetime.date(1971, 3, 9), 'HireDate': datetime.date(2009, 12, 29), 'AgeAtHire': 38},
+            {'BusinessEntityID': 82, 'BirthDate': datetime.date(1973, 8, 29), 'HireDate': datetime.date(2010, 3, 3), 'AgeAtHire': 37},
+            {'BusinessEntityID': 83, 'BirthDate': datetime.date(1973, 12, 23), 'HireDate': datetime.date(2010, 2, 12), 'AgeAtHire': 37},
+            {'BusinessEntityID': 84, 'BirthDate': datetime.date(1952, 3, 2), 'HireDate': datetime.date(2010, 2, 5), 'AgeAtHire': 58},
+            {'BusinessEntityID': 85, 'BirthDate': datetime.date(1970, 12, 23), 'HireDate': datetime.date(2009, 12, 11), 'AgeAtHire': 39},
+            {'BusinessEntityID': 86, 'BirthDate': datetime.date(1972, 6, 13), 'HireDate': datetime.date(2009, 1, 5), 'AgeAtHire': 37},
+            {'BusinessEntityID': 87, 'BirthDate': datetime.date(1984, 4, 11), 'HireDate': datetime.date(2008, 12, 22), 'AgeAtHire': 24},
+            {'BusinessEntityID': 88, 'BirthDate': datetime.date(1966, 12, 17), 'HireDate': datetime.date(2009, 12, 18), 'AgeAtHire': 43},
+            {'BusinessEntityID': 89, 'BirthDate': datetime.date(1986, 9, 10), 'HireDate': datetime.date(2010, 2, 1), 'AgeAtHire': 24},
+            {'BusinessEntityID': 90, 'BirthDate': datetime.date(1986, 9, 7), 'HireDate': datetime.date(2010, 2, 20), 'AgeAtHire': 24},
+            {'BusinessEntityID': 91, 'BirthDate': datetime.date(1986, 9, 13), 'HireDate': datetime.date(2010, 1, 12), 'AgeAtHire': 24},
+            {'BusinessEntityID': 92, 'BirthDate': datetime.date(1986, 10, 1), 'HireDate': datetime.date(2010, 3, 10), 'AgeAtHire': 24},
+            {'BusinessEntityID': 93, 'BirthDate': datetime.date(1980, 4, 28), 'HireDate': datetime.date(2008, 12, 27), 'AgeAtHire': 28},
+            {'BusinessEntityID': 94, 'BirthDate': datetime.date(1972, 11, 25), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 36},
+            {'BusinessEntityID': 95, 'BirthDate': datetime.date(1986, 9, 8), 'HireDate': datetime.date(2008, 12, 19), 'AgeAtHire': 22},
+            {'BusinessEntityID': 96, 'BirthDate': datetime.date(1990, 1, 25), 'HireDate': datetime.date(2009, 3, 2), 'AgeAtHire': 19},
+            {'BusinessEntityID': 97, 'BirthDate': datetime.date(1986, 3, 21), 'HireDate': datetime.date(2009, 2, 10), 'AgeAtHire': 23},
+            {'BusinessEntityID': 98, 'BirthDate': datetime.date(1978, 6, 26), 'HireDate': datetime.date(2009, 2, 11), 'AgeAtHire': 31},
+            {'BusinessEntityID': 99, 'BirthDate': datetime.date(1979, 3, 29), 'HireDate': datetime.date(2009, 1, 6), 'AgeAtHire': 30},
+            {'BusinessEntityID': 100, 'BirthDate': datetime.date(1973, 1, 24), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 36},
+            {'BusinessEntityID': 101, 'BirthDate': datetime.date(1971, 8, 30), 'HireDate': datetime.date(2009, 1, 25), 'AgeAtHire': 38},
+            {'BusinessEntityID': 102, 'BirthDate': datetime.date(1983, 10, 26), 'HireDate': datetime.date(2008, 12, 3), 'AgeAtHire': 25},
+            {'BusinessEntityID': 103, 'BirthDate': datetime.date(1986, 9, 22), 'HireDate': datetime.date(2009, 12, 6), 'AgeAtHire': 23},
+            {'BusinessEntityID': 104, 'BirthDate': datetime.date(1986, 9, 19), 'HireDate': datetime.date(2009, 12, 25), 'AgeAtHire': 23},
+            {'BusinessEntityID': 105, 'BirthDate': datetime.date(1986, 9, 19), 'HireDate': datetime.date(2009, 12, 25), 'AgeAtHire': 23},
+            {'BusinessEntityID': 106, 'BirthDate': datetime.date(1986, 9, 28), 'HireDate': datetime.date(2010, 2, 27), 'AgeAtHire': 24},
+            {'BusinessEntityID': 107, 'BirthDate': datetime.date(1986, 10, 1), 'HireDate': datetime.date(2010, 2, 8), 'AgeAtHire': 24},
+            {'BusinessEntityID': 108, 'BirthDate': datetime.date(1989, 2, 5), 'HireDate': datetime.date(2008, 12, 8), 'AgeAtHire': 19},
+            {'BusinessEntityID': 109, 'BirthDate': datetime.date(1978, 1, 26), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 30},
+            {'BusinessEntityID': 110, 'BirthDate': datetime.date(1979, 7, 6), 'HireDate': datetime.date(2008, 12, 14), 'AgeAtHire': 29},
+            {'BusinessEntityID': 111, 'BirthDate': datetime.date(1978, 2, 25), 'HireDate': datetime.date(2008, 12, 17), 'AgeAtHire': 30},
+            {'BusinessEntityID': 112, 'BirthDate': datetime.date(1978, 5, 31), 'HireDate': datetime.date(2009, 1, 1), 'AgeAtHire': 31},
+            {'BusinessEntityID': 113, 'BirthDate': datetime.date(1987, 7, 17), 'HireDate': datetime.date(2008, 12, 25), 'AgeAtHire': 21},
+            {'BusinessEntityID': 114, 'BirthDate': datetime.date(1978, 5, 7), 'HireDate': datetime.date(2009, 1, 13), 'AgeAtHire': 31},
+            {'BusinessEntityID': 115, 'BirthDate': datetime.date(1991, 5, 31), 'HireDate': datetime.date(2009, 1, 20), 'AgeAtHire': 18},
+            {'BusinessEntityID': 116, 'BirthDate': datetime.date(1974, 5, 3), 'HireDate': datetime.date(2009, 1, 31), 'AgeAtHire': 35},
+            {'BusinessEntityID': 117, 'BirthDate': datetime.date(1990, 8, 4), 'HireDate': datetime.date(2009, 2, 18), 'AgeAtHire': 19},
+            {'BusinessEntityID': 118, 'BirthDate': datetime.date(1971, 6, 13), 'HireDate': datetime.date(2009, 2, 13), 'AgeAtHire': 38},
+            {'BusinessEntityID': 119, 'BirthDate': datetime.date(1989, 6, 15), 'HireDate': datetime.date(2009, 2, 25), 'AgeAtHire': 20},
+            {'BusinessEntityID': 120, 'BirthDate': datetime.date(1987, 6, 6), 'HireDate': datetime.date(2009, 3, 4), 'AgeAtHire': 22},
+            {'BusinessEntityID': 121, 'BirthDate': datetime.date(1972, 9, 9), 'HireDate': datetime.date(2009, 1, 2), 'AgeAtHire': 37},
+            {'BusinessEntityID': 122, 'BirthDate': datetime.date(1978, 2, 17), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 30},
+            {'BusinessEntityID': 123, 'BirthDate': datetime.date(1977, 3, 18), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 31},
+            {'BusinessEntityID': 124, 'BirthDate': datetime.date(1984, 4, 30), 'HireDate': datetime.date(2008, 12, 26), 'AgeAtHire': 24},
+            {'BusinessEntityID': 125, 'BirthDate': datetime.date(1973, 11, 11), 'HireDate': datetime.date(2009, 1, 20), 'AgeAtHire': 36},
+            {'BusinessEntityID': 126, 'BirthDate': datetime.date(1985, 5, 4), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 24},
+            {'BusinessEntityID': 127, 'BirthDate': datetime.date(1983, 7, 2), 'HireDate': datetime.date(2009, 1, 3), 'AgeAtHire': 26},
+            {'BusinessEntityID': 128, 'BirthDate': datetime.date(1980, 11, 13), 'HireDate': datetime.date(2008, 12, 4), 'AgeAtHire': 28},
+            {'BusinessEntityID': 129, 'BirthDate': datetime.date(1988, 5, 16), 'HireDate': datetime.date(2008, 12, 22), 'AgeAtHire': 20},
+            {'BusinessEntityID': 130, 'BirthDate': datetime.date(1973, 8, 4), 'HireDate': datetime.date(2009, 2, 13), 'AgeAtHire': 36},
+            {'BusinessEntityID': 131, 'BirthDate': datetime.date(1990, 10, 7), 'HireDate': datetime.date(2009, 2, 15), 'AgeAtHire': 19},
+            {'BusinessEntityID': 132, 'BirthDate': datetime.date(1986, 4, 9), 'HireDate': datetime.date(2009, 2, 22), 'AgeAtHire': 23},
+            {'BusinessEntityID': 133, 'BirthDate': datetime.date(1991, 1, 4), 'HireDate': datetime.date(2009, 1, 10), 'AgeAtHire': 18},
+            {'BusinessEntityID': 134, 'BirthDate': datetime.date(1985, 1, 19), 'HireDate': datetime.date(2009, 1, 14), 'AgeAtHire': 24},
+            {'BusinessEntityID': 135, 'BirthDate': datetime.date(1982, 1, 3), 'HireDate': datetime.date(2008, 12, 4), 'AgeAtHire': 26},
+            {'BusinessEntityID': 136, 'BirthDate': datetime.date(1970, 11, 12), 'HireDate': datetime.date(2009, 12, 11), 'AgeAtHire': 39},
+            {'BusinessEntityID': 137, 'BirthDate': datetime.date(1974, 9, 5), 'HireDate': datetime.date(2009, 2, 23), 'AgeAtHire': 35},
+            {'BusinessEntityID': 138, 'BirthDate': datetime.date(1987, 11, 22), 'HireDate': datetime.date(2009, 2, 4), 'AgeAtHire': 22},
+            {'BusinessEntityID': 139, 'BirthDate': datetime.date(1971, 10, 23), 'HireDate': datetime.date(2010, 1, 6), 'AgeAtHire': 39},
+            {'BusinessEntityID': 140, 'BirthDate': datetime.date(1953, 4, 30), 'HireDate': datetime.date(2010, 1, 22), 'AgeAtHire': 57},
+            {'BusinessEntityID': 141, 'BirthDate': datetime.date(1974, 9, 10), 'HireDate': datetime.date(2010, 1, 24), 'AgeAtHire': 36},
+            {'BusinessEntityID': 142, 'BirthDate': datetime.date(1970, 4, 4), 'HireDate': datetime.date(2010, 3, 4), 'AgeAtHire': 40},
+            {'BusinessEntityID': 143, 'BirthDate': datetime.date(1971, 9, 5), 'HireDate': datetime.date(2010, 2, 13), 'AgeAtHire': 39},
+            {'BusinessEntityID': 144, 'BirthDate': datetime.date(1990, 11, 4), 'HireDate': datetime.date(2009, 1, 17), 'AgeAtHire': 19},
+            {'BusinessEntityID': 145, 'BirthDate': datetime.date(1981, 8, 18), 'HireDate': datetime.date(2009, 1, 27), 'AgeAtHire': 28},
+            {'BusinessEntityID': 146, 'BirthDate': datetime.date(1989, 6, 25), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 19},
+            {'BusinessEntityID': 147, 'BirthDate': datetime.date(1975, 11, 5), 'HireDate': datetime.date(2008, 12, 26), 'AgeAtHire': 33},
+            {'BusinessEntityID': 148, 'BirthDate': datetime.date(1988, 12, 7), 'HireDate': datetime.date(2009, 1, 14), 'AgeAtHire': 21},
+            {'BusinessEntityID': 149, 'BirthDate': datetime.date(1983, 10, 20), 'HireDate': datetime.date(2009, 1, 31), 'AgeAtHire': 26},
+            {'BusinessEntityID': 150, 'BirthDate': datetime.date(1982, 9, 18), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 27},
+            {'BusinessEntityID': 151, 'BirthDate': datetime.date(1977, 9, 13), 'HireDate': datetime.date(2009, 2, 19), 'AgeAtHire': 32},
+            {'BusinessEntityID': 152, 'BirthDate': datetime.date(1977, 4, 6), 'HireDate': datetime.date(2009, 2, 1), 'AgeAtHire': 32},
+            {'BusinessEntityID': 153, 'BirthDate': datetime.date(1974, 10, 16), 'HireDate': datetime.date(2008, 12, 16), 'AgeAtHire': 34},
+            {'BusinessEntityID': 154, 'BirthDate': datetime.date(1967, 3, 2), 'HireDate': datetime.date(2008, 12, 23), 'AgeAtHire': 41},
+            {'BusinessEntityID': 155, 'BirthDate': datetime.date(1989, 2, 15), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 20},
+            {'BusinessEntityID': 156, 'BirthDate': datetime.date(1974, 9, 23), 'HireDate': datetime.date(2009, 1, 11), 'AgeAtHire': 35},
+            {'BusinessEntityID': 157, 'BirthDate': datetime.date(1977, 10, 5), 'HireDate': datetime.date(2009, 2, 3), 'AgeAtHire': 32},
+            {'BusinessEntityID': 158, 'BirthDate': datetime.date(1986, 12, 8), 'HireDate': datetime.date(2009, 3, 7), 'AgeAtHire': 23},
+            {'BusinessEntityID': 159, 'BirthDate': datetime.date(1984, 12, 8), 'HireDate': datetime.date(2009, 2, 16), 'AgeAtHire': 25},
+            {'BusinessEntityID': 160, 'BirthDate': datetime.date(1977, 1, 15), 'HireDate': datetime.date(2009, 1, 21), 'AgeAtHire': 32},
+            {'BusinessEntityID': 161, 'BirthDate': datetime.date(1985, 2, 6), 'HireDate': datetime.date(2008, 12, 15), 'AgeAtHire': 23},
+            {'BusinessEntityID': 162, 'BirthDate': datetime.date(1980, 12, 25), 'HireDate': datetime.date(2009, 1, 3), 'AgeAtHire': 29},
+            {'BusinessEntityID': 163, 'BirthDate': datetime.date(1990, 4, 13), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 19},
+            {'BusinessEntityID': 164, 'BirthDate': datetime.date(1988, 9, 24), 'HireDate': datetime.date(2009, 3, 6), 'AgeAtHire': 21},
+            {'BusinessEntityID': 165, 'BirthDate': datetime.date(1988, 12, 16), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 21},
+            {'BusinessEntityID': 166, 'BirthDate': datetime.date(1983, 6, 22), 'HireDate': datetime.date(2009, 2, 21), 'AgeAtHire': 26},
+            {'BusinessEntityID': 167, 'BirthDate': datetime.date(1979, 11, 2), 'HireDate': datetime.date(2008, 12, 2), 'AgeAtHire': 29},
+            {'BusinessEntityID': 168, 'BirthDate': datetime.date(1984, 8, 25), 'HireDate': datetime.date(2008, 12, 7), 'AgeAtHire': 24},
+            {'BusinessEntityID': 169, 'BirthDate': datetime.date(1983, 4, 2), 'HireDate': datetime.date(2008, 12, 14), 'AgeAtHire': 25},
+            {'BusinessEntityID': 170, 'BirthDate': datetime.date(1977, 4, 16), 'HireDate': datetime.date(2008, 12, 21), 'AgeAtHire': 31},
+            {'BusinessEntityID': 171, 'BirthDate': datetime.date(1981, 8, 3), 'HireDate': datetime.date(2009, 1, 2), 'AgeAtHire': 28},
+            {'BusinessEntityID': 172, 'BirthDate': datetime.date(1986, 10, 24), 'HireDate': datetime.date(2009, 1, 16), 'AgeAtHire': 23},
+            {'BusinessEntityID': 173, 'BirthDate': datetime.date(1987, 7, 15), 'HireDate': datetime.date(2009, 1, 21), 'AgeAtHire': 22},
+            {'BusinessEntityID': 174, 'BirthDate': datetime.date(1986, 1, 5), 'HireDate': datetime.date(2009, 1, 27), 'AgeAtHire': 23},
+            {'BusinessEntityID': 175, 'BirthDate': datetime.date(1989, 1, 8), 'HireDate': datetime.date(2009, 2, 2), 'AgeAtHire': 20},
+            {'BusinessEntityID': 176, 'BirthDate': datetime.date(1985, 9, 23), 'HireDate': datetime.date(2009, 2, 14), 'AgeAtHire': 24},
+            {'BusinessEntityID': 177, 'BirthDate': datetime.date(1982, 2, 11), 'HireDate': datetime.date(2009, 2, 21), 'AgeAtHire': 27},
+            {'BusinessEntityID': 178, 'BirthDate': datetime.date(1982, 3, 24), 'HireDate': datetime.date(2009, 3, 3), 'AgeAtHire': 27},
+            {'BusinessEntityID': 179, 'BirthDate': datetime.date(1974, 11, 15), 'HireDate': datetime.date(2009, 3, 5), 'AgeAtHire': 35},
+            {'BusinessEntityID': 180, 'BirthDate': datetime.date(1984, 11, 18), 'HireDate': datetime.date(2009, 2, 20), 'AgeAtHire': 25},
+            {'BusinessEntityID': 181, 'BirthDate': datetime.date(1984, 11, 17), 'HireDate': datetime.date(2008, 12, 9), 'AgeAtHire': 24},
+            {'BusinessEntityID': 182, 'BirthDate': datetime.date(1986, 12, 1), 'HireDate': datetime.date(2008, 12, 28), 'AgeAtHire': 22},
+            {'BusinessEntityID': 183, 'BirthDate': datetime.date(1979, 7, 2), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 30},
+            {'BusinessEntityID': 184, 'BirthDate': datetime.date(1986, 4, 5), 'HireDate': datetime.date(2009, 2, 9), 'AgeAtHire': 23},
+            {'BusinessEntityID': 185, 'BirthDate': datetime.date(1975, 12, 21), 'HireDate': datetime.date(2009, 2, 28), 'AgeAtHire': 34},
+            {'BusinessEntityID': 186, 'BirthDate': datetime.date(1990, 5, 24), 'HireDate': datetime.date(2009, 2, 8), 'AgeAtHire': 19},
+            {'BusinessEntityID': 187, 'BirthDate': datetime.date(1989, 4, 15), 'HireDate': datetime.date(2008, 12, 9), 'AgeAtHire': 19},
+            {'BusinessEntityID': 188, 'BirthDate': datetime.date(1985, 11, 24), 'HireDate': datetime.date(2008, 12, 27), 'AgeAtHire': 23},
+            {'BusinessEntityID': 189, 'BirthDate': datetime.date(1972, 7, 24), 'HireDate': datetime.date(2009, 1, 15), 'AgeAtHire': 37},
+            {'BusinessEntityID': 190, 'BirthDate': datetime.date(1985, 2, 28), 'HireDate': datetime.date(2009, 2, 2), 'AgeAtHire': 24},
+            {'BusinessEntityID': 191, 'BirthDate': datetime.date(1988, 3, 14), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 21},
+            {'BusinessEntityID': 192, 'BirthDate': datetime.date(1983, 2, 28), 'HireDate': datetime.date(2009, 3, 5), 'AgeAtHire': 26},
+            {'BusinessEntityID': 193, 'BirthDate': datetime.date(1988, 12, 5), 'HireDate': datetime.date(2008, 12, 6), 'AgeAtHire': 20},
+            {'BusinessEntityID': 194, 'BirthDate': datetime.date(1989, 6, 25), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 19},
+            {'BusinessEntityID': 195, 'BirthDate': datetime.date(1985, 12, 25), 'HireDate': datetime.date(2008, 12, 17), 'AgeAtHire': 23},
+            {'BusinessEntityID': 196, 'BirthDate': datetime.date(1980, 10, 4), 'HireDate': datetime.date(2008, 12, 24), 'AgeAtHire': 28},
+            {'BusinessEntityID': 197, 'BirthDate': datetime.date(1977, 10, 4), 'HireDate': datetime.date(2008, 12, 31), 'AgeAtHire': 31},
+            {'BusinessEntityID': 198, 'BirthDate': datetime.date(1988, 11, 26), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 21},
+            {'BusinessEntityID': 199, 'BirthDate': datetime.date(1987, 2, 10), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 22},
+            {'BusinessEntityID': 200, 'BirthDate': datetime.date(1987, 9, 6), 'HireDate': datetime.date(2009, 1, 17), 'AgeAtHire': 22},
+            {'BusinessEntityID': 201, 'BirthDate': datetime.date(1977, 2, 10), 'HireDate': datetime.date(2009, 1, 29), 'AgeAtHire': 32},
+            {'BusinessEntityID': 202, 'BirthDate': datetime.date(1989, 11, 10), 'HireDate': datetime.date(2009, 2, 5), 'AgeAtHire': 20},
+            {'BusinessEntityID': 203, 'BirthDate': datetime.date(1981, 5, 28), 'HireDate': datetime.date(2009, 2, 24), 'AgeAtHire': 28},
+            {'BusinessEntityID': 204, 'BirthDate': datetime.date(1988, 5, 10), 'HireDate': datetime.date(2009, 3, 8), 'AgeAtHire': 21},
+            {'BusinessEntityID': 205, 'BirthDate': datetime.date(1980, 7, 18), 'HireDate': datetime.date(2009, 2, 26), 'AgeAtHire': 29},
+            {'BusinessEntityID': 206, 'BirthDate': datetime.date(1962, 9, 13), 'HireDate': datetime.date(2008, 12, 2), 'AgeAtHire': 46},
+            {'BusinessEntityID': 207, 'BirthDate': datetime.date(1970, 10, 18), 'HireDate': datetime.date(2008, 12, 2), 'AgeAtHire': 38},
+            {'BusinessEntityID': 208, 'BirthDate': datetime.date(1987, 2, 10), 'HireDate': datetime.date(2009, 1, 8), 'AgeAtHire': 22},
+            {'BusinessEntityID': 209, 'BirthDate': datetime.date(1990, 11, 1), 'HireDate': datetime.date(2009, 1, 27), 'AgeAtHire': 19},
+            {'BusinessEntityID': 210, 'BirthDate': datetime.date(1969, 9, 17), 'HireDate': datetime.date(2009, 2, 20), 'AgeAtHire': 40},
+            {'BusinessEntityID': 211, 'BirthDate': datetime.date(1977, 10, 26), 'HireDate': datetime.date(2009, 2, 28), 'AgeAtHire': 32},
+            {'BusinessEntityID': 212, 'BirthDate': datetime.date(1976, 3, 18), 'HireDate': datetime.date(2008, 12, 9), 'AgeAtHire': 32},
+            {'BusinessEntityID': 213, 'BirthDate': datetime.date(1966, 12, 5), 'HireDate': datetime.date(2010, 2, 23), 'AgeAtHire': 44},
+            {'BusinessEntityID': 214, 'BirthDate': datetime.date(1989, 3, 28), 'HireDate': datetime.date(2009, 2, 2), 'AgeAtHire': 20},
+            {'BusinessEntityID': 215, 'BirthDate': datetime.date(1986, 4, 30), 'HireDate': datetime.date(2009, 1, 15), 'AgeAtHire': 23},
+            {'BusinessEntityID': 216, 'BirthDate': datetime.date(1976, 3, 6), 'HireDate': datetime.date(2008, 12, 28), 'AgeAtHire': 32},
+            {'BusinessEntityID': 217, 'BirthDate': datetime.date(1976, 1, 30), 'HireDate': datetime.date(2009, 1, 4), 'AgeAtHire': 33},
+            {'BusinessEntityID': 218, 'BirthDate': datetime.date(1990, 4, 28), 'HireDate': datetime.date(2008, 12, 16), 'AgeAtHire': 18},
+            {'BusinessEntityID': 219, 'BirthDate': datetime.date(1987, 3, 12), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 22},
+            {'BusinessEntityID': 220, 'BirthDate': datetime.date(1975, 12, 25), 'HireDate': datetime.date(2009, 2, 9), 'AgeAtHire': 34},
+            {'BusinessEntityID': 221, 'BirthDate': datetime.date(1987, 5, 26), 'HireDate': datetime.date(2009, 3, 6), 'AgeAtHire': 22},
+            {'BusinessEntityID': 222, 'BirthDate': datetime.date(1968, 9, 17), 'HireDate': datetime.date(2008, 12, 12), 'AgeAtHire': 40},
+            {'BusinessEntityID': 223, 'BirthDate': datetime.date(1987, 12, 22), 'HireDate': datetime.date(2009, 1, 26), 'AgeAtHire': 22},
+            {'BusinessEntityID': 224, 'BirthDate': datetime.date(1981, 11, 6), 'HireDate': datetime.date(2009, 1, 7), 'AgeAtHire': 28},
+            {'BusinessEntityID': 225, 'BirthDate': datetime.date(1984, 3, 29), 'HireDate': datetime.date(2009, 2, 13), 'AgeAtHire': 25},
+            {'BusinessEntityID': 226, 'BirthDate': datetime.date(1984, 8, 11), 'HireDate': datetime.date(2009, 3, 3), 'AgeAtHire': 25},
+            {'BusinessEntityID': 227, 'BirthDate': datetime.date(1971, 2, 18), 'HireDate': datetime.date(2009, 12, 2), 'AgeAtHire': 38},
+            {'BusinessEntityID': 228, 'BirthDate': datetime.date(1976, 1, 18), 'HireDate': datetime.date(2008, 12, 14), 'AgeAtHire': 32},
+            {'BusinessEntityID': 229, 'BirthDate': datetime.date(1970, 7, 31), 'HireDate': datetime.date(2010, 2, 16), 'AgeAtHire': 40},
+            {'BusinessEntityID': 230, 'BirthDate': datetime.date(1971, 12, 17), 'HireDate': datetime.date(2010, 3, 5), 'AgeAtHire': 39},
+            {'BusinessEntityID': 231, 'BirthDate': datetime.date(1954, 4, 24), 'HireDate': datetime.date(2010, 3, 7), 'AgeAtHire': 56},
+            {'BusinessEntityID': 232, 'BirthDate': datetime.date(1970, 12, 3), 'HireDate': datetime.date(2010, 1, 27), 'AgeAtHire': 40},
+            {'BusinessEntityID': 233, 'BirthDate': datetime.date(1971, 8, 27), 'HireDate': datetime.date(2009, 12, 21), 'AgeAtHire': 38},
+            {'BusinessEntityID': 234, 'BirthDate': datetime.date(1976, 1, 6), 'HireDate': datetime.date(2009, 1, 31), 'AgeAtHire': 33},
+            {'BusinessEntityID': 235, 'BirthDate': datetime.date(1976, 2, 11), 'HireDate': datetime.date(2008, 12, 6), 'AgeAtHire': 32},
+            {'BusinessEntityID': 236, 'BirthDate': datetime.date(1976, 4, 16), 'HireDate': datetime.date(2009, 2, 25), 'AgeAtHire': 33},
+            {'BusinessEntityID': 237, 'BirthDate': datetime.date(1977, 4, 17), 'HireDate': datetime.date(2009, 2, 6), 'AgeAtHire': 32},
+            {'BusinessEntityID': 238, 'BirthDate': datetime.date(1984, 8, 1), 'HireDate': datetime.date(2009, 1, 1), 'AgeAtHire': 25},
+            {'BusinessEntityID': 239, 'BirthDate': datetime.date(1984, 11, 20), 'HireDate': datetime.date(2008, 12, 25), 'AgeAtHire': 24},
+            {'BusinessEntityID': 240, 'BirthDate': datetime.date(1978, 7, 18), 'HireDate': datetime.date(2008, 12, 13), 'AgeAtHire': 30},
+            {'BusinessEntityID': 241, 'BirthDate': datetime.date(1983, 7, 8), 'HireDate': datetime.date(2009, 1, 30), 'AgeAtHire': 26},
+            {'BusinessEntityID': 242, 'BirthDate': datetime.date(1976, 3, 6), 'HireDate': datetime.date(2008, 12, 18), 'AgeAtHire': 32},
+            {'BusinessEntityID': 243, 'BirthDate': datetime.date(1976, 2, 23), 'HireDate': datetime.date(2009, 1, 6), 'AgeAtHire': 33},
+            {'BusinessEntityID': 244, 'BirthDate': datetime.date(1984, 9, 20), 'HireDate': datetime.date(2009, 1, 24), 'AgeAtHire': 25},
+            {'BusinessEntityID': 245, 'BirthDate': datetime.date(1976, 1, 4), 'HireDate': datetime.date(2009, 2, 18), 'AgeAtHire': 33},
+            {'BusinessEntityID': 246, 'BirthDate': datetime.date(1977, 2, 14), 'HireDate': datetime.date(2009, 2, 11), 'AgeAtHire': 32},
+            {'BusinessEntityID': 247, 'BirthDate': datetime.date(1979, 3, 9), 'HireDate': datetime.date(2009, 3, 1), 'AgeAtHire': 30},
+            {'BusinessEntityID': 248, 'BirthDate': datetime.date(1979, 7, 1), 'HireDate': datetime.date(2009, 3, 8), 'AgeAtHire': 30},
+            {'BusinessEntityID': 249, 'BirthDate': datetime.date(1984, 10, 11), 'HireDate': datetime.date(2008, 12, 25), 'AgeAtHire': 24},
+            {'BusinessEntityID': 250, 'BirthDate': datetime.date(1978, 2, 10), 'HireDate': datetime.date(2011, 2, 25), 'AgeAtHire': 33},
+            {'BusinessEntityID': 251, 'BirthDate': datetime.date(1984, 8, 17), 'HireDate': datetime.date(2009, 2, 10), 'AgeAtHire': 25},
+            {'BusinessEntityID': 252, 'BirthDate': datetime.date(1974, 8, 21), 'HireDate': datetime.date(2009, 2, 28), 'AgeAtHire': 35},
+            {'BusinessEntityID': 253, 'BirthDate': datetime.date(1970, 11, 30), 'HireDate': datetime.date(2009, 12, 17), 'AgeAtHire': 39},
+            {'BusinessEntityID': 254, 'BirthDate': datetime.date(1970, 11, 24), 'HireDate': datetime.date(2010, 1, 4), 'AgeAtHire': 40},
+            {'BusinessEntityID': 255, 'BirthDate': datetime.date(1966, 11, 29), 'HireDate': datetime.date(2010, 1, 11), 'AgeAtHire': 44},
+            {'BusinessEntityID': 256, 'BirthDate': datetime.date(1952, 5, 12), 'HireDate': datetime.date(2010, 1, 23), 'AgeAtHire': 58},
+            {'BusinessEntityID': 257, 'BirthDate': datetime.date(1972, 9, 17), 'HireDate': datetime.date(2010, 1, 27), 'AgeAtHire': 38},
+            {'BusinessEntityID': 258, 'BirthDate': datetime.date(1971, 1, 4), 'HireDate': datetime.date(2010, 1, 31), 'AgeAtHire': 39},
+            {'BusinessEntityID': 259, 'BirthDate': datetime.date(1973, 6, 3), 'HireDate': datetime.date(2010, 3, 9), 'AgeAtHire': 37},
+            {'BusinessEntityID': 260, 'BirthDate': datetime.date(1978, 1, 29), 'HireDate': datetime.date(2010, 12, 6), 'AgeAtHire': 32},
+            {'BusinessEntityID': 261, 'BirthDate': datetime.date(1978, 1, 17), 'HireDate': datetime.date(2010, 12, 25), 'AgeAtHire': 32},
+            {'BusinessEntityID': 262, 'BirthDate': datetime.date(1964, 6, 21), 'HireDate': datetime.date(2009, 1, 12), 'AgeAtHire': 45},
+            {'BusinessEntityID': 263, 'BirthDate': datetime.date(1975, 12, 13), 'HireDate': datetime.date(2008, 12, 11), 'AgeAtHire': 33},
+            {'BusinessEntityID': 264, 'BirthDate': datetime.date(1984, 3, 25), 'HireDate': datetime.date(2009, 2, 4), 'AgeAtHire': 25},
+            {'BusinessEntityID': 265, 'BirthDate': datetime.date(1977, 3, 27), 'HireDate': datetime.date(2008, 12, 4), 'AgeAtHire': 31},
+            {'BusinessEntityID': 266, 'BirthDate': datetime.date(1980, 5, 28), 'HireDate': datetime.date(2009, 2, 23), 'AgeAtHire': 29},
+            {'BusinessEntityID': 267, 'BirthDate': datetime.date(1978, 5, 19), 'HireDate': datetime.date(2009, 2, 16), 'AgeAtHire': 31},
+            {'BusinessEntityID': 268, 'BirthDate': datetime.date(1988, 3, 13), 'HireDate': datetime.date(2009, 2, 3), 'AgeAtHire': 21},
+            {'BusinessEntityID': 269, 'BirthDate': datetime.date(1987, 5, 26), 'HireDate': datetime.date(2009, 1, 11), 'AgeAtHire': 22},
+            {'BusinessEntityID': 270, 'BirthDate': datetime.date(1975, 5, 17), 'HireDate': datetime.date(2009, 1, 17), 'AgeAtHire': 34},
+            {'BusinessEntityID': 271, 'BirthDate': datetime.date(1976, 1, 6), 'HireDate': datetime.date(2009, 1, 22), 'AgeAtHire': 33},
+            {'BusinessEntityID': 272, 'BirthDate': datetime.date(1985, 1, 30), 'HireDate': datetime.date(2008, 12, 23), 'AgeAtHire': 23},
+            {'BusinessEntityID': 273, 'BirthDate': datetime.date(1977, 6, 6), 'HireDate': datetime.date(2011, 2, 15), 'AgeAtHire': 34},
+            {'BusinessEntityID': 274, 'BirthDate': datetime.date(1951, 10, 17), 'HireDate': datetime.date(2011, 1, 4), 'AgeAtHire': 60},
+            {'BusinessEntityID': 275, 'BirthDate': datetime.date(1968, 12, 25), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 43},
+            {'BusinessEntityID': 276, 'BirthDate': datetime.date(1980, 2, 27), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 31},
+            {'BusinessEntityID': 277, 'BirthDate': datetime.date(1962, 8, 29), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 49},
+            {'BusinessEntityID': 278, 'BirthDate': datetime.date(1975, 2, 4), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 36},
+            {'BusinessEntityID': 279, 'BirthDate': datetime.date(1974, 1, 18), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 37},
+            {'BusinessEntityID': 280, 'BirthDate': datetime.date(1974, 12, 6), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 37},
+            {'BusinessEntityID': 281, 'BirthDate': datetime.date(1968, 3, 9), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 43},
+            {'BusinessEntityID': 282, 'BirthDate': datetime.date(1963, 12, 11), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 48},
+            {'BusinessEntityID': 283, 'BirthDate': datetime.date(1974, 2, 11), 'HireDate': datetime.date(2011, 5, 31), 'AgeAtHire': 37},
+            {'BusinessEntityID': 284, 'BirthDate': datetime.date(1978, 1, 5), 'HireDate': datetime.date(2012, 9, 30), 'AgeAtHire': 34},
+            {'BusinessEntityID': 285, 'BirthDate': datetime.date(1975, 1, 11), 'HireDate': datetime.date(2013, 3, 14), 'AgeAtHire': 38},
+            {'BusinessEntityID': 286, 'BirthDate': datetime.date(1977, 2, 14), 'HireDate': datetime.date(2013, 5, 30), 'AgeAtHire': 36},
+            {'BusinessEntityID': 287, 'BirthDate': datetime.date(1957, 9, 20), 'HireDate': datetime.date(2012, 4, 16), 'AgeAtHire': 55},
+            {'BusinessEntityID': 288, 'BirthDate': datetime.date(1975, 7, 9), 'HireDate': datetime.date(2013, 5, 30), 'AgeAtHire': 38},
+            {'BusinessEntityID': 289, 'BirthDate': datetime.date(1968, 3, 17), 'HireDate': datetime.date(2012, 5, 30), 'AgeAtHire': 44},
+            {'BusinessEntityID': 290, 'BirthDate': datetime.date(1975, 9, 30), 'HireDate': datetime.date(2012, 5, 30), 'AgeAtHire': 37}
+        ]
+    }
+}
+Execution success completed.
+SQL executed successfully!
+
+Process completed!
+SQL Result:
+{
+    'result': [
+        {'BusinessEntityID': 1, 'BirthDate': '1969-01-29', 'HireDate': '2009-01-14', 'AgeAtHire': 40},
+        {'BusinessEntityID': 2, 'BirthDate': '1971-08-01', 'HireDate': '2008-01-31', 'AgeAtHire': 37},
+        {'BusinessEntityID': 3, 'BirthDate': '1974-11-12', 'HireDate': '2007-11-11', 'AgeAtHire': 33},
+        {'BusinessEntityID': 4, 'BirthDate': '1974-12-23', 'HireDate': '2007-12-05', 'AgeAtHire': 33},
+        {'BusinessEntityID': 5, 'BirthDate': '1952-09-27', 'HireDate': '2008-01-06', 'AgeAtHire': 56},
+        {'BusinessEntityID': 6, 'BirthDate': '1959-03-11', 'HireDate': '2008-01-24', 'AgeAtHire': 49},
+        {'BusinessEntityID': 7, 'BirthDate': '1987-02-24', 'HireDate': '2009-02-08', 'AgeAtHire': 22},
+        {'BusinessEntityID': 8, 'BirthDate': '1986-06-05', 'HireDate': '2008-12-29', 'AgeAtHire': 22},
+        {'BusinessEntityID': 9, 'BirthDate': '1979-01-21', 'HireDate': '2009-01-16', 'AgeAtHire': 30},
+        {'BusinessEntityID': 10, 'BirthDate': '1984-11-30', 'HireDate': '2009-05-03', 'AgeAtHire': 25},
+        {'BusinessEntityID': 11, 'BirthDate': '1978-01-17', 'HireDate': '2010-12-05', 'AgeAtHire': 32},
+        {'BusinessEntityID': 12, 'BirthDate': '1959-07-29', 'HireDate': '2007-12-11', 'AgeAtHire': 48},
+        {'BusinessEntityID': 13, 'BirthDate': '1989-05-28', 'HireDate': '2010-12-23', 'AgeAtHire': 21},
+        {'BusinessEntityID': 14, 'BirthDate': '1979-06-16', 'HireDate': '2010-12-30', 'AgeAtHire': 31},
+        {'BusinessEntityID': 15, 'BirthDate': '1961-05-02', 'HireDate': '2011-01-18', 'AgeAtHire': 50},
+        {'BusinessEntityID': 16, 'BirthDate': '1975-03-19', 'HireDate': '2007-12-20', 'AgeAtHire': 32},
+        {'BusinessEntityID': 17, 'BirthDate': '1987-05-03', 'HireDate': '2007-01-26', 'AgeAtHire': 20},
+        {'BusinessEntityID': 18, 'BirthDate': '1978-03-06', 'HireDate': '2011-02-07', 'AgeAtHire': 33},
+        {'BusinessEntityID': 19, 'BirthDate': '1978-01-29', 'HireDate': '2011-02-14', 'AgeAtHire': 33},
+        {'BusinessEntityID': 20, 'BirthDate': '1975-03-17', 'HireDate': '2011-01-07', 'AgeAtHire': 36},
+        {'BusinessEntityID': 21, 'BirthDate': '1986-02-04', 'HireDate': '2009-03-02', 'AgeAtHire': 23},
+        {'BusinessEntityID': 22, 'BirthDate': '1987-05-21', 'HireDate': '2008-12-12', 'AgeAtHire': 21},
+        {'BusinessEntityID': 23, 'BirthDate': '1962-09-13', 'HireDate': '2009-01-12', 'AgeAtHire': 47},
+        {'BusinessEntityID': 24, 'BirthDate': '1979-06-18', 'HireDate': '2009-01-18', 'AgeAtHire': 30},
+        {'BusinessEntityID': 25, 'BirthDate': '1983-01-07', 'HireDate': '2009-02-03', 'AgeAtHire': 26},
+        {'BusinessEntityID': 26, 'BirthDate': '1982-11-03', 'HireDate': '2008-12-01', 'AgeAtHire': 26},
+        {'BusinessEntityID': 27, 'BirthDate': '1956-10-08', 'HireDate': '2008-02-27', 'AgeAtHire': 52},
+        {'BusinessEntityID': 28, 'BirthDate': '1988-03-13', 'HireDate': '2006-06-30', 'AgeAtHire': 18},
+        {'BusinessEntityID': 29, 'BirthDate': '1979-09-25', 'HireDate': '2009-01-23', 'AgeAtHire': 30},
+        {'BusinessEntityID': 30, 'BirthDate': '1989-09-28', 'HireDate': '2009-01-29', 'AgeAtHire': 20},
+        {'BusinessEntityID': 31, 'BirthDate': '1986-05-20', 'HireDate': '2009-01-04', 'AgeAtHire': 23},
+        {'BusinessEntityID': 32, 'BirthDate': '1977-07-10', 'HireDate': '2008-12-29', 'AgeAtHire': 31},
+        {'BusinessEntityID': 33, 'BirthDate': '1976-12-26', 'HireDate': '2008-12-17', 'AgeAtHire': 32},
+        {'BusinessEntityID': 34, 'BirthDate': '1987-06-10', 'HireDate': '2009-02-16', 'AgeAtHire': 22},
+        {'BusinessEntityID': 35, 'BirthDate': '1977-01-10', 'HireDate': '2009-02-08', 'AgeAtHire': 32},
+        {'BusinessEntityID': 36, 'BirthDate': '1984-07-31', 'HireDate': '2009-02-10', 'AgeAtHire': 25},
+        {'BusinessEntityID': 37, 'BirthDate': '1986-08-07', 'HireDate': '2009-03-07', 'AgeAtHire': 23},
+        {'BusinessEntityID': 38, 'BirthDate': '1966-12-14', 'HireDate': '2010-01-16', 'AgeAtHire': 44},
+        {'BusinessEntityID': 39, 'BirthDate': '1971-09-11', 'HireDate': '2010-02-05', 'AgeAtHire': 39},
+        {'BusinessEntityID': 40, 'BirthDate': '1956-01-16', 'HireDate': '2007-12-26', 'AgeAtHire': 51},
+        {'BusinessEntityID': 41, 'BirthDate': '1973-08-27', 'HireDate': '2009-01-21', 'AgeAtHire': 36},
+        {'BusinessEntityID': 42, 'BirthDate': '1984-07-25', 'HireDate': '2008-12-27', 'AgeAtHire': 24},
+        {'BusinessEntityID': 43, 'BirthDate': '1988-11-19', 'HireDate': '2009-01-02', 'AgeAtHire': 21},
+        {'BusinessEntityID': 44, 'BirthDate': '1990-05-17', 'HireDate': '2008-12-08', 'AgeAtHire': 18},
+        {'BusinessEntityID': 45, 'BirthDate': '1986-01-10', 'HireDate': '2009-02-26', 'AgeAtHire': 23},
+        {'BusinessEntityID': 46, 'BirthDate': '1976-02-10', 'HireDate': '2009-02-08', 'AgeAtHire': 33},
+        {'BusinessEntityID': 47, 'BirthDate': '1988-09-06', 'HireDate': '2009-02-22', 'AgeAtHire': 21},
+        {'BusinessEntityID': 48, 'BirthDate': '1956-06-04', 'HireDate': '2008-01-06', 'AgeAtHire': 52},
+        {'BusinessEntityID': 49, 'BirthDate': '1956-03-26', 'HireDate': '2008-01-07', 'AgeAtHire': 52},
+        {'BusinessEntityID': 50, 'BirthDate': '1956-08-30', 'HireDate': '2008-02-02', 'AgeAtHire': 52},
+        {'BusinessEntityID': 51, 'BirthDate': '1956-07-11', 'HireDate': '2008-02-20', 'AgeAtHire': 52},
+        {'BusinessEntityID': 52, 'BirthDate': '1956-04-04', 'HireDate': '2008-03-10', 'AgeAtHire': 52},
+        {'BusinessEntityID': 53, 'BirthDate': '1956-03-29', 'HireDate': '2008-03-28', 'AgeAtHire': 52},
+        {'BusinessEntityID': 54, 'BirthDate': '1986-09-10', 'HireDate': '2010-01-01', 'AgeAtHire': 24},
+        {'BusinessEntityID': 55, 'BirthDate': '1956-04-01', 'HireDate': '2008-02-08', 'AgeAtHire': 52},
+        {'BusinessEntityID': 56, 'BirthDate': '1988-07-06', 'HireDate': '2009-02-05', 'AgeAtHire': 21},
+        {'BusinessEntityID': 57, 'BirthDate': '1971-07-24', 'HireDate': '2009-02-23', 'AgeAtHire': 38},
+        {'BusinessEntityID': 58, 'BirthDate': '1986-05-30', 'HireDate': '2008-12-05', 'AgeAtHire': 22},
+        {'BusinessEntityID': 59, 'BirthDate': '1979-08-16', 'HireDate': '2008-12-24', 'AgeAtHire': 29},
+        {'BusinessEntityID': 60, 'BirthDate': '1977-02-03', 'HireDate': '2009-01-11', 'AgeAtHire': 32},
+        {'BusinessEntityID': 61, 'BirthDate': '1989-08-09', 'HireDate': '2009-01-18', 'AgeAtHire': 20},
+        {'BusinessEntityID': 62, 'BirthDate': '1956-08-07', 'HireDate': '2008-03-17', 'AgeAtHire': 52},
+        {'BusinessEntityID': 63, 'BirthDate': '1955-01-30', 'HireDate': '2010-01-29', 'AgeAtHire': 55},
+        {'BusinessEntityID': 64, 'BirthDate': '1973-09-05', 'HireDate': '2010-02-23', 'AgeAtHire': 37},
+        {'BusinessEntityID': 65, 'BirthDate': '1970-04-28', 'HireDate': '2010-02-23', 'AgeAtHire': 40},
+        {'BusinessEntityID': 66, 'BirthDate': '1970-03-07', 'HireDate': '2009-12-22', 'AgeAtHire': 39},
+        {'BusinessEntityID': 67, 'BirthDate': '1976-02-11', 'HireDate': '2009-03-05', 'AgeAtHire': 33},
+        {'BusinessEntityID': 68, 'BirthDate': '1971-09-02', 'HireDate': '2009-12-03', 'AgeAtHire': 38},
+        {'BusinessEntityID': 69, 'BirthDate': '1991-04-06', 'HireDate': '2009-02-15', 'AgeAtHire': 18},
+        {'BusinessEntityID': 70, 'BirthDate': '1984-12-29', 'HireDate': '2008-12-15', 'AgeAtHire': 24},
+        {'BusinessEntityID': 71, 'BirthDate': '1989-01-29', 'HireDate': '2009-02-15', 'AgeAtHire': 20},
+        {'BusinessEntityID': 72, 'BirthDate': '1977-05-14', 'HireDate': '2008-12-01', 'AgeAtHire': 31},
+        {'BusinessEntityID': 73, 'BirthDate': '1983-10-19', 'HireDate': '2008-12-19', 'AgeAtHire': 25},
+        {'BusinessEntityID': 74, 'BirthDate': '1989-11-06', 'HireDate': '2009-01-07', 'AgeAtHire': 20},
+        {'BusinessEntityID': 75, 'BirthDate': '1982-06-27', 'HireDate': '2009-01-26', 'AgeAtHire': 27},
+        {'BusinessEntityID': 76, 'BirthDate': '1988-10-17', 'HireDate': '2009-02-12', 'AgeAtHire': 21},
+        {'BusinessEntityID': 77, 'BirthDate': '1983-05-13', 'HireDate': '2009-03-03', 'AgeAtHire': 26},
+        {'BusinessEntityID': 78, 'BirthDate': '1987-08-27', 'HireDate': '2008-12-15', 'AgeAtHire': 21},
+        {'BusinessEntityID': 79, 'BirthDate': '1966-12-08', 'HireDate': '2010-01-24', 'AgeAtHire': 44},
+        {'BusinessEntityID': 80, 'BirthDate': '1970-12-03', 'HireDate': '2010-01-17', 'AgeAtHire': 40},
+        {'BusinessEntityID': 81, 'BirthDate': '1971-03-09', 'HireDate': '2009-12-29', 'AgeAtHire': 38},
+        {'BusinessEntityID': 82, 'BirthDate': '1973-08-29', 'HireDate': '2010-03-03', 'AgeAtHire': 37},
+        {'BusinessEntityID': 83, 'BirthDate': '1973-12-23', 'HireDate': '2010-02-12', 'AgeAtHire': 37},
+        {'BusinessEntityID': 84, 'BirthDate': '1952-03-02', 'HireDate': '2010-02-05', 'AgeAtHire': 58},
+        {'BusinessEntityID': 85, 'BirthDate': '1970-12-23', 'HireDate': '2009-12-11', 'AgeAtHire': 39},
+        {'BusinessEntityID': 86, 'BirthDate': '1972-06-13', 'HireDate': '2009-01-05', 'AgeAtHire': 37},
+        {'BusinessEntityID': 87, 'BirthDate': '1984-04-11', 'HireDate': '2008-12-22', 'AgeAtHire': 24},
+        {'BusinessEntityID': 88, 'BirthDate': '1966-12-17', 'HireDate': '2009-12-18', 'AgeAtHire': 43},
+        {'BusinessEntityID': 89, 'BirthDate': '1986-09-10', 'HireDate': '2010-02-01', 'AgeAtHire': 24},
+        {'BusinessEntityID': 90, 'BirthDate': '1986-09-07', 'HireDate': '2010-02-20', 'AgeAtHire': 24},
+        {'BusinessEntityID': 91, 'BirthDate': '1986-09-13', 'HireDate': '2010-01-12', 'AgeAtHire': 24},
+        {'BusinessEntityID': 92, 'BirthDate': '1986-10-01', 'HireDate': '2010-03-10', 'AgeAtHire': 24},
+        {'BusinessEntityID': 93, 'BirthDate': '1980-04-28', 'HireDate': '2008-12-27', 'AgeAtHire': 28},
+        {'BusinessEntityID': 94, 'BirthDate': '1972-11-25', 'HireDate': '2008-12-12', 'AgeAtHire': 36},
+        {'BusinessEntityID': 95, 'BirthDate': '1986-09-08', 'HireDate': '2008-12-19', 'AgeAtHire': 22},
+        {'BusinessEntityID': 96, 'BirthDate': '1990-01-25', 'HireDate': '2009-03-02', 'AgeAtHire': 19},
+        {'BusinessEntityID': 97, 'BirthDate': '1986-03-21', 'HireDate': '2009-02-10', 'AgeAtHire': 23},
+        {'BusinessEntityID': 98, 'BirthDate': '1978-06-26', 'HireDate': '2009-02-11', 'AgeAtHire': 31},
+        {'BusinessEntityID': 99, 'BirthDate': '1979-03-29', 'HireDate': '2009-01-06', 'AgeAtHire': 30},
+        {'BusinessEntityID': 100, 'BirthDate': '1973-01-24', 'HireDate': '2009-01-12', 'AgeAtHire': 36},
+        {'BusinessEntityID': 101, 'BirthDate': '1971-08-30', 'HireDate': '2009-01-25', 'AgeAtHire': 38},
+        {'BusinessEntityID': 102, 'BirthDate': '1983-10-26', 'HireDate': '2008-12-03', 'AgeAtHire': 25},
+        {'BusinessEntityID': 103, 'BirthDate': '1986-09-22', 'HireDate': '2009-12-06', 'AgeAtHire': 23},
+        {'BusinessEntityID': 104, 'BirthDate': '1986-09-19', 'HireDate': '2009-12-25', 'AgeAtHire': 23},
+        {'BusinessEntityID': 105, 'BirthDate': '1986-09-19', 'HireDate': '2009-12-25', 'AgeAtHire': 23},
+        {'BusinessEntityID': 106, 'BirthDate': '1986-09-28', 'HireDate': '2010-02-27', 'AgeAtHire': 24},
+        {'BusinessEntityID': 107, 'BirthDate': '1986-10-01', 'HireDate': '2010-02-08', 'AgeAtHire': 24},
+        {'BusinessEntityID': 108, 'BirthDate': '1989-02-05', 'HireDate': '2008-12-08', 'AgeAtHire': 19},
+        {'BusinessEntityID': 109, 'BirthDate': '1978-01-26', 'HireDate': '2008-12-07', 'AgeAtHire': 30},
+        {'BusinessEntityID': 110, 'BirthDate': '1979-07-06', 'HireDate': '2008-12-14', 'AgeAtHire': 29},
+        {'BusinessEntityID': 111, 'BirthDate': '1978-02-25', 'HireDate': '2008-12-17', 'AgeAtHire': 30},
+        {'BusinessEntityID': 112, 'BirthDate': '1978-05-31', 'HireDate': '2009-01-01', 'AgeAtHire': 31},
+        {'BusinessEntityID': 113, 'BirthDate': '1987-07-17', 'HireDate': '2008-12-25', 'AgeAtHire': 21},
+        {'BusinessEntityID': 114, 'BirthDate': '1978-05-07', 'HireDate': '2009-01-13', 'AgeAtHire': 31},
+        {'BusinessEntityID': 115, 'BirthDate': '1991-05-31', 'HireDate': '2009-01-20', 'AgeAtHire': 18},
+        {'BusinessEntityID': 116, 'BirthDate': '1974-05-03', 'HireDate': '2009-01-31', 'AgeAtHire': 35},
+        {'BusinessEntityID': 117, 'BirthDate': '1990-08-04', 'HireDate': '2009-02-18', 'AgeAtHire': 19},
+        {'BusinessEntityID': 118, 'BirthDate': '1971-06-13', 'HireDate': '2009-02-13', 'AgeAtHire': 38},
+        {'BusinessEntityID': 119, 'BirthDate': '1989-06-15', 'HireDate': '2009-02-25', 'AgeAtHire': 20},
+        {'BusinessEntityID': 120, 'BirthDate': '1987-06-06', 'HireDate': '2009-03-04', 'AgeAtHire': 22},
+        {'BusinessEntityID': 121, 'BirthDate': '1972-09-09', 'HireDate': '2009-01-02', 'AgeAtHire': 37},
+        {'BusinessEntityID': 122, 'BirthDate': '1978-02-17', 'HireDate': '2008-12-07', 'AgeAtHire': 30},
+        {'BusinessEntityID': 123, 'BirthDate': '1977-03-18', 'HireDate': '2008-12-07', 'AgeAtHire': 31},
+        {'BusinessEntityID': 124, 'BirthDate': '1984-04-30', 'HireDate': '2008-12-26', 'AgeAtHire': 24},
+        {'BusinessEntityID': 125, 'BirthDate': '1973-11-11', 'HireDate': '2009-01-20', 'AgeAtHire': 36},
+        {'BusinessEntityID': 126, 'BirthDate': '1985-05-04', 'HireDate': '2009-02-26', 'AgeAtHire': 24},
+        {'BusinessEntityID': 127, 'BirthDate': '1983-07-02', 'HireDate': '2009-01-03', 'AgeAtHire': 26},
+        {'BusinessEntityID': 128, 'BirthDate': '1980-11-13', 'HireDate': '2008-12-04', 'AgeAtHire': 28},
+        {'BusinessEntityID': 129, 'BirthDate': '1988-05-16', 'HireDate': '2008-12-22', 'AgeAtHire': 20},
+        {'BusinessEntityID': 130, 'BirthDate': '1973-08-04', 'HireDate': '2009-02-13', 'AgeAtHire': 36},
+        {'BusinessEntityID': 131, 'BirthDate': '1990-10-07', 'HireDate': '2009-02-15', 'AgeAtHire': 19},
+        {'BusinessEntityID': 132, 'BirthDate': '1986-04-09', 'HireDate': '2009-02-22', 'AgeAtHire': 23},
+        {'BusinessEntityID': 133, 'BirthDate': '1991-01-04', 'HireDate': '2009-01-10', 'AgeAtHire': 18},
+        {'BusinessEntityID': 134, 'BirthDate': '1985-01-19', 'HireDate': '2009-01-14', 'AgeAtHire': 24},
+        {'BusinessEntityID': 135, 'BirthDate': '1982-01-03', 'HireDate': '2008-12-04', 'AgeAtHire': 26},
+        {'BusinessEntityID': 136, 'BirthDate': '1970-11-12', 'HireDate': '2009-12-11', 'AgeAtHire': 39},
+        {'BusinessEntityID': 137, 'BirthDate': '1974-09-05', 'HireDate': '2009-02-23', 'AgeAtHire': 35},
+        {'BusinessEntityID': 138, 'BirthDate': '1987-11-22', 'HireDate': '2009-02-04', 'AgeAtHire': 22},
+        {'BusinessEntityID': 139, 'BirthDate': '1971-10-23', 'HireDate': '2010-01-06', 'AgeAtHire': 39},
+        {'BusinessEntityID': 140, 'BirthDate': '1953-04-30', 'HireDate': '2010-01-22', 'AgeAtHire': 57},
+        {'BusinessEntityID': 141, 'BirthDate': '1974-09-10', 'HireDate': '2010-01-24', 'AgeAtHire': 36},
+        {'BusinessEntityID': 142, 'BirthDate': '1970-04-04', 'HireDate': '2010-03-04', 'AgeAtHire': 40},
+        {'BusinessEntityID': 143, 'BirthDate': '1971-09-05', 'HireDate': '2010-02-13', 'AgeAtHire': 39},
+        {'BusinessEntityID': 144, 'BirthDate': '1990-11-04', 'HireDate': '2009-01-17', 'AgeAtHire': 19},
+        {'BusinessEntityID': 145, 'BirthDate': '1981-08-18', 'HireDate': '2009-01-27', 'AgeAtHire': 28},
+        {'BusinessEntityID': 146, 'BirthDate': '1989-06-25', 'HireDate': '2008-12-07', 'AgeAtHire': 19},
+        {'BusinessEntityID': 147, 'BirthDate': '1975-11-05', 'HireDate': '2008-12-26', 'AgeAtHire': 33},
+        {'BusinessEntityID': 148, 'BirthDate': '1988-12-07', 'HireDate': '2009-01-14', 'AgeAtHire': 21},
+        {'BusinessEntityID': 149, 'BirthDate': '1983-10-20', 'HireDate': '2009-01-31', 'AgeAtHire': 26},
+        {'BusinessEntityID': 150, 'BirthDate': '1982-09-18', 'HireDate': '2009-02-26', 'AgeAtHire': 27},
+        {'BusinessEntityID': 151, 'BirthDate': '1977-09-13', 'HireDate': '2009-02-19', 'AgeAtHire': 32},
+        {'BusinessEntityID': 152, 'BirthDate': '1977-04-06', 'HireDate': '2009-02-01', 'AgeAtHire': 32},
+        {'BusinessEntityID': 153, 'BirthDate': '1974-10-16', 'HireDate': '2008-12-16', 'AgeAtHire': 34},
+        {'BusinessEntityID': 154, 'BirthDate': '1967-03-02', 'HireDate': '2008-12-23', 'AgeAtHire': 41},
+        {'BusinessEntityID': 155, 'BirthDate': '1989-02-15', 'HireDate': '2009-01-04', 'AgeAtHire': 20},
+        {'BusinessEntityID': 156, 'BirthDate': '1974-09-23', 'HireDate': '2009-01-11', 'AgeAtHire': 35},
+        {'BusinessEntityID': 157, 'BirthDate': '1977-10-05', 'HireDate': '2009-02-03', 'AgeAtHire': 32},
+        {'BusinessEntityID': 158, 'BirthDate': '1986-12-08', 'HireDate': '2009-03-07', 'AgeAtHire': 23},
+        {'BusinessEntityID': 159, 'BirthDate': '1984-12-08', 'HireDate': '2009-02-16', 'AgeAtHire': 25},
+        {'BusinessEntityID': 160, 'BirthDate': '1977-01-15', 'HireDate': '2009-01-21', 'AgeAtHire': 32},
+        {'BusinessEntityID': 161, 'BirthDate': '1985-02-06', 'HireDate': '2008-12-15', 'AgeAtHire': 23},
+        {'BusinessEntityID': 162, 'BirthDate': '1980-12-25', 'HireDate': '2009-01-03', 'AgeAtHire': 29},
+        {'BusinessEntityID': 163, 'BirthDate': '1990-04-13', 'HireDate': '2009-02-08', 'AgeAtHire': 19},
+        {'BusinessEntityID': 164, 'BirthDate': '1988-09-24', 'HireDate': '2009-03-06', 'AgeAtHire': 21},
+        {'BusinessEntityID': 165, 'BirthDate': '1988-12-16', 'HireDate': '2009-01-22', 'AgeAtHire': 21},
+        {'BusinessEntityID': 166, 'BirthDate': '1983-06-22', 'HireDate': '2009-02-21', 'AgeAtHire': 26},
+        {'BusinessEntityID': 167, 'BirthDate': '1979-11-02', 'HireDate': '2008-12-02', 'AgeAtHire': 29},
+        {'BusinessEntityID': 168, 'BirthDate': '1984-08-25', 'HireDate': '2008-12-07', 'AgeAtHire': 24},
+        {'BusinessEntityID': 169, 'BirthDate': '1983-04-02', 'HireDate': '2008-12-14', 'AgeAtHire': 25},
+        {'BusinessEntityID': 170, 'BirthDate': '1977-04-16', 'HireDate': '2008-12-21', 'AgeAtHire': 31},
+        {'BusinessEntityID': 171, 'BirthDate': '1981-08-03', 'HireDate': '2009-01-02', 'AgeAtHire': 28},
+        {'BusinessEntityID': 172, 'BirthDate': '1986-10-24', 'HireDate': '2009-01-16', 'AgeAtHire': 23},
+        {'BusinessEntityID': 173, 'BirthDate': '1987-07-15', 'HireDate': '2009-01-21', 'AgeAtHire': 22},
+        {'BusinessEntityID': 174, 'BirthDate': '1986-01-05', 'HireDate': '2009-01-27', 'AgeAtHire': 23},
+        {'BusinessEntityID': 175, 'BirthDate': '1989-01-08', 'HireDate': '2009-02-02', 'AgeAtHire': 20},
+        {'BusinessEntityID': 176, 'BirthDate': '1985-09-23', 'HireDate': '2009-02-14', 'AgeAtHire': 24},
+        {'BusinessEntityID': 177, 'BirthDate': '1982-02-11', 'HireDate': '2009-02-21', 'AgeAtHire': 27},
+        {'BusinessEntityID': 178, 'BirthDate': '1982-03-24', 'HireDate': '2009-03-03', 'AgeAtHire': 27},
+        {'BusinessEntityID': 179, 'BirthDate': '1974-11-15', 'HireDate': '2009-03-05', 'AgeAtHire': 35},
+        {'BusinessEntityID': 180, 'BirthDate': '1984-11-18', 'HireDate': '2009-02-20', 'AgeAtHire': 25},
+        {'BusinessEntityID': 181, 'BirthDate': '1984-11-17', 'HireDate': '2008-12-09', 'AgeAtHire': 24},
+        {'BusinessEntityID': 182, 'BirthDate': '1986-12-01', 'HireDate': '2008-12-28', 'AgeAtHire': 22},
+        {'BusinessEntityID': 183, 'BirthDate': '1979-07-02', 'HireDate': '2009-01-22', 'AgeAtHire': 30},
+        {'BusinessEntityID': 184, 'BirthDate': '1986-04-05', 'HireDate': '2009-02-09', 'AgeAtHire': 23},
+        {'BusinessEntityID': 185, 'BirthDate': '1975-12-21', 'HireDate': '2009-02-28', 'AgeAtHire': 34},
+        {'BusinessEntityID': 186, 'BirthDate': '1990-05-24', 'HireDate': '2009-02-08', 'AgeAtHire': 19},
+        {'BusinessEntityID': 187, 'BirthDate': '1989-04-15', 'HireDate': '2008-12-09', 'AgeAtHire': 19},
+        {'BusinessEntityID': 188, 'BirthDate': '1985-11-24', 'HireDate': '2008-12-27', 'AgeAtHire': 23},
+        {'BusinessEntityID': 189, 'BirthDate': '1972-07-24', 'HireDate': '2009-01-15', 'AgeAtHire': 37},
+        {'BusinessEntityID': 190, 'BirthDate': '1985-02-28', 'HireDate': '2009-02-02', 'AgeAtHire': 24},
+        {'BusinessEntityID': 191, 'BirthDate': '1988-03-14', 'HireDate': '2009-02-26', 'AgeAtHire': 21},
+        {'BusinessEntityID': 192, 'BirthDate': '1983-02-28', 'HireDate': '2009-03-05', 'AgeAtHire': 26},
+        {'BusinessEntityID': 193, 'BirthDate': '1988-12-05', 'HireDate': '2008-12-06', 'AgeAtHire': 20},
+        {'BusinessEntityID': 194, 'BirthDate': '1989-06-25', 'HireDate': '2008-12-12', 'AgeAtHire': 19},
+        {'BusinessEntityID': 195, 'BirthDate': '1985-12-25', 'HireDate': '2008-12-17', 'AgeAtHire': 23},
+        {'BusinessEntityID': 196, 'BirthDate': '1980-10-04', 'HireDate': '2008-12-24', 'AgeAtHire': 28},
+        {'BusinessEntityID': 197, 'BirthDate': '1977-10-04', 'HireDate': '2008-12-31', 'AgeAtHire': 31},
+        {'BusinessEntityID': 198, 'BirthDate': '1988-11-26', 'HireDate': '2009-01-04', 'AgeAtHire': 21},
+        {'BusinessEntityID': 199, 'BirthDate': '1987-02-10', 'HireDate': '2009-01-12', 'AgeAtHire': 22},
+        {'BusinessEntityID': 200, 'BirthDate': '1987-09-06', 'HireDate': '2009-01-17', 'AgeAtHire': 22},
+        {'BusinessEntityID': 201, 'BirthDate': '1977-02-10', 'HireDate': '2009-01-29', 'AgeAtHire': 32},
+        {'BusinessEntityID': 202, 'BirthDate': '1989-11-10', 'HireDate': '2009-02-05', 'AgeAtHire': 20},
+        {'BusinessEntityID': 203, 'BirthDate': '1981-05-28', 'HireDate': '2009-02-24', 'AgeAtHire': 28},
+        {'BusinessEntityID': 204, 'BirthDate': '1988-05-10', 'HireDate': '2009-03-08', 'AgeAtHire': 21},
+        {'BusinessEntityID': 205, 'BirthDate': '1980-07-18', 'HireDate': '2009-02-26', 'AgeAtHire': 29},
+        {'BusinessEntityID': 206, 'BirthDate': '1962-09-13', 'HireDate': '2008-12-02', 'AgeAtHire': 46},
+        {'BusinessEntityID': 207, 'BirthDate': '1970-10-18', 'HireDate': '2008-12-02', 'AgeAtHire': 38},
+        {'BusinessEntityID': 208, 'BirthDate': '1987-02-10', 'HireDate': '2009-01-08', 'AgeAtHire': 22},
+        {'BusinessEntityID': 209, 'BirthDate': '1990-11-01', 'HireDate': '2009-01-27', 'AgeAtHire': 19},
+        {'BusinessEntityID': 210, 'BirthDate': '1969-09-17', 'HireDate': '2009-02-20', 'AgeAtHire': 40},
+        {'BusinessEntityID': 211, 'BirthDate': '1977-10-26', 'HireDate': '2009-02-28', 'AgeAtHire': 32},
+        {'BusinessEntityID': 212, 'BirthDate': '1976-03-18', 'HireDate': '2008-12-09', 'AgeAtHire': 32},
+        {'BusinessEntityID': 213, 'BirthDate': '1966-12-05', 'HireDate': '2010-02-23', 'AgeAtHire': 44},
+        {'BusinessEntityID': 214, 'BirthDate': '1989-03-28', 'HireDate': '2009-02-02', 'AgeAtHire': 20},
+        {'BusinessEntityID': 215, 'BirthDate': '1986-04-30', 'HireDate': '2009-01-15', 'AgeAtHire': 23},
+        {'BusinessEntityID': 216, 'BirthDate': '1976-03-06', 'HireDate': '2008-12-28', 'AgeAtHire': 32},
+        {'BusinessEntityID': 217, 'BirthDate': '1976-01-30', 'HireDate': '2009-01-04', 'AgeAtHire': 33},
+        {'BusinessEntityID': 218, 'BirthDate': '1990-04-28', 'HireDate': '2008-12-16', 'AgeAtHire': 18},
+        {'BusinessEntityID': 219, 'BirthDate': '1987-03-12', 'HireDate': '2009-01-22', 'AgeAtHire': 22},
+        {'BusinessEntityID': 220, 'BirthDate': '1975-12-25', 'HireDate': '2009-02-09', 'AgeAtHire': 34},
+        {'BusinessEntityID': 221, 'BirthDate': '1987-05-26', 'HireDate': '2009-03-06', 'AgeAtHire': 22},
+        {'BusinessEntityID': 222, 'BirthDate': '1968-09-17', 'HireDate': '2008-12-12', 'AgeAtHire': 40},
+        {'BusinessEntityID': 223, 'BirthDate': '1987-12-22', 'HireDate': '2009-01-26', 'AgeAtHire': 22},
+        {'BusinessEntityID': 224, 'BirthDate': '1981-11-06', 'HireDate': '2009-01-07', 'AgeAtHire': 28},
+        {'BusinessEntityID': 225, 'BirthDate': '1984-03-29', 'HireDate': '2009-02-13', 'AgeAtHire': 25},
+        {'BusinessEntityID': 226, 'BirthDate': '1984-08-11', 'HireDate': '2009-03-03', 'AgeAtHire': 25},
+        {'BusinessEntityID': 227, 'BirthDate': '1971-02-18', 'HireDate': '2009-12-02', 'AgeAtHire': 38},
+        {'BusinessEntityID': 228, 'BirthDate': '1976-01-18', 'HireDate': '2008-12-14', 'AgeAtHire': 32},
+        {'BusinessEntityID': 229, 'BirthDate': '1970-07-31', 'HireDate': '2010-02-16', 'AgeAtHire': 40},
+        {'BusinessEntityID': 230, 'BirthDate': '1971-12-17', 'HireDate': '2010-03-05', 'AgeAtHire': 39},
+        {'BusinessEntityID': 231, 'BirthDate': '1954-04-24', 'HireDate': '2010-03-07', 'AgeAtHire': 56},
+        {'BusinessEntityID': 232, 'BirthDate': '1970-12-03', 'HireDate': '2010-01-27', 'AgeAtHire': 40},
+        {'BusinessEntityID': 233, 'BirthDate': '1971-08-27', 'HireDate': '2009-12-21', 'AgeAtHire': 38},
+        {'BusinessEntityID': 234, 'BirthDate': '1976-01-06', 'HireDate': '2009-01-31', 'AgeAtHire': 33},
+        {'BusinessEntityID': 235, 'BirthDate': '1976-02-11', 'HireDate': '2008-12-06', 'AgeAtHire': 32},
+        {'BusinessEntityID': 236, 'BirthDate': '1976-04-16', 'HireDate': '2009-02-25', 'AgeAtHire': 33},
+        {'BusinessEntityID': 237, 'BirthDate': '1977-04-17', 'HireDate': '2009-02-06', 'AgeAtHire': 32},
+        {'BusinessEntityID': 238, 'BirthDate': '1984-08-01', 'HireDate': '2009-01-01', 'AgeAtHire': 25},
+        {'BusinessEntityID': 239, 'BirthDate': '1984-11-20', 'HireDate': '2008-12-25', 'AgeAtHire': 24},
+        {'BusinessEntityID': 240, 'BirthDate': '1978-07-18', 'HireDate': '2008-12-13', 'AgeAtHire': 30},
+        {'BusinessEntityID': 241, 'BirthDate': '1983-07-08', 'HireDate': '2009-01-30', 'AgeAtHire': 26},
+        {'BusinessEntityID': 242, 'BirthDate': '1976-03-06', 'HireDate': '2008-12-18', 'AgeAtHire': 32},
+        {'BusinessEntityID': 243, 'BirthDate': '1976-02-23', 'HireDate': '2009-01-06', 'AgeAtHire': 33},
+        {'BusinessEntityID': 244, 'BirthDate': '1984-09-20', 'HireDate': '2009-01-24', 'AgeAtHire': 25},
+        {'BusinessEntityID': 245, 'BirthDate': '1976-01-04', 'HireDate': '2009-02-18', 'AgeAtHire': 33},
+        {'BusinessEntityID': 246, 'BirthDate': '1977-02-14', 'HireDate': '2009-02-11', 'AgeAtHire': 32},
+        {'BusinessEntityID': 247, 'BirthDate': '1979-03-09', 'HireDate': '2009-03-01', 'AgeAtHire': 30},
+        {'BusinessEntityID': 248, 'BirthDate': '1979-07-01', 'HireDate': '2009-03-08', 'AgeAtHire': 30},
+        {'BusinessEntityID': 249, 'BirthDate': '1984-10-11', 'HireDate': '2008-12-25', 'AgeAtHire': 24},
+        {'BusinessEntityID': 250, 'BirthDate': '1978-02-10', 'HireDate': '2011-02-25', 'AgeAtHire': 33},
+        {'BusinessEntityID': 251, 'BirthDate': '1984-08-17', 'HireDate': '2009-02-10', 'AgeAtHire': 25},
+        {'BusinessEntityID': 252, 'BirthDate': '1974-08-21', 'HireDate': '2009-02-28', 'AgeAtHire': 35},
+        {'BusinessEntityID': 253, 'BirthDate': '1970-11-30', 'HireDate': '2009-12-17', 'AgeAtHire': 39},
+        {'BusinessEntityID': 254, 'BirthDate': '1970-11-24', 'HireDate': '2010-01-04', 'AgeAtHire': 40},
+        {'BusinessEntityID': 255, 'BirthDate': '1966-11-29', 'HireDate': '2010-01-11', 'AgeAtHire': 44},
+        {'BusinessEntityID': 256, 'BirthDate': '1952-05-12', 'HireDate': '2010-01-23', 'AgeAtHire': 58},
+        {'BusinessEntityID': 257, 'BirthDate': '1972-09-17', 'HireDate': '2010-01-27', 'AgeAtHire': 38},
+        {'BusinessEntityID': 258, 'BirthDate': '1971-01-04', 'HireDate': '2010-01-31', 'AgeAtHire': 39},
+        {'BusinessEntityID': 259, 'BirthDate': '1973-06-03', 'HireDate': '2010-03-09', 'AgeAtHire': 37},
+        {'BusinessEntityID': 260, 'BirthDate': '1978-01-29', 'HireDate': '2010-12-06', 'AgeAtHire': 32},
+        {'BusinessEntityID': 261, 'BirthDate': '1978-01-17', 'HireDate': '2010-12-25', 'AgeAtHire': 32},
+        {'BusinessEntityID': 262, 'BirthDate': '1964-06-21', 'HireDate': '2009-01-12', 'AgeAtHire': 45},
+        {'BusinessEntityID': 263, 'BirthDate': '1975-12-13', 'HireDate': '2008-12-11', 'AgeAtHire': 33},
+        {'BusinessEntityID': 264, 'BirthDate': '1984-03-25', 'HireDate': '2009-02-04', 'AgeAtHire': 25},
+        {'BusinessEntityID': 265, 'BirthDate': '1977-03-27', 'HireDate': '2008-12-04', 'AgeAtHire': 31},
+        {'BusinessEntityID': 266, 'BirthDate': '1980-05-28', 'HireDate': '2009-02-23', 'AgeAtHire': 29},
+        {'BusinessEntityID': 267, 'BirthDate': '1978-05-19', 'HireDate': '2009-02-16', 'AgeAtHire': 31},
+        {'BusinessEntityID': 268, 'BirthDate': '1988-03-13', 'HireDate': '2009-02-03', 'AgeAtHire': 21},
+        {'BusinessEntityID': 269, 'BirthDate': '1987-05-26', 'HireDate': '2009-01-11', 'AgeAtHire': 22},
+        {'BusinessEntityID': 270, 'BirthDate': '1975-05-17', 'HireDate': '2009-01-17', 'AgeAtHire': 34},
+        {'BusinessEntityID': 271, 'BirthDate': '1976-01-06', 'HireDate': '2009-01-22', 'AgeAtHire': 33},
+        {'BusinessEntityID': 272, 'BirthDate': '1985-01-30', 'HireDate': '2008-12-23', 'AgeAtHire': 23},
+        {'BusinessEntityID': 273, 'BirthDate': '1977-06-06', 'HireDate': '2011-02-15', 'AgeAtHire': 34},
+        {'BusinessEntityID': 274, 'BirthDate': '1951-10-17', 'HireDate': '2011-01-04', 'AgeAtHire': 60},
+        {'BusinessEntityID': 275, 'BirthDate': '1968-12-25', 'HireDate': '2011-05-31', 'AgeAtHire': 43},
+        {'BusinessEntityID': 276, 'BirthDate': '1980-02-27', 'HireDate': '2011-05-31', 'AgeAtHire': 31},
+        {'BusinessEntityID': 277, 'BirthDate': '1962-08-29', 'HireDate': '2011-05-31', 'AgeAtHire': 49},
+        {'BusinessEntityID': 278, 'BirthDate': '1975-02-04', 'HireDate': '2011-05-31', 'AgeAtHire': 36},
+        {'BusinessEntityID': 279, 'BirthDate': '1974-01-18', 'HireDate': '2011-05-31', 'AgeAtHire': 37},
+        {'BusinessEntityID': 280, 'BirthDate': '1974-12-06', 'HireDate': '2011-05-31', 'AgeAtHire': 37},
+        {'BusinessEntityID': 281, 'BirthDate': '1968-03-09', 'HireDate': '2011-05-31', 'AgeAtHire': 43},
+        {'BusinessEntityID': 282, 'BirthDate': '1963-12-11', 'HireDate': '2011-05-31', 'AgeAtHire': 48},
+        {'BusinessEntityID': 283, 'BirthDate': '1974-02-11', 'HireDate': '2011-05-31', 'AgeAtHire': 37},
+        {'BusinessEntityID': 284, 'BirthDate': '1978-01-05', 'HireDate': '2012-09-30', 'AgeAtHire': 34},
+        {'BusinessEntityID': 285, 'BirthDate': '1975-01-11', 'HireDate': '2013-03-14', 'AgeAtHire': 38},
+        {'BusinessEntityID': 286, 'BirthDate': '1977-02-14', 'HireDate': '2013-05-30', 'AgeAtHire': 36},
+        {'BusinessEntityID': 287, 'BirthDate': '1957-09-20', 'HireDate': '2012-04-16', 'AgeAtHire': 55},
+        {'BusinessEntityID': 288, 'BirthDate': '1975-07-09', 'HireDate': '2013-05-30', 'AgeAtHire': 38},
+        {'BusinessEntityID': 289, 'BirthDate': '1968-03-17', 'HireDate': '2012-05-30', 'AgeAtHire': 44},
+        {'BusinessEntityID': 290, 'BirthDate': '1975-09-30', 'HireDate': '2012-05-30', 'AgeAtHire': 37}
+    ]
+}
+Model used: o1
+Final Answer:
+Below are the calculated ages at hire for each employee, as provided by the database. Each row shows the employee’s BusinessEntityID, date of birth 
+(BirthDate), date of hire (HireDate), and the computed age at the time of hiring (AgeAtHire):
+
+1.  BusinessEntityID: 1,   BirthDate: 1969-01-29, HireDate: 2009-01-14, AgeAtHire: 40
+2.  BusinessEntityID: 2,   BirthDate: 1971-08-01, HireDate: 2008-01-31, AgeAtHire: 37
+3.  BusinessEntityID: 3,   BirthDate: 1974-11-12, HireDate: 2007-11-11, AgeAtHire: 33
+4.  BusinessEntityID: 4,   BirthDate: 1974-12-23, HireDate: 2007-12-05, AgeAtHire: 33
+5.  BusinessEntityID: 5,   BirthDate: 1952-09-27, HireDate: 2008-01-06, AgeAtHire: 56
+6.  BusinessEntityID: 6,   BirthDate: 1959-03-11, HireDate: 2008-01-24, AgeAtHire: 49
+7.  BusinessEntityID: 7,   BirthDate: 1987-02-24, HireDate: 2009-02-08, AgeAtHire: 22
+8.  BusinessEntityID: 8,   BirthDate: 1986-06-05, HireDate: 2008-12-29, AgeAtHire: 22
+9.  BusinessEntityID: 9,   BirthDate: 1979-01-21, HireDate: 2009-01-16, AgeAtHire: 30
+10. BusinessEntityID: 10,  BirthDate: 1984-11-30, HireDate: 2009-05-03, AgeAtHire: 25
+11. BusinessEntityID: 11,  BirthDate: 1978-01-17, HireDate: 2010-12-05, AgeAtHire: 32
+12. BusinessEntityID: 12,  BirthDate: 1959-07-29, HireDate: 2007-12-11, AgeAtHire: 48
+13. BusinessEntityID: 13,  BirthDate: 1989-05-28, HireDate: 2010-12-23, AgeAtHire: 21
+14. BusinessEntityID: 14,  BirthDate: 1979-06-16, HireDate: 2010-12-30, AgeAtHire: 31
+15. BusinessEntityID: 15,  BirthDate: 1961-05-02, HireDate: 2011-01-18, AgeAtHire: 50
+16. BusinessEntityID: 16,  BirthDate: 1975-03-19, HireDate: 2007-12-20, AgeAtHire: 32
+17. BusinessEntityID: 17,  BirthDate: 1987-05-03, HireDate: 2007-01-26, AgeAtHire: 20
+18. BusinessEntityID: 18,  BirthDate: 1978-03-06, HireDate: 2011-02-07, AgeAtHire: 33
+19. BusinessEntityID: 19,  BirthDate: 1978-01-29, HireDate: 2011-02-14, AgeAtHire: 33
+20. BusinessEntityID: 20,  BirthDate: 1975-03-17, HireDate: 2011-01-07, AgeAtHire: 36
+21. BusinessEntityID: 21,  BirthDate: 1986-02-04, HireDate: 2009-03-02, AgeAtHire: 23
+22. BusinessEntityID: 22,  BirthDate: 1987-05-21, HireDate: 2008-12-12, AgeAtHire: 21
+23. BusinessEntityID: 23,  BirthDate: 1962-09-13, HireDate: 2009-01-12, AgeAtHire: 47
+24. BusinessEntityID: 24,  BirthDate: 1979-06-18, HireDate: 2009-01-18, AgeAtHire: 30
+25. BusinessEntityID: 25,  BirthDate: 1983-01-07, HireDate: 2009-02-03, AgeAtHire: 26
+26. BusinessEntityID: 26,  BirthDate: 1982-11-03, HireDate: 2008-12-01, AgeAtHire: 26
+27. BusinessEntityID: 27,  BirthDate: 1956-10-08, HireDate: 2008-02-27, AgeAtHire: 52
+28. BusinessEntityID: 28,  BirthDate: 1988-03-13, HireDate: 2006-06-30, AgeAtHire: 18
+29. BusinessEntityID: 29,  BirthDate: 1979-09-25, HireDate: 2009-01-23, AgeAtHire: 30
+30. BusinessEntityID: 30,  BirthDate: 1989-09-28, HireDate: 2009-01-29, AgeAtHire: 20
+31. BusinessEntityID: 31,  BirthDate: 1986-05-20, HireDate: 2009-01-04, AgeAtHire: 23
+32. BusinessEntityID: 32,  BirthDate: 1977-07-10, HireDate: 2008-12-29, AgeAtHire: 31
+33. BusinessEntityID: 33,  BirthDate: 1976-12-26, HireDate: 2008-12-17, AgeAtHire: 32
+34. BusinessEntityID: 34,  BirthDate: 1987-06-10, HireDate: 2009-02-16, AgeAtHire: 22
+35. BusinessEntityID: 35,  BirthDate: 1977-01-10, HireDate: 2009-02-08, AgeAtHire: 32
+36. BusinessEntityID: 36,  BirthDate: 1984-07-31, HireDate: 2009-02-10, AgeAtHire: 25
+37. BusinessEntityID: 37,  BirthDate: 1986-08-07, HireDate: 2009-03-07, AgeAtHire: 23
+38. BusinessEntityID: 38,  BirthDate: 1966-12-14, HireDate: 2010-01-16, AgeAtHire: 44
+39. BusinessEntityID: 39,  BirthDate: 1971-09-11, HireDate: 2010-02-05, AgeAtHire: 39
+40. BusinessEntityID: 40,  BirthDate: 1956-01-16, HireDate: 2007-12-26, AgeAtHire: 51
+41. BusinessEntityID: 41,  BirthDate: 1973-08-27, HireDate: 2009-01-21, AgeAtHire: 36
+42. BusinessEntityID: 42,  BirthDate: 1984-07-25, HireDate: 2008-12-27, AgeAtHire: 24
+43. BusinessEntityID: 43,  BirthDate: 1988-11-19, HireDate: 2009-01-02, AgeAtHire: 21
+44. BusinessEntityID: 44,  BirthDate: 1990-05-17, HireDate: 2008-12-08, AgeAtHire: 18
+45. BusinessEntityID: 45,  BirthDate: 1986-01-10, HireDate: 2009-02-26, AgeAtHire: 23
+46. BusinessEntityID: 46,  BirthDate: 1976-02-10, HireDate: 2009-02-08, AgeAtHire: 33
+47. BusinessEntityID: 47,  BirthDate: 1988-09-06, HireDate: 2009-02-22, AgeAtHire: 21
+48. BusinessEntityID: 48,  BirthDate: 1956-06-04, HireDate: 2008-01-06, AgeAtHire: 52
+49. BusinessEntityID: 49,  BirthDate: 1956-03-26, HireDate: 2008-01-07, AgeAtHire: 52
+50. BusinessEntityID: 50,  BirthDate: 1956-08-30, HireDate: 2008-02-02, AgeAtHire: 52
+51. BusinessEntityID: 51,  BirthDate: 1956-07-11, HireDate: 2008-02-20, AgeAtHire: 52
+52. BusinessEntityID: 52,  BirthDate: 1956-04-04, HireDate: 2008-03-10, AgeAtHire: 52
+53. BusinessEntityID: 53,  BirthDate: 1956-03-29, HireDate: 2008-03-28, AgeAtHire: 52
+54. BusinessEntityID: 54,  BirthDate: 1986-09-10, HireDate: 2010-01-01, AgeAtHire: 24
+55. BusinessEntityID: 55,  BirthDate: 1956-04-01, HireDate: 2008-02-08, AgeAtHire: 52
+56. BusinessEntityID: 56,  BirthDate: 1988-07-06, HireDate: 2009-02-05, AgeAtHire: 21
+57. BusinessEntityID: 57,  BirthDate: 1971-07-24, HireDate: 2009-02-23, AgeAtHire: 38
+58. BusinessEntityID: 58,  BirthDate: 1986-05-30, HireDate: 2008-12-05, AgeAtHire: 22
+59. BusinessEntityID: 59,  BirthDate: 1979-08-16, HireDate: 2008-12-24, AgeAtHire: 29
+60. BusinessEntityID: 60,  BirthDate: 1977-02-03, HireDate: 2009-01-11, AgeAtHire: 32
+61. BusinessEntityID: 61,  BirthDate: 1989-08-09, HireDate: 2009-01-18, AgeAtHire: 20
+62. BusinessEntityID: 62,  BirthDate: 1956-08-07, HireDate: 2008-03-17, AgeAtHire: 52
+63. BusinessEntityID: 63,  BirthDate: 1955-01-30, HireDate: 2010-01-29, AgeAtHire: 55
+64. BusinessEntityID: 64,  BirthDate: 1973-09-05, HireDate: 2010-02-23, AgeAtHire: 37
+65. BusinessEntityID: 65,  BirthDate: 1970-04-28, HireDate: 2010-02-23, AgeAtHire: 40
+66. BusinessEntityID: 66,  BirthDate: 1970-03-07, HireDate: 2009-12-22, AgeAtHire: 39
+67. BusinessEntityID: 67,  BirthDate: 1976-02-11, HireDate: 2009-03-05, AgeAtHire: 33
+68. BusinessEntityID: 68,  BirthDate: 1971-09-02, HireDate: 2009-12-03, AgeAtHire: 38
+69. BusinessEntityID: 69,  BirthDate: 1991-04-06, HireDate: 2009-02-15, AgeAtHire: 18
+70. BusinessEntityID: 70,  BirthDate: 1984-12-29, HireDate: 2008-12-15, AgeAtHire: 24
+71. BusinessEntityID: 71,  BirthDate: 1989-01-29, HireDate: 2009-02-15, AgeAtHire: 20
+72. BusinessEntityID: 72,  BirthDate: 1977-05-14, HireDate: 2008-12-01, AgeAtHire: 31
+73. BusinessEntityID: 73,  BirthDate: 1983-10-19, HireDate: 2008-12-19, AgeAtHire: 25
+74. BusinessEntityID: 74,  BirthDate: 1989-11-06, HireDate: 2009-01-07, AgeAtHire: 20
+75. BusinessEntityID: 75,  BirthDate: 1982-06-27, HireDate: 2009-01-26, AgeAtHire: 27
+76. BusinessEntityID: 76,  BirthDate: 1988-10-17, HireDate: 2009-02-12, AgeAtHire: 21
+77. BusinessEntityID: 77,  BirthDate: 1983-05-13, HireDate: 2009-03-03, AgeAtHire: 26
+78. BusinessEntityID: 78,  BirthDate: 1987-08-27, HireDate: 2008-12-15, AgeAtHire: 21
+79. BusinessEntityID: 79,  BirthDate: 1966-12-08, HireDate: 2010-01-24, AgeAtHire: 44
+80. BusinessEntityID: 80,  BirthDate: 1970-12-03, HireDate: 2010-01-17, AgeAtHire: 40
+81. BusinessEntityID: 81,  BirthDate: 1971-03-09, HireDate: 2009-12-29, AgeAtHire: 38
+82. BusinessEntityID: 82,  BirthDate: 1973-08-29, HireDate: 2010-03-03, AgeAtHire: 37
+83. BusinessEntityID: 83,  BirthDate: 1973-12-23, HireDate: 2010-02-12, AgeAtHire: 37
+84. BusinessEntityID: 84,  BirthDate: 1952-03-02, HireDate: 2010-02-05, AgeAtHire: 58
+85. BusinessEntityID: 85,  BirthDate: 1970-12-23, HireDate: 2009-12-11, AgeAtHire: 39
+86. BusinessEntityID: 86,  BirthDate: 1972-06-13, HireDate: 2009-01-05, AgeAtHire: 37
+87. BusinessEntityID: 87,  BirthDate: 1984-04-11, HireDate: 2008-12-22, AgeAtHire: 24
+88. BusinessEntityID: 88,  BirthDate: 1966-12-17, HireDate: 2009-12-18, AgeAtHire: 43
+89. BusinessEntityID: 89,  BirthDate: 1986-09-10, HireDate: 2010-02-01, AgeAtHire: 24
+90. BusinessEntityID: 90,  BirthDate: 1986-09-07, HireDate: 2010-02-20, AgeAtHire: 24
+91. BusinessEntityID: 91,  BirthDate: 1986-09-13, HireDate: 2010-01-12, AgeAtHire: 24
+92. BusinessEntityID: 92,  BirthDate: 1986-10-01, HireDate: 2010-03-10, AgeAtHire: 24
+93. BusinessEntityID: 93,  BirthDate: 1980-04-28, HireDate: 2008-12-27, AgeAtHire: 28
+94. BusinessEntityID: 94,  BirthDate: 1972-11-25, HireDate: 2008-12-12, AgeAtHire: 36
+95. BusinessEntityID: 95,  BirthDate: 1986-09-08, HireDate: 2008-12-19, AgeAtHire: 22
+96. BusinessEntityID: 96,  BirthDate: 1990-01-25, HireDate: 2009-03-02, AgeAtHire: 19
+97. BusinessEntityID: 97,  BirthDate: 1986-03-21, HireDate: 2009-02-10, AgeAtHire: 23
+98. BusinessEntityID: 98,  BirthDate: 1978-06-26, HireDate: 2009-02-11, AgeAtHire: 31
+99. BusinessEntityID: 99,  BirthDate: 1979-03-29, HireDate: 2009-01-06, AgeAtHire: 30
+100. BusinessEntityID: 100, BirthDate: 1973-01-24, HireDate: 2009-01-12, AgeAtHire: 36
+101. BusinessEntityID: 101, BirthDate: 1971-08-30, HireDate: 2009-01-25, AgeAtHire: 38
+102. BusinessEntityID: 102, BirthDate: 1983-10-26, HireDate: 2008-12-03, AgeAtHire: 25
+103. BusinessEntityID: 103, BirthDate: 1986-09-22, HireDate: 2009-12-06, AgeAtHire: 23
+104. BusinessEntityID: 104, BirthDate: 1986-09-19, HireDate: 2009-12-25, AgeAtHire: 23
+105. BusinessEntityID: 105, BirthDate: 1986-09-19, HireDate: 2009-12-25, AgeAtHire: 23
+106. BusinessEntityID: 106, BirthDate: 1986-09-28, HireDate: 2010-02-27, AgeAtHire: 24
+107. BusinessEntityID: 107, BirthDate: 1986-10-01, HireDate: 2010-02-08, AgeAtHire: 24
+108. BusinessEntityID: 108, BirthDate: 1989-02-05, HireDate: 2008-12-08, AgeAtHire: 19
+109. BusinessEntityID: 109, BirthDate: 1978-01-26, HireDate: 2008-12-07, AgeAtHire: 30
+110. BusinessEntityID: 110, BirthDate: 1979-07-06, HireDate: 2008-12-14, AgeAtHire: 29
+111. BusinessEntityID: 111, BirthDate: 1978-02-25, HireDate: 2008-12-17, AgeAtHire: 30
+112. BusinessEntityID: 112, BirthDate: 1978-05-31, HireDate: 2009-01-01, AgeAtHire: 31
+113. BusinessEntityID: 113, BirthDate: 1987-07-17, HireDate: 2008-12-25, AgeAtHire: 21
+114. BusinessEntityID: 114, BirthDate: 1978-05-07, HireDate: 2009-01-13, AgeAtHire: 31
+115. BusinessEntityID: 115, BirthDate: 1991-05-31, HireDate: 2009-01-20, AgeAtHire: 18
+116. BusinessEntityID: 116, BirthDate: 1974-05-03, HireDate: 2009-01-31, AgeAtHire: 35
+117. BusinessEntityID: 117, BirthDate: 1990-08-04, HireDate: 2009-02-18, AgeAtHire: 19
+118. BusinessEntityID: 118, BirthDate: 1971-06-13, HireDate: 2009-02-13, AgeAtHire: 38
+119. BusinessEntityID: 119, BirthDate: 1989-06-15, HireDate: 2009-02-25, AgeAtHire: 20
+120. BusinessEntityID: 120, BirthDate: 1987-06-06, HireDate: 2009-03-04, AgeAtHire: 22
+121. BusinessEntityID: 121, BirthDate: 1972-09-09, HireDate: 2009-01-02, AgeAtHire: 37
+122. BusinessEntityID: 122, BirthDate: 1978-02-17, HireDate: 2008-12-07, AgeAtHire: 30
+123. BusinessEntityID: 123, BirthDate: 1977-03-18, HireDate: 2008-12-07, AgeAtHire: 31
+124. BusinessEntityID: 124, BirthDate: 1984-04-30, HireDate: 2008-12-26, AgeAtHire: 24
+125. BusinessEntityID: 125, BirthDate: 1973-11-11, HireDate: 2009-01-20, AgeAtHire: 36
+126. BusinessEntityID: 126, BirthDate: 1985-05-04, HireDate: 2009-02-26, AgeAtHire: 24
+127. BusinessEntityID: 127, BirthDate: 1983-07-02, HireDate: 2009-01-03, AgeAtHire: 26
+128. BusinessEntityID: 128, BirthDate: 1980-11-13, HireDate: 2008-12-04, AgeAtHire: 28
+129. BusinessEntityID: 129, BirthDate: 1988-05-16, HireDate: 2008-12-22, AgeAtHire: 20
+130. BusinessEntityID: 130, BirthDate: 1973-08-04, HireDate: 2009-02-13, AgeAtHire: 36
+131. BusinessEntityID: 131, BirthDate: 1990-10-07, HireDate: 2009-02-15, AgeAtHire: 19
+132. BusinessEntityID: 132, BirthDate: 1986-04-09, HireDate: 2009-02-22, AgeAtHire: 23
+133. BusinessEntityID: 133, BirthDate: 1991-01-04, HireDate: 2009-01-10, AgeAtHire: 18
+134. BusinessEntityID: 134, BirthDate: 1985-01-19, HireDate: 2009-01-14, AgeAtHire: 24
+135. BusinessEntityID: 135, BirthDate: 1982-01-03, HireDate: 2008-12-04, AgeAtHire: 26
+136. BusinessEntityID: 136, BirthDate: 1970-11-12, HireDate: 2009-12-11, AgeAtHire: 39
+137. BusinessEntityID: 137, BirthDate: 1974-09-05, HireDate: 2009-02-23, AgeAtHire: 35
+138. BusinessEntityID: 138, BirthDate: 1987-11-22, HireDate: 2009-02-04, AgeAtHire: 22
+139. BusinessEntityID: 139, BirthDate: 1971-10-23, HireDate: 2010-01-06, AgeAtHire: 39
+140. BusinessEntityID: 140, BirthDate: 1953-04-30, HireDate: 2010-01-22, AgeAtHire: 57
+141. BusinessEntityID: 141, BirthDate: 1974-09-10, HireDate: 2010-01-24, AgeAtHire: 36
+142. BusinessEntityID: 142, BirthDate: 1970-04-04, HireDate: 2010-03-04, AgeAtHire: 40
+143. BusinessEntityID: 143, BirthDate: 1971-09-05, HireDate: 2010-02-13, AgeAtHire: 39
+144. BusinessEntityID: 144, BirthDate: 1990-11-04, HireDate: 2009-01-17, AgeAtHire: 19
+145. BusinessEntityID: 145, BirthDate: 1981-08-18, HireDate: 2009-01-27, AgeAtHire: 28
+146. BusinessEntityID: 146, BirthDate: 1989-06-25, HireDate: 2008-12-07, AgeAtHire: 19
+147. BusinessEntityID: 147, BirthDate: 1975-11-05, HireDate: 2008-12-26, AgeAtHire: 33
+148. BusinessEntityID: 148, BirthDate: 1988-12-07, HireDate: 2009-01-14, AgeAtHire: 21
+149. BusinessEntityID: 149, BirthDate: 1983-10-20, HireDate: 2009-01-31, AgeAtHire: 26
+150. BusinessEntityID: 150, BirthDate: 1982-09-18, HireDate: 2009-02-26, AgeAtHire: 27
+151. BusinessEntityID: 151, BirthDate: 1977-09-13, HireDate: 2009-02-19, AgeAtHire: 32
+152. BusinessEntityID: 152, BirthDate: 1977-04-06, HireDate: 2009-02-01, AgeAtHire: 32
+153. BusinessEntityID: 153, BirthDate: 1974-10-16, HireDate: 2008-12-16, AgeAtHire: 34
+154. BusinessEntityID: 154, BirthDate: 1967-03-02, HireDate: 2008-12-23, AgeAtHire: 41
+155. BusinessEntityID: 155, BirthDate: 1989-02-15, HireDate: 2009-01-04, AgeAtHire: 20
+156. BusinessEntityID: 156, BirthDate: 1974-09-23, HireDate: 2009-01-11, AgeAtHire: 35
+157. BusinessEntityID: 157, BirthDate: 1977-10-05, HireDate: 2009-02-03, AgeAtHire: 32
+158. BusinessEntityID: 158, BirthDate: 1986-12-08, HireDate: 2009-03-07, AgeAtHire: 23
+159. BusinessEntityID: 159, BirthDate: 1984-12-08, HireDate: 2009-02-16, AgeAtHire: 25
+160. BusinessEntityID: 160, BirthDate: 1977-01-15, HireDate: 2009-01-21, AgeAtHire: 32
+161. BusinessEntityID: 161, BirthDate: 1985-02-06, HireDate: 2008-12-15, AgeAtHire: 23
+162. BusinessEntityID: 162, BirthDate: 1980-12-25, HireDate: 2009-01-03, AgeAtHire: 29
+163. BusinessEntityID: 163, BirthDate: 1990-04-13, HireDate: 2009-02-08, AgeAtHire: 19
+164. BusinessEntityID: 164, BirthDate: 1988-09-24, HireDate: 2009-03-06, AgeAtHire: 21
+165. BusinessEntityID: 165, BirthDate: 1988-12-16, HireDate: 2009-01-22, AgeAtHire: 21
+166. BusinessEntityID: 166, BirthDate: 1983-06-22, HireDate: 2009-02-21, AgeAtHire: 26
+167. BusinessEntityID: 167, BirthDate: 1979-11-02, HireDate: 2008-12-02, AgeAtHire: 29
+168. BusinessEntityID: 168, BirthDate: 1984-08-25, HireDate: 2008-12-07, AgeAtHire: 24
+169. BusinessEntityID: 169, BirthDate: 1983-04-02, HireDate: 2008-12-14, AgeAtHire: 25
+170. BusinessEntityID: 170, BirthDate: 1977-04-16, HireDate: 2008-12-21, AgeAtHire: 31
+171. BusinessEntityID: 171, BirthDate: 1981-08-03, HireDate: 2009-01-02, AgeAtHire: 28
+172. BusinessEntityID: 172, BirthDate: 1986-10-24, HireDate: 2009-01-16, AgeAtHire: 23
+173. BusinessEntityID: 173, BirthDate: 1987-07-15, HireDate: 2009-01-21, AgeAtHire: 22
+174. BusinessEntityID: 174, BirthDate: 1986-01-05, HireDate: 2009-01-27, AgeAtHire: 23
+175. BusinessEntityID: 175, BirthDate: 1989-01-08, HireDate: 2009-02-02, AgeAtHire: 20
+176. BusinessEntityID: 176, BirthDate: 1985-09-23, HireDate: 2009-02-14, AgeAtHire: 24
+177. BusinessEntityID: 177, BirthDate: 1982-02-11, HireDate: 2009-02-21, AgeAtHire: 27
+178. BusinessEntityID: 178, BirthDate: 1982-03-24, HireDate: 2009-03-03, AgeAtHire: 27
+179. BusinessEntityID: 179, BirthDate: 1974-11-15, HireDate: 2009-03-05, AgeAtHire: 35
+180. BusinessEntityID: 180, BirthDate: 1984-11-18, HireDate: 2009-02-20, AgeAtHire: 25
+181. BusinessEntityID: 181, BirthDate: 1984-11-17, HireDate: 2008-12-09, AgeAtHire: 24
+182. BusinessEntityID: 182, BirthDate: 1986-12-01, HireDate: 2008-12-28, AgeAtHire: 22
+183. BusinessEntityID: 183, BirthDate: 1979-07-02, HireDate: 2009-01-22, AgeAtHire: 30
+184. BusinessEntityID: 184, BirthDate: 1986-04-05, HireDate: 2009-02-09, AgeAtHire: 23
+185. BusinessEntityID: 185, BirthDate: 1975-12-21, HireDate: 2009-02-28, AgeAtHire: 34
+186. BusinessEntityID: 186, BirthDate: 1990-05-24, HireDate: 2009-02-08, AgeAtHire: 19
+187. BusinessEntityID: 187, BirthDate: 1989-04-15, HireDate: 2008-12-09, AgeAtHire: 19
+188. BusinessEntityID: 188, BirthDate: 1985-11-24, HireDate: 2008-12-27, AgeAtHire: 23
+189. BusinessEntityID: 189, BirthDate: 1972-07-24, HireDate: 2009-01-15, AgeAtHire: 37
+190. BusinessEntityID: 190, BirthDate: 1985-02-28, HireDate: 2009-02-02, AgeAtHire: 24
+191. BusinessEntityID: 191, BirthDate: 1988-03-14, HireDate: 2009-02-26, AgeAtHire: 21
+192. BusinessEntityID: 192, BirthDate: 1983-02-28, HireDate: 2009-03-05, AgeAtHire: 26
+193. BusinessEntityID: 193, BirthDate: 1988-12-05, HireDate: 2008-12-06, AgeAtHire: 20
+194. BusinessEntityID: 194, BirthDate: 1989-06-25, HireDate: 2008-12-12, AgeAtHire: 19
+195. BusinessEntityID: 195, BirthDate: 1985-12-25, HireDate: 2008-12-17, AgeAtHire: 23
+196. BusinessEntityID: 196, BirthDate: 1980-10-04, HireDate: 2008-12-24, AgeAtHire: 28
+197. BusinessEntityID: 197, BirthDate: 1977-10-04, HireDate: 2008-12-31, AgeAtHire: 31
+198. BusinessEntityID: 198, BirthDate: 1988-11-26, HireDate: 2009-01-04, AgeAtHire: 21
+199. BusinessEntityID: 199, BirthDate: 1987-02-10, HireDate: 2009-01-12, AgeAtHire: 22
+200. BusinessEntityID: 200, BirthDate: 1987-09-06, HireDate: 2009-01-17, AgeAtHire: 22
+201. BusinessEntityID: 201, BirthDate: 1977-02-10, HireDate: 2009-01-29, AgeAtHire: 32
+202. BusinessEntityID: 202, BirthDate: 1989-11-10, HireDate: 2009-02-05, AgeAtHire: 20
+203. BusinessEntityID: 203, BirthDate: 1981-05-28, HireDate: 2009-02-24, AgeAtHire: 28
+204. BusinessEntityID: 204, BirthDate: 1988-05-10, HireDate: 2009-03-08, AgeAtHire: 21
+205. BusinessEntityID: 205, BirthDate: 1980-07-18, HireDate: 2009-02-26, AgeAtHire: 29
+206. BusinessEntityID: 206, BirthDate: 1962-09-13, HireDate: 2008-12-02, AgeAtHire: 46
+207. BusinessEntityID: 207, BirthDate: 1970-10-18, HireDate: 2008-12-02, AgeAtHire: 38
+208. BusinessEntityID: 208, BirthDate: 1987-02-10, HireDate: 2009-01-08, AgeAtHire: 22
+209. BusinessEntityID: 209, BirthDate: 1990-11-01, HireDate: 2009-01-27, AgeAtHire: 19
+210. BusinessEntityID: 210, BirthDate: 1969-09-17, HireDate: 2009-02-20, AgeAtHire: 40
+211. BusinessEntityID: 211, BirthDate: 1977-10-26, HireDate: 2009-02-28, AgeAtHire: 32
+212. BusinessEntityID: 212, BirthDate: 1976-03-18, HireDate: 2008-12-09, AgeAtHire: 32
+213. BusinessEntityID: 213, BirthDate: 1966-12-05, HireDate: 2010-02-23, AgeAtHire: 44
+214. BusinessEntityID: 214, BirthDate: 1989-03-28, HireDate: 2009-02-02, AgeAtHire: 20
+215. BusinessEntityID: 215, BirthDate: 1986-04-30, HireDate: 2009-01-15, AgeAtHire: 23
+216. BusinessEntityID: 216, BirthDate: 1976-03-06, HireDate: 2008-12-28, AgeAtHire: 32
+217. BusinessEntityID: 217, BirthDate: 1976-01-30, HireDate: 2009-01-04, AgeAtHire: 33
+218. BusinessEntityID: 218, BirthDate: 1990-04-28, HireDate: 2008-12-16, AgeAtHire: 18
+219. BusinessEntityID: 219, BirthDate: 1987-03-12, HireDate: 2009-01-22, AgeAtHire: 22
+220. BusinessEntityID: 220, BirthDate: 1975-12-25, HireDate: 2009-02-09, AgeAtHire: 34
+221. BusinessEntityID: 221, BirthDate: 1987-05-26, HireDate: 2009-03-06, AgeAtHire: 22
+222. BusinessEntityID: 222, BirthDate: 1968-09-17, HireDate: 2008-12-12, AgeAtHire: 40
+223. BusinessEntityID: 223, BirthDate: 1987-12-22, HireDate: 2009-01-26, AgeAtHire: 22
+224. BusinessEntityID: 224, BirthDate: 1981-11-06, HireDate: 2009-01-07, AgeAtHire: 28
+225. BusinessEntityID: 225, BirthDate: 1984-03-29, HireDate: 2009-02-13, AgeAtHire: 25
+226. BusinessEntityID: 226, BirthDate: 1984-08-11, HireDate: 2009-03-03, AgeAtHire: 25
+227. BusinessEntityID: 227, BirthDate: 1971-02-18, HireDate: 2009-12-02, AgeAtHire: 38
+228. BusinessEntityID: 228, BirthDate: 1976-01-18, HireDate: 2008-12-14, AgeAtHire: 32
+229. BusinessEntityID: 229, BirthDate: 1970-07-31, HireDate: 2010-02-16, AgeAtHire: 40
+230. BusinessEntityID: 230, BirthDate: 1971-12-17, HireDate: 2010-03-05, AgeAtHire: 39
+231. BusinessEntityID: 231, BirthDate: 1954-04-24, HireDate: 2010-03-07, AgeAtHire: 56
+232. BusinessEntityID: 232, BirthDate: 1970-12-03, HireDate: 2010-01-27, AgeAtHire: 40
+233. BusinessEntityID: 233, BirthDate: 1971-08-27, HireDate: 2009-12-21, AgeAtHire: 38
+234. BusinessEntityID: 234, BirthDate: 1976-01-06, HireDate: 2009-01-31, AgeAtHire: 33
+235. BusinessEntityID: 235, BirthDate: 1976-02-11, HireDate: 2008-12-06, AgeAtHire: 32
+236. BusinessEntityID: 236, BirthDate: 1976-04-16, HireDate: 2009-02-25, AgeAtHire: 33
+237. BusinessEntityID: 237, BirthDate: 1977-04-17, HireDate: 2009-02-06, AgeAtHire: 32
+238. BusinessEntityID: 238, BirthDate: 1984-08-01, HireDate: 2009-01-01, AgeAtHire: 25
+239. BusinessEntityID: 239, BirthDate: 1984-11-20, HireDate: 2008-12-25, AgeAtHire: 24
+240. BusinessEntityID: 240, BirthDate: 1978-07-18, HireDate: 2008-12-13, AgeAtHire: 30
+241. BusinessEntityID: 241, BirthDate: 1983-07-08, HireDate: 2009-01-30, AgeAtHire: 26
+242. BusinessEntityID: 242, BirthDate: 1976-03-06, HireDate: 2008-12-18, AgeAtHire: 32
+243. BusinessEntityID: 243, BirthDate: 1976-02-23, HireDate: 2009-01-06, AgeAtHire: 33
+244. BusinessEntityID: 244, BirthDate: 1984-09-20, HireDate: 2009-01-24, AgeAtHire: 25
+245. BusinessEntityID: 245, BirthDate: 1976-01-04, HireDate: 2009-02-18, AgeAtHire: 33
+246. BusinessEntityID: 246, BirthDate: 1977-02-14, HireDate: 2009-02-11, AgeAtHire: 32
+247. BusinessEntityID: 247, BirthDate: 1979-03-09, HireDate: 2009-03-01, AgeAtHire: 30
+248. BusinessEntityID: 248, BirthDate: 1979-07-01, HireDate: 2009-03-08, AgeAtHire: 30
+249. BusinessEntityID: 249, BirthDate: 1984-10-11, HireDate: 2008-12-25, AgeAtHire: 24
+250. BusinessEntityID: 250, BirthDate: 1978-02-10, HireDate: 2011-02-25, AgeAtHire: 33
+251. BusinessEntityID: 251, BirthDate: 1984-08-17, HireDate: 2009-02-10, AgeAtHire: 25
+252. BusinessEntityID: 252, BirthDate: 1974-08-21, HireDate: 2009-02-28, AgeAtHire: 35
+253. BusinessEntityID: 253, BirthDate: 1970-11-30, HireDate: 2009-12-17, AgeAtHire: 39
+254. BusinessEntityID: 254, BirthDate: 1970-11-24, HireDate: 2010-01-04, AgeAtHire: 40
+255. BusinessEntityID: 255, BirthDate: 1966-11-29, HireDate: 2010-01-11, AgeAtHire: 44
+256. BusinessEntityID: 256, BirthDate: 1952-05-12, HireDate: 2010-01-23, AgeAtHire: 58
+257. BusinessEntityID: 257, BirthDate: 1972-09-17, HireDate: 2010-01-27, AgeAtHire: 38
+258. BusinessEntityID: 258, BirthDate: 1971-01-04, HireDate: 2010-01-31, AgeAtHire: 39
+259. BusinessEntityID: 259, BirthDate: 1973-06-03, HireDate: 2010-03-09, AgeAtHire: 37
+260. BusinessEntityID: 260, BirthDate: 1978-01-29, HireDate: 2010-12-06, AgeAtHire: 32
+261. BusinessEntityID: 261, BirthDate: 1978-01-17, HireDate: 2010-12-25, AgeAtHire: 32
+262. BusinessEntityID: 262, BirthDate: 1964-06-21, HireDate: 2009-01-12, AgeAtHire: 45
+263. BusinessEntityID: 263, BirthDate: 1975-12-13, HireDate: 2008-12-11, AgeAtHire: 33
+264. BusinessEntityID: 264, BirthDate: 1984-03-25, HireDate: 2009-02-04, AgeAtHire: 25
+265. BusinessEntityID: 265, BirthDate: 1977-03-27, HireDate: 2008-12-04, AgeAtHire: 31
+266. BusinessEntityID: 266, BirthDate: 1980-05-28, HireDate: 2009-02-23, AgeAtHire: 29
+267. BusinessEntityID: 267, BirthDate: 1978-05-19, HireDate: 2009-02-16, AgeAtHire: 31
+268. BusinessEntityID: 268, BirthDate: 1988-03-13, HireDate: 2009-02-03, AgeAtHire: 21
+269. BusinessEntityID: 269, BirthDate: 1987-05-26, HireDate: 2009-01-11, AgeAtHire: 22
+270. BusinessEntityID: 270, BirthDate: 1975-05-17, HireDate: 2009-01-17, AgeAtHire: 34
+271. BusinessEntityID: 271, BirthDate: 1976-01-06, HireDate: 2009-01-22, AgeAtHire: 33
+272. BusinessEntityID: 272, BirthDate: 1985-01-30, HireDate: 2008-12-23, AgeAtHire: 23
+273. BusinessEntityID: 273, BirthDate: 1977-06-06, HireDate: 2011-02-15, AgeAtHire: 34
+274. BusinessEntityID: 274, BirthDate: 1951-10-17, HireDate: 2011-01-04, AgeAtHire: 60
+275. BusinessEntityID: 275, BirthDate: 1968-12-25, HireDate: 2011-05-31, AgeAtHire: 43
+276. BusinessEntityID: 276, BirthDate: 1980-02-27, HireDate: 2011-05-31, AgeAtHire: 31
+277. BusinessEntityID: 277, BirthDate: 1962-08-29, HireDate: 2011-05-31, AgeAtHire: 49
+278. BusinessEntityID: 278, BirthDate: 1975-02-04, HireDate: 2011-05-31, AgeAtHire: 36
+279. BusinessEntityID: 279, BirthDate: 1974-01-18, HireDate: 2011-05-31, AgeAtHire: 37
+280. BusinessEntityID: 280, BirthDate: 1974-12-06, HireDate: 2011-05-31, AgeAtHire: 37
+281. BusinessEntityID: 281, BirthDate: 1968-03-09, HireDate: 2011-05-31, AgeAtHire: 43
+282. BusinessEntityID: 282, BirthDate: 1963-12-11, HireDate: 2011-05-31, AgeAtHire: 48
+283. BusinessEntityID: 283, BirthDate: 1974-02-11, HireDate: 2011-05-31, AgeAtHire: 37
+284. BusinessEntityID: 284, BirthDate: 1978-01-05, HireDate: 2012-09-30, AgeAtHire: 34
+285. BusinessEntityID: 285, BirthDate: 1975-01-11, HireDate: 2013-03-14, AgeAtHire: 38
+286. BusinessEntityID: 286, BirthDate: 1977-02-14, HireDate: 2013-05-30, AgeAtHire: 36
+287. BusinessEntityID: 287, BirthDate: 1957-09-20, HireDate: 2012-04-16, AgeAtHire: 55
+288. BusinessEntityID: 288, BirthDate: 1975-07-09, HireDate: 2013-05-30, AgeAtHire: 38
+289. BusinessEntityID: 289, BirthDate: 1968-03-17, HireDate: 2012-05-30, AgeAtHire: 44
+290. BusinessEntityID: 290, BirthDate: 1975-09-30, HireDate: 2012-05-30, AgeAtHire: 37
+
+These entries show the computed “AgeAtHire” column for each employee, confirming how old they were on their hire date.
+
+Assessment:
+
+While the identifying column is different between the ground turh solution and the generated result, it does not make the generated one wrong as the question does nto specify which columns to print.
+answer is 100% correct.

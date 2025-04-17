@@ -1,0 +1,88 @@
+Q10: How many employees will be due a long service award in the next 5 years if long service is 20 years?
+
+Ground Truth SQL:
+```
+SELECT COUNT(*) AS [EmployeeCount] FROM HumanResources.Employee WHERE HumanResources.Employee.CurrentFlag = 1 AND DATEADD(YEAR, 20, 
+HumanResources.Employee.HireDate) BETWEEN GETDATE() AND DATEADD(YEAR, 5, GETDATE());
+```
+
+Output:
+
+Generated SQL:
+SELECT COUNT(*) AS [EmployeeCount] FROM HumanResources.Employee WHERE HumanResources.Employee.CurrentFlag = 1 AND DATEADD(YEAR, 20, 
+HumanResources.Employee.HireDate) BETWEEN GETDATE() AND DATEADD(YEAR, 5, GETDATE());
+
+
+python src\main.py "How many employees will be due a long service award in the next 5 years if long service is 20 years?" 
+AzureChatCompletion service registered with kernel.
+SQL Process initialized
+Processing query: How many employees will be due a long service award in the next 5 years if long service is 20 years?
+Executing TableNameStep...
+Running TableNameStep...
+Received user query: How many employees will be due a long service award in the next 5 years if long service is 20 years?
+Model used: o1
+Extracted table names:
+
+GetTableNames(table_names=[ValidTableName(table_name='HumanResources.Employee'), ValidTableName(table_name='Person.Person')])
+Executing ColumnNameStep...
+Running ColumnNameStep...
+Model used: o1
+Extracted column names:
+
+GetColumnNames(
+    table_column_list=[TableColumns(table_name='HumanResources.Employee', column_names=['BusinessEntityID', 'HireDate', 'CurrentFlag'])],
+    table_column_names=[TableColumns(table_name='HumanResources.Employee', column_names=['BusinessEntityID', 'HireDate', 'CurrentFlag'])]
+)
+Executing SQLGenerationStep...
+Running SQLGenerationStep...
+Writing file to full path: C:\Users\wknupp\Documents\Code\semantic-kernel-advanced-usage\templates\natural_language_to_SQL\output_prompts\prompt_0.txt
+Model used: o1
+Generated SQL statement:
+
+SQLGenerateResult(
+    sql_statement='SELECT COUNT(*) AS [EmployeeCount] FROM HumanResources.Employee WHERE HumanResources.Employee.CurrentFlag = 1 AND DATEADD(YEAR, 20, 
+HumanResources.Employee.HireDate) BETWEEN GETDATE() AND DATEADD(YEAR, 5, GETDATE());',
+    result='SELECT COUNT(*) AS [EmployeeCount] FROM HumanResources.Employee WHERE HumanResources.Employee.CurrentFlag = 1 AND DATEADD(YEAR, 20, 
+HumanResources.Employee.HireDate) BETWEEN GETDATE() AND DATEADD(YEAR, 5, GETDATE());',
+    status='OK',
+    reason=''
+)
+Executing BusinessRulesStep...
+Running BusinessRulesStep...
+Model used: o1
+Applied business rules:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ValidationStep...
+Running ValidationStep...
+SQL statement to validate: SELECT COUNT(*) AS [EmployeeCount] FROM HumanResources.Employee WHERE HumanResources.Employee.CurrentFlag = 1 AND DATEADD(YEAR, 20, HumanResources.Employee.HireDate) BETWEEN GETDATE() AND DATEADD(YEAR, 5, GETDATE());
+Model used: o1
+SQL validation results:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ExecutionStep...
+Running ExecutionStep...
+SQL statement to execute: SELECT COUNT(*) AS [EmployeeCount] FROM HumanResources.Employee WHERE HumanResources.Employee.CurrentFlag = 1 AND DATEADD(YEAR, 20, HumanResources.Employee.HireDate) BETWEEN GETDATE() AND DATEADD(YEAR, 5, GETDATE());
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 1/4, Auth method: Azure CLI Credential Token, Auth retry: 1)
+* Running SQL in Azure SQL [SELECT COUNT(*) AS [EmployeeCount] FROM HumanResources.Employee WHERE HumanResources.Employee.CurrentFlag = 1 AND DATEADD(YEAR, 20, HumanResources.Employee.HireDate) BETWEEN GETDATE() AND DATEADD(YEAR, 5, GETDATE());]...
+
+(262,)
+{'result': [{'EmployeeCount': 262}]}
+SQL execution succeeded.
+resp_dd
+{
+    'query': 'How many employees will be due a long service award in the next 5 years if long service is 20 years?',
+    'response': {'result': [{'EmployeeCount': 262}]}
+}
+Execution success completed.
+SQL executed successfully!
+
+Process completed!
+SQL Result:
+{'result': [{'EmployeeCount': 262}]}
+Model used: o1
+Final Answer:
+Based on the provided database context, the number of employees due a long service award in the next five years (assuming 20 years of service) is 262.
+
+Assessment: The ground truth answer seems to be less accurate than the generated  answer as it does not consider the currently employed flag and therefore would incorrectly include past employees
+100%

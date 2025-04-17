@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../../")
 
-from enum import Enum, auto
+from enum import Enum
 
 
 class SQLEvents(str, Enum):
@@ -18,11 +18,11 @@ class SQLEvents(str, Enum):
     SQLGenerationStepFailed = "SQLGenerationStepFailed"
     BusinessRulesStepDone = "BusinessRulesStepDone"
     BusinessRulesFailed = "BusinessRulesFailed"
+      # Execution events
+    ExecutionSuccess = "ExecutionSuccess"
+    ExecutionError = "ExecutionError"
+    RetryWithAzureSQLSyntax = "RetryWithAzureSQLSyntax"
     
     # Validation events
     ValidationPassed = "ValidationPassed"
     ValidationFailed = "ValidationFailed"
-    
-    # Execution events
-    ExecutionSuccess = "ExecutionSuccess"
-    ExecutionError = "ExecutionError"

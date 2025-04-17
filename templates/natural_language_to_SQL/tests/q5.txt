@@ -1,0 +1,2185 @@
+Q5: If commission is calculated based on 14.790% of standard cost, extract product item and calculate the margin if standard cost is increased or decreased as follows for each product colours as follows: Black +22%, Red - 12%, Silver +15%, Multi +5% White (2) times original price divided by the square root of the margin price ,while other colours remain the same.
+
+SQL Generated:
+```sql
+SELECT P.ProductID, P.Name, P.Color, P.StandardCost, CASE WHEN P.Color = 'Black' THEN P.StandardCost * 1.22 WHEN P.Color = 'Red' THEN P.StandardCost * 0.88 WHEN P.Color = 'Silver' THEN P.StandardCost * 1.15 WHEN P.Color = 'Multi' THEN P.StandardCost * 1.05 WHEN P.Color = 'White' THEN P.StandardCost * 2 ELSE P.StandardCost END AS AdjustedStandardCost, (CASE WHEN P.Color = 'Black' THEN P.StandardCost * 1.22 WHEN P.Color = 'Red' THEN P.StandardCost * 0.88 WHEN P.Color = 'Silver' THEN P.StandardCost * 1.15 WHEN P.Color = 'Multi' THEN P.StandardCost * 1.05 WHEN P.Color = 'White' THEN P.StandardCost * 2 ELSE P.StandardCost END - P.StandardCost * 1.1479) AS Margin FROM Production.Product AS P
+```
+
+Output:
+python src\main.py "If commission is calculated based on 14.790% of standard cost, extract product item and calculate the margin if standard cost is increased or decreased as follows for each product colours as follows: Black +22%, Red - 12%, Silver +15%, Multi +5% White (2) times original price divided by the square root of the margin price ,while other colours remain the same." 
+AzureChatCompletion service registered with kernel.
+SQL Process initialized
+Processing query: If commission is calculated based on 14.790% of standard cost, extract product item and calculate the margin if standard cost is increased or
+decreased as follows for each product colours as follows: Black +22%, Red - 12%, Silver +15%, Multi +5% White (2) times original price divided by the square 
+root of the margin price ,while other colours remain the same.
+Executing TableNameStep...
+Running TableNameStep...
+Received user query: If commission is calculated based on 14.790% of standard cost, extract product item and calculate the margin if standard cost is increased or decreased as follows for each product colours as follows: Black +22%, Red - 12%, Silver +15%, Multi +5% White (2) times original price divided by the square root of the margin price ,while other colours remain the same.
+Model used: global-4o
+Extracted table names:
+
+GetTableNames(
+    table_names=[
+        ValidTableName(table_name='Production.Product'),
+        ValidTableName(table_name='Production.ProductCategory'),
+        ValidTableName(table_name='Production.ProductSubcategory')
+    ]
+)
+Executing ColumnNameStep...
+Running ColumnNameStep...
+Model used: global-4o
+Extracted column names:
+
+GetColumnNames(
+    table_column_list=[
+        TableColumns(table_name='Production.Product', column_names=['ProductID', 'Name', 'Color', 'StandardCost']),
+        TableColumns(table_name='Production.ProductSubcategory', column_names=['ProductSubcategoryID', 'ProductCategoryID']),
+        TableColumns(table_name='Production.ProductCategory', column_names=['ProductCategoryID'])
+    ],
+    table_column_names=[
+        TableColumns(table_name='Production.Product', column_names=['ProductID', 'Name', 'Color', 'StandardCost']),
+        TableColumns(table_name='Production.ProductSubcategory', column_names=['ProductSubcategoryID', 'ProductCategoryID']),
+        TableColumns(table_name='Production.ProductCategory', column_names=['ProductCategoryID'])
+    ]
+)
+Executing SQLGenerationStep...
+Running SQLGenerationStep...
+Writing file to full path: C:\Users\wknupp\Documents\Code\semantic-kernel-advanced-usage\templates\natural_language_to_SQL\output_prompts\prompt_0.txt
+Model used: global-4o
+Generated SQL statement:
+
+SQLGenerateResult(
+    sql_statement="SELECT P.ProductID, P.Name, P.StandardCost * IIF(P.Color = 'Black', 1.22, IIF(P.Color = 'Red', 0.88, IIF(P.Color = 'Silver', 1.15, 
+IIF(P.Color = 'Multi', 1.05, IIF(P.Color = 'White', ((2 * P.StandardCost) / SQRT(P.StandardCost * 0.1479)), 1.0))))) - P.StandardCost * 0.1479 AS Margin FROM 
+Production.Product AS P;",
+    result="SELECT P.ProductID, P.Name, P.StandardCost * IIF(P.Color = 'Black', 1.22, IIF(P.Color = 'Red', 0.88, IIF(P.Color = 'Silver', 1.15, IIF(P.Color = 
+'Multi', 1.05, IIF(P.Color = 'White', ((2 * P.StandardCost) / SQRT(P.StandardCost * 0.1479)), 1.0))))) - P.StandardCost * 0.1479 AS Margin FROM 
+Production.Product AS P;",
+    status='OK',
+    reason=''
+)
+Executing BusinessRulesStep...
+Running BusinessRulesStep...
+Model used: global-4o
+Applied business rules:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ValidationStep...
+Running ValidationStep...
+SQL statement to validate: SELECT P.ProductID, P.Name, P.StandardCost * IIF(P.Color = 'Black', 1.22, IIF(P.Color = 'Red', 0.88, IIF(P.Color = 'Silver', 1.15, IIF(P.Color = 'Multi', 1.05, IIF(P.Color = 'White', ((2 * P.StandardCost) / SQRT(P.StandardCost * 0.1479)), 1.0))))) - P.StandardCost * 0.1479 AS Margin FROM Production.Product AS P;
+Model used: global-4o
+SQL validation results:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ExecutionStep...
+Running ExecutionStep...
+SQL statement to execute: SELECT P.ProductID, P.Name, P.StandardCost * IIF(P.Color = 'Black', 1.22, IIF(P.Color = 'Red', 0.88, IIF(P.Color = 'Silver', 1.15, IIF(P.Color = 'Multi', 1.05, IIF(P.Color = 'White', ((2 * P.StandardCost) / SQRT(P.StandardCost * 0.1479)), 1.0))))) - P.StandardCost * 0.1479 AS Margin FROM Production.Product AS P;
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 1/4, Auth method: Azure CLI Credential Token, Auth retry: 1)
+* Running SQL in Azure SQL [SELECT P.ProductID, P.Name, P.StandardCost * IIF(P.Color = 'Black', 1.22, IIF(P.Color = 'Red', 0.88, IIF(P.Color = 'Silver', 1.15, IIF(P.Color = 'Multi', 1.05, IIF(P.Color = 'White', ((2 * P.StandardCost) / SQRT(P.StandardCost * 0.1479)), 1.0))))) - P.StandardCost * 0.1479 AS Margin FROM Production.Product AS P;]...
+
+(1, 'Adjustable Race', 0.0)
+(2, 'Bearing Ball', 0.0)
+(3, 'BB Ball Bearing', 0.0)
+(4, 'Headset Ball Bearings', 0.0)
+(316, 'Blade', 0.0)
+(317, 'LL Crankarm', 0.0)
+(318, 'ML Crankarm', 0.0)
+(319, 'HL Crankarm', 0.0)
+(320, 'Chainring Bolts', 0.0)
+(321, 'Chainring Nut', 0.0)
+(322, 'Chainring', 0.0)
+(323, 'Crown Race', 0.0)
+(324, 'Chain Stays', 0.0)
+(325, 'Decal 1', 0.0)
+(326, 'Decal 2', 0.0)
+(327, 'Down Tube', 0.0)
+(328, 'Mountain End Caps', 0.0)
+(329, 'Road End Caps', 0.0)
+(330, 'Touring End Caps', 0.0)
+(331, 'Fork End', 0.0)
+(332, 'Freewheel', 0.0)
+(341, 'Flat Washer 1', 0.0)
+(342, 'Flat Washer 6', 0.0)
+(343, 'Flat Washer 2', 0.0)
+(344, 'Flat Washer 9', 0.0)
+(345, 'Flat Washer 4', 0.0)
+(346, 'Flat Washer 3', 0.0)
+(347, 'Flat Washer 8', 0.0)
+(348, 'Flat Washer 5', 0.0)
+(349, 'Flat Washer 7', 0.0)
+(350, 'Fork Crown', 0.0)
+(351, 'Front Derailleur Cage', 0.0)
+(352, 'Front Derailleur Linkage', 0.0)
+(355, 'Guide Pulley', 0.0)
+(356, 'LL Grip Tape', 0.0)
+(357, 'ML Grip Tape', 0.0)
+(358, 'HL Grip Tape', 0.0)
+(359, 'Thin-Jam Hex Nut 9', 0.0)
+(360, 'Thin-Jam Hex Nut 10', 0.0)
+(361, 'Thin-Jam Hex Nut 1', 0.0)
+(362, 'Thin-Jam Hex Nut 2', 0.0)
+(363, 'Thin-Jam Hex Nut 15', 0.0)
+(364, 'Thin-Jam Hex Nut 16', 0.0)
+(365, 'Thin-Jam Hex Nut 5', 0.0)
+(366, 'Thin-Jam Hex Nut 6', 0.0)
+(367, 'Thin-Jam Hex Nut 3', 0.0)
+(368, 'Thin-Jam Hex Nut 4', 0.0)
+(369, 'Thin-Jam Hex Nut 13', 0.0)
+(370, 'Thin-Jam Hex Nut 14', 0.0)
+(371, 'Thin-Jam Hex Nut 7', 0.0)
+(372, 'Thin-Jam Hex Nut 8', 0.0)
+(373, 'Thin-Jam Hex Nut 12', 0.0)
+(374, 'Thin-Jam Hex Nut 11', 0.0)
+(375, 'Hex Nut 5', 0.0)
+(376, 'Hex Nut 6', 0.0)
+(377, 'Hex Nut 16', 0.0)
+(378, 'Hex Nut 17', 0.0)
+(379, 'Hex Nut 7', 0.0)
+(380, 'Hex Nut 8', 0.0)
+(381, 'Hex Nut 9', 0.0)
+(382, 'Hex Nut 22', 0.0)
+(383, 'Hex Nut 23', 0.0)
+(384, 'Hex Nut 12', 0.0)
+(385, 'Hex Nut 13', 0.0)
+(386, 'Hex Nut 1', 0.0)
+(387, 'Hex Nut 10', 0.0)
+(388, 'Hex Nut 11', 0.0)
+(389, 'Hex Nut 2', 0.0)
+(390, 'Hex Nut 20', 0.0)
+(391, 'Hex Nut 21', 0.0)
+(392, 'Hex Nut 3', 0.0)
+(393, 'Hex Nut 14', 0.0)
+(394, 'Hex Nut 15', 0.0)
+(395, 'Hex Nut 4', 0.0)
+(396, 'Hex Nut 18', 0.0)
+(397, 'Hex Nut 19', 0.0)
+(398, 'Handlebar Tube', 0.0)
+(399, 'Head Tube', 0.0)
+(400, 'LL Hub', 0.0)
+(401, 'HL Hub', 0.0)
+(402, 'Keyed Washer', 0.0)
+(403, 'External Lock Washer 3', 0.0)
+(404, 'External Lock Washer 4', 0.0)
+(405, 'External Lock Washer 9', 0.0)
+(406, 'External Lock Washer 5', 0.0)
+(407, 'External Lock Washer 7', 0.0)
+(408, 'External Lock Washer 6', 0.0)
+(409, 'External Lock Washer 1', 0.0)
+(410, 'External Lock Washer 8', 0.0)
+(411, 'External Lock Washer 2', 0.0)
+(412, 'Internal Lock Washer 3', 0.0)
+(413, 'Internal Lock Washer 4', 0.0)
+(414, 'Internal Lock Washer 9', 0.0)
+(415, 'Internal Lock Washer 5', 0.0)
+(416, 'Internal Lock Washer 7', 0.0)
+(417, 'Internal Lock Washer 6', 0.0)
+(418, 'Internal Lock Washer 10', 0.0)
+(419, 'Internal Lock Washer 1', 0.0)
+(420, 'Internal Lock Washer 8', 0.0)
+(421, 'Internal Lock Washer 2', 0.0)
+(422, 'Thin-Jam Lock Nut 9', 0.0)
+(423, 'Thin-Jam Lock Nut 10', 0.0)
+(424, 'Thin-Jam Lock Nut 1', 0.0)
+(425, 'Thin-Jam Lock Nut 2', 0.0)
+(426, 'Thin-Jam Lock Nut 15', 0.0)
+(427, 'Thin-Jam Lock Nut 16', 0.0)
+(428, 'Thin-Jam Lock Nut 5', 0.0)
+(429, 'Thin-Jam Lock Nut 6', 0.0)
+(430, 'Thin-Jam Lock Nut 3', 0.0)
+(431, 'Thin-Jam Lock Nut 4', 0.0)
+(432, 'Thin-Jam Lock Nut 13', 0.0)
+(433, 'Thin-Jam Lock Nut 14', 0.0)
+(434, 'Thin-Jam Lock Nut 7', 0.0)
+(435, 'Thin-Jam Lock Nut 8', 0.0)
+(436, 'Thin-Jam Lock Nut 12', 0.0)
+(437, 'Thin-Jam Lock Nut 11', 0.0)
+(438, 'Lock Nut 5', 0.0)
+(439, 'Lock Nut 6', 0.0)
+(440, 'Lock Nut 16', 0.0)
+(441, 'Lock Nut 17', 0.0)
+(442, 'Lock Nut 7', 0.0)
+(443, 'Lock Nut 8', 0.0)
+(444, 'Lock Nut 9', 0.0)
+(445, 'Lock Nut 22', 0.0)
+(446, 'Lock Nut 23', 0.0)
+(447, 'Lock Nut 12', 0.0)
+(448, 'Lock Nut 13', 0.0)
+(449, 'Lock Nut 1', 0.0)
+(450, 'Lock Nut 10', 0.0)
+(451, 'Lock Nut 11', 0.0)
+(452, 'Lock Nut 2', 0.0)
+(453, 'Lock Nut 20', 0.0)
+(454, 'Lock Nut 21', 0.0)
+(455, 'Lock Nut 3', 0.0)
+(456, 'Lock Nut 14', 0.0)
+(457, 'Lock Nut 15', 0.0)
+(458, 'Lock Nut 4', 0.0)
+(459, 'Lock Nut 19', 0.0)
+(460, 'Lock Nut 18', 0.0)
+(461, 'Lock Ring', 0.0)
+(462, 'Lower Head Race', 0.0)
+(463, 'Lock Washer 4', 0.0)
+(464, 'Lock Washer 5', 0.0)
+(465, 'Lock Washer 10', 0.0)
+(466, 'Lock Washer 6', 0.0)
+(467, 'Lock Washer 13', 0.0)
+(468, 'Lock Washer 8', 0.0)
+(469, 'Lock Washer 1', 0.0)
+(470, 'Lock Washer 7', 0.0)
+(471, 'Lock Washer 12', 0.0)
+(472, 'Lock Washer 2', 0.0)
+(473, 'Lock Washer 9', 0.0)
+(474, 'Lock Washer 3', 0.0)
+(475, 'Lock Washer 11', 0.0)
+(476, 'Metal Angle', 0.0)
+(477, 'Metal Bar 1', 0.0)
+(478, 'Metal Bar 2', 0.0)
+(479, 'Metal Plate 2', 0.0)
+(480, 'Metal Plate 1', 0.0)
+(481, 'Metal Plate 3', 0.0)
+(482, 'Metal Sheet 2', 0.0)
+(483, 'Metal Sheet 3', 0.0)
+(484, 'Metal Sheet 7', 0.0)
+(485, 'Metal Sheet 4', 0.0)
+(486, 'Metal Sheet 5', 0.0)
+(487, 'Metal Sheet 6', 0.0)
+(488, 'Metal Sheet 1', 0.0)
+(489, 'Metal Tread Plate', 0.0)
+(490, 'LL Nipple', 0.0)
+(491, 'HL Nipple', 0.0)
+(492, 'Paint - Black', 0.0)
+(493, 'Paint - Red', 0.0)
+(494, 'Paint - Silver', 0.0)
+(495, 'Paint - Blue', 0.0)
+(496, 'Paint - Yellow', 0.0)
+(497, 'Pinch Bolt', 0.0)
+(504, 'Cup-Shaped Race', 0.0)
+(505, 'Cone-Shaped Race', 0.0)
+(506, 'Reflector', 0.0)
+(507, 'LL Mountain Rim', 0.0)
+(508, 'ML Mountain Rim', 0.0)
+(509, 'HL Mountain Rim', 0.0)
+(510, 'LL Road Rim', 0.0)
+(511, 'ML Road Rim', 0.0)
+(512, 'HL Road Rim', 0.0)
+(513, 'Touring Rim', 0.0)
+(514, 'LL Mountain Seat Assembly', 84.16191699999999)
+(515, 'ML Mountain Seat Assembly', 92.870379)
+(516, 'HL Mountain Seat Assembly', 124.295827)
+(517, 'LL Road Seat Assembly', 84.16191699999999)
+(518, 'ML Road Seat Assembly', 92.870379)
+(519, 'HL Road Seat Assembly', 124.295827)
+(520, 'LL Touring Seat Assembly', 84.16191699999999)
+(521, 'ML Touring Seat Assembly', 92.870379)
+(522, 'HL Touring Seat Assembly', 124.295827)
+(523, 'LL Spindle/Axle', 0.0)
+(524, 'HL Spindle/Axle', 0.0)
+(525, 'LL Shell', 0.0)
+(526, 'HL Shell', 0.0)
+(527, 'Spokes', 0.0)
+(528, 'Seat Lug', 0.0)
+(529, 'Stem', 0.0)
+(530, 'Seat Post', 0.0)
+(531, 'Steerer', 0.0)
+(532, 'Seat Stays', 0.0)
+(533, 'Seat Tube', 0.0)
+(534, 'Top Tube', 0.0)
+(535, 'Tension Pulley', 0.0)
+(679, 'Rear Derailleur Cage', 0.0)
+(680, 'HL Road Frame - Black, 58', 1135.6862509999999)
+(706, 'HL Road Frame - Red, 58', 775.5208509999999)
+(707, 'Sport-100 Helmet, Red', 9.58048023)
+(708, 'Sport-100 Helmet, Black', 14.029822229999999)
+(709, 'Mountain Bike Socks, M', 32.04798578625503)
+(710, 'Mountain Bike Socks, L', 32.04798578625503)
+(711, 'Sport-100 Helmet, Blue', 11.15083623)
+(712, 'AWC Logo Cap', 6.24460683)
+(713, 'Long-Sleeve Logo Jersey, S', 34.723903830000005)
+(714, 'Long-Sleeve Logo Jersey, M', 34.723903830000005)
+(715, 'Long-Sleeve Logo Jersey, L', 34.723903830000005)
+(716, 'Long-Sleeve Logo Jersey, XL', 34.723903830000005)
+(717, 'HL Road Frame - Red, 62', 635.92709782)
+(718, 'HL Road Frame - Red, 44', 635.92709782)
+(719, 'HL Road Frame - Red, 48', 635.92709782)
+(720, 'HL Road Frame - Red, 52', 635.92709782)
+(721, 'HL Road Frame - Red, 56', 635.92709782)
+(722, 'LL Road Frame - Black, 58', 219.37856971)
+(723, 'LL Road Frame - Black, 60', 219.37856971)
+(724, 'LL Road Frame - Black, 62', 219.37856971)
+(725, 'LL Road Frame - Red, 44', 137.01771291)
+(726, 'LL Road Frame - Red, 48', 137.01771291)
+(727, 'LL Road Frame - Red, 52', 137.01771291)
+(728, 'LL Road Frame - Red, 58', 137.01771291)
+(729, 'LL Road Frame - Red, 60', 137.01771291)
+(730, 'LL Road Frame - Red, 62', 137.01771291)
+(731, 'ML Road Frame - Red, 44', 257.80125474)
+(732, 'ML Road Frame - Red, 48', 257.80125474)
+(733, 'ML Road Frame - Red, 52', 257.80125474)
+(734, 'ML Road Frame - Red, 58', 257.80125474)
+(735, 'ML Road Frame - Red, 60', 257.80125474)
+(736, 'LL Road Frame - Black, 44', 219.37856971)
+(737, 'LL Road Frame - Black, 48', 219.37856971)
+(738, 'LL Road Frame - Black, 52', 219.37856971)
+(739, 'HL Mountain Frame - Silver, 42', 748.76932042)
+(740, 'HL Mountain Frame - Silver, 44', 708.2953031)
+(741, 'HL Mountain Frame - Silver, 48', 708.2953031)
+(742, 'HL Mountain Frame - Silver, 46', 748.76932042)
+(743, 'HL Mountain Frame - Black, 42', 792.3258561)
+(744, 'HL Mountain Frame - Black, 44', 749.4973908799999)
+(745, 'HL Mountain Frame - Black, 48', 749.4973908799999)
+(746, 'HL Mountain Frame - Black, 46', 792.3258561)
+(747, 'HL Mountain Frame - Black, 38', 792.3258561)
+(748, 'HL Mountain Frame - Silver, 38', 748.76932042)
+(749, 'Road-150 Red, 62', 1589.6044838199998)
+(750, 'Road-150 Red, 44', 1589.6044838199998)
+(751, 'Road-150 Red, 48', 1589.6044838199998)
+(752, 'Road-150 Red, 52', 1589.6044838199998)
+(753, 'Road-150 Red, 56', 1589.6044838199998)
+(754, 'Road-450 Red, 58', 647.6949464300001)
+(755, 'Road-450 Red, 60', 647.6949464300001)
+(756, 'Road-450 Red, 44', 647.6949464300001)
+(757, 'Road-450 Red, 48', 647.6949464300001)
+(758, 'Road-450 Red, 52', 647.6949464300001)
+(759, 'Road-650 Red, 58', 356.31790186)
+(760, 'Road-650 Red, 60', 356.31790186)
+(761, 'Road-650 Red, 62', 356.31790186)
+(762, 'Road-650 Red, 44', 356.31790186)
+(763, 'Road-650 Red, 48', 356.31790186)
+(764, 'Road-650 Red, 52', 356.31790186)
+(765, 'Road-650 Black, 58', 521.7981458599999)
+(766, 'Road-650 Black, 60', 521.7981458599999)
+(767, 'Road-650 Black, 62', 521.7981458599999)
+(768, 'Road-650 Black, 44', 521.7981458599999)
+(769, 'Road-650 Black, 48', 521.7981458599999)
+(770, 'Road-650 Black, 52', 521.7981458599999)
+(771, 'Mountain-100 Silver, 38', 1916.1699242399998)
+(772, 'Mountain-100 Silver, 42', 1916.1699242399998)
+(773, 'Mountain-100 Silver, 44', 1916.1699242399998)
+(774, 'Mountain-100 Silver, 48', 1916.1699242399998)
+(775, 'Mountain-100 Black, 38', 2034.9470062399998)
+(776, 'Mountain-100 Black, 42', 2034.9470062399998)
+(777, 'Mountain-100 Black, 44', 2034.9470062399998)
+(778, 'Mountain-100 Black, 48', 2034.9470062399998)
+(779, 'Mountain-200 Silver, 38', 1268.27730095)
+(780, 'Mountain-200 Silver, 42', 1268.27730095)
+(781, 'Mountain-200 Silver, 46', 1268.27730095)
+(782, 'Mountain-200 Black, 38', 1342.24915173)
+(783, 'Mountain-200 Black, 42', 1342.24915173)
+(784, 'Mountain-200 Black, 46', 1342.24915173)
+(785, 'Mountain-300 Black, 38', 641.58259234)
+(786, 'Mountain-300 Black, 40', 641.58259234)
+(787, 'Mountain-300 Black, 44', 641.58259234)
+(788, 'Mountain-300 Black, 48', 641.58259234)
+(789, 'Road-250 Red, 44', 1111.90352344)
+(790, 'Road-250 Red, 48', 1111.90352344)
+(791, 'Road-250 Red, 52', 1111.90352344)
+(792, 'Road-250 Red, 58', 1138.37735759)
+(793, 'Road-250 Black, 44', 1667.05964359)
+(794, 'Road-250 Black, 48', 1667.05964359)
+(795, 'Road-250 Black, 52', 1667.05964359)
+(796, 'Road-250 Black, 58', 1667.05964359)
+(797, 'Road-550-W Yellow, 38', 607.61529758)
+(798, 'Road-550-W Yellow, 40', 607.61529758)
+(799, 'Road-550-W Yellow, 42', 607.61529758)
+(800, 'Road-550-W Yellow, 44', 607.61529758)
+(801, 'Road-550-W Yellow, 48', 607.61529758)
+(802, 'LL Fork', 56.07644537000001)
+(803, 'ML Fork', 66.39358696)
+(804, 'HL Fork', 86.82353656000001)
+(805, 'LL Headset', 12.938968079999999)
+(806, 'ML Headset', 38.69965528)
+(807, 'HL Headset', 47.18938321)
+(808, 'LL Mountain Handlebars', 16.85095918)
+(809, 'ML Mountain Handlebars', 23.42635925)
+(810, 'HL Mountain Handlebars', 45.50205479)
+(811, 'LL Road Handlebars', 16.85095918)
+(812, 'ML Road Handlebars', 23.42635925)
+(813, 'HL Road Handlebars', 45.50205479)
+(814, 'ML Mountain Frame - Black, 38', 199.21687153)
+(815, 'LL Mountain Front Wheel', 28.91539468)
+(816, 'ML Mountain Front Wheel', 99.49849191000001)
+(817, 'HL Mountain Front Wheel', 142.90610555)
+(818, 'LL Road Front Wheel', 40.730043890000005)
+(819, 'ML Road Front Wheel', 118.23429709000001)
+(820, 'HL Road Front Wheel', 157.11260986000002)
+(821, 'Touring Front Wheel', 103.77542044)
+(822, 'ML Road Frame-W - Yellow, 38', 307.55935988)
+(823, 'LL Mountain Rear Wheel', 41.76772947999999)
+(824, 'ML Mountain Rear Wheel', 112.35082671)
+(825, 'HL Mountain Rear Wheel', 155.75844035)
+(826, 'LL Road Rear Wheel', 53.58237869)
+(827, 'ML Road Rear Wheel', 131.08663188999998)
+(828, 'HL Road Rear Wheel', 169.96494466000001)
+(829, 'Touring Rear Wheel', 116.62775524000001)
+(830, 'ML Mountain Frame - Black, 40', 199.21687153)
+(831, 'ML Mountain Frame - Black, 44', 199.21687153)
+(832, 'ML Mountain Frame - Black, 48', 199.21687153)
+(833, 'ML Road Frame-W - Yellow, 40', 307.55935988)
+(834, 'ML Road Frame-W - Yellow, 42', 307.55935988)
+(835, 'ML Road Frame-W - Yellow, 44', 307.55935988)
+(836, 'ML Road Frame-W - Yellow, 48', 307.55935988)
+(837, 'HL Road Frame - Black, 62', 931.2627258199999)
+(838, 'HL Road Frame - Black, 44', 931.2627258199999)
+(839, 'HL Road Frame - Black, 48', 931.2627258199999)
+(840, 'HL Road Frame - Black, 52', 931.2627258199999)
+(841, "Men's Sports Shorts, S", 26.530079389999997)
+(842, 'Touring-Panniers, Large', 43.93640625)
+(843, 'Cable Lock', 8.78728125)
+(844, 'Minipump', 7.026331390000001)
+(845, 'Mountain Pump', 8.78378764)
+(846, 'Taillights - Battery-Powered', 4.91738389)
+(847, 'Headlights - Dual-Beam', 12.298700140000001)
+(848, 'Headlights - Weatherproof', 15.813612639999999)
+(849, "Men's Sports Shorts, M", 26.530079389999997)
+(850, "Men's Sports Shorts, L", 26.530079389999997)
+(851, "Men's Sports Shorts, XL", 26.530079389999997)
+(852, "Women's Tights, S", 33.16369814)
+(853, "Women's Tights, M", 33.16369814)
+(854, "Women's Tights, L", 33.16369814)
+(855, "Men's Bib-Shorts, S", 33.48676389)
+(856, "Men's Bib-Shorts, M", 33.48676389)
+(857, "Men's Bib-Shorts, L", 33.48676389)
+(858, 'Half-Finger Gloves, S', 9.81968553)
+(859, 'Half-Finger Gloves, M', 9.81968553)
+(860, 'Half-Finger Gloves, L', 9.81968553)
+(861, 'Full-Finger Gloves, S', 16.80077189)
+(862, 'Full-Finger Gloves, M', 16.80077189)
+(863, 'Full-Finger Gloves, L', 16.80077189)
+(864, 'Classic Vest, S', 20.236522899999997)
+(865, 'Classic Vest, M', 20.236522899999997)
+(866, 'Classic Vest, L', 20.236522899999997)
+(867, "Women's Mountain Shorts, S", 28.063611230000003)
+(868, "Women's Mountain Shorts, M", 28.063611230000003)
+(869, "Women's Mountain Shorts, L", 28.063611230000003)
+(870, 'Water Bottle - 30 oz.', 1.5902742300000001)
+(871, 'Mountain Bottle Cage', 3.18370123)
+(872, 'Road Bottle Cage', 2.86501583)
+(873, 'Patch Kit/8 Patches', 0.72982365)
+(874, 'Racing Socks, M', 31.565453339275386)
+(875, 'Racing Socks, L', 31.565453339275386)
+(876, 'Hitch Rack - 4-Bike', 38.242248000000004)
+(877, 'Bike Wash - Dissolver', 2.5335489300000003)
+(878, 'Fender Set - Mountain', 7.0046880499999995)
+(879, 'All-Purpose Bike Stand', 50.6709786)
+(880, 'Hydration Pack - 70 oz.', 20.609489229999994)
+(881, 'Short-Sleeve Classic Jersey, S', 35.42375683)
+(882, 'Short-Sleeve Classic Jersey, M', 35.42375683)
+(883, 'Short-Sleeve Classic Jersey, L', 35.42375683)
+(884, 'Short-Sleeve Classic Jersey, XL', 35.42375683)
+(885, 'HL Touring Frame - Yellow, 60', 512.74580677)
+(886, 'LL Touring Frame - Yellow, 62', 170.29380399000001)
+(887, 'HL Touring Frame - Yellow, 46', 512.74580677)
+(888, 'HL Touring Frame - Yellow, 50', 512.74580677)
+(889, 'HL Touring Frame - Yellow, 54', 512.74580677)
+(890, 'HL Touring Frame - Blue, 46', 512.74580677)
+(891, 'HL Touring Frame - Blue, 50', 512.74580677)
+(892, 'HL Touring Frame - Blue, 54', 512.74580677)
+(893, 'HL Touring Frame - Blue, 60', 512.74580677)
+(894, 'Rear Derailleur', 54.04144921999999)
+(895, 'LL Touring Frame - Blue, 50', 170.29380399000001)
+(896, 'LL Touring Frame - Blue, 54', 170.29380399000001)
+(897, 'LL Touring Frame - Blue, 58', 170.29380399000001)
+(898, 'LL Touring Frame - Blue, 62', 170.29380399000001)
+(899, 'LL Touring Frame - Yellow, 44', 170.29380399000001)
+(900, 'LL Touring Frame - Yellow, 50', 170.29380399000001)
+(901, 'LL Touring Frame - Yellow, 54', 170.29380399000001)
+(902, 'LL Touring Frame - Yellow, 58', 170.29380399000001)
+(903, 'LL Touring Frame - Blue, 44', 170.29380399000001)
+(904, 'ML Mountain Frame-W - Silver, 40', 199.79438897)
+(905, 'ML Mountain Frame-W - Silver, 42', 199.79438897)
+(906, 'ML Mountain Frame-W - Silver, 46', 199.79438897)
+(907, 'Rear Brakes', 47.385300599999994)
+(908, 'LL Mountain Seat/Saddle', 10.26039173)
+(909, 'ML Mountain Seat/Saddle', 14.807964219999999)
+(910, 'HL Mountain Seat/Saddle', 19.91545162)
+(911, 'LL Road Seat/Saddle', 10.26039173)
+(912, 'ML Road Seat/Saddle', 14.807964219999999)
+(913, 'HL Road Seat/Saddle', 19.91545162)
+(914, 'LL Touring Seat/Saddle', 10.26039173)
+(915, 'ML Touring Seat/Saddle', 14.807964219999999)
+(916, 'HL Touring Seat/Saddle', 19.91545162)
+(917, 'LL Mountain Frame - Silver, 42', 144.89744697999998)
+(918, 'LL Mountain Frame - Silver, 44', 144.89744697999998)
+(919, 'LL Mountain Frame - Silver, 48', 144.89744697999998)
+(920, 'LL Mountain Frame - Silver, 52', 144.89744697999998)
+(921, 'Mountain Tire Tube', 1.5902742300000001)
+(922, 'Road Tire Tube', 1.27158883)
+(923, 'Touring Tire Tube', 1.5902742300000001)
+(924, 'LL Mountain Frame - Black, 42', 146.6471985)
+(925, 'LL Mountain Frame - Black, 44', 146.6471985)
+(926, 'LL Mountain Frame - Black, 48', 146.6471985)
+(927, 'LL Mountain Frame - Black, 52', 146.6471985)
+(928, 'LL Mountain Tire', 7.963982229999999)
+(929, 'ML Mountain Tire', 9.557409230000001)
+(930, 'HL Mountain Tire', 11.153989)
+(931, 'LL Road Tire', 6.84858333)
+(932, 'ML Road Tire', 7.963982229999999)
+(933, 'HL Road Tire', 10.38914404)
+(934, 'Touring Tire', 9.23872383)
+(935, 'LL Mountain Pedal', 15.31871296)
+(936, 'ML Mountain Pedal', 23.4906928)
+(937, 'HL Mountain Pedal', 30.641175160000003)
+(938, 'LL Road Pedal', 15.31871296)
+(939, 'ML Road Pedal', 23.4906928)
+(940, 'HL Road Pedal', 30.641175160000003)
+(941, 'Touring Pedal', 30.641175160000003)
+(942, 'ML Mountain Frame-W - Silver, 38', 199.79438897)
+(943, 'LL Mountain Frame - Black, 40', 146.6471985)
+(944, 'LL Mountain Frame - Silver, 40', 144.89744697999998)
+(945, 'Front Derailleur', 40.70690535999999)
+(946, 'LL Touring Handlebars', 17.4373744)
+(947, 'HL Touring Handlebars', 34.64391491)
+(948, 'Front Brakes', 47.385300599999994)
+(949, 'LL Crankset', 83.53545895999999)
+(950, 'ML Crankset', 122.09246336)
+(951, 'HL Crankset', 192.78030475999998)
+(952, 'Chain', 9.005471859999998)
+(953, 'Touring-2000 Blue, 60', 643.46399668)
+(954, 'Touring-1000 Yellow, 46', 1262.7592845899999)
+(955, 'Touring-1000 Yellow, 50', 1262.7592845899999)
+(956, 'Touring-1000 Yellow, 54', 1262.7592845899999)
+(957, 'Touring-1000 Yellow, 60', 1262.7592845899999)
+(958, 'Touring-3000 Blue, 54', 393.19711408)
+(959, 'Touring-3000 Blue, 58', 393.19711408)
+(960, 'Touring-3000 Blue, 62', 393.19711408)
+(961, 'Touring-3000 Yellow, 44', 393.19711408)
+(962, 'Touring-3000 Yellow, 50', 393.19711408)
+(963, 'Touring-3000 Yellow, 54', 393.19711408)
+(964, 'Touring-3000 Yellow, 58', 393.19711408)
+(965, 'Touring-3000 Yellow, 62', 393.19711408)
+(966, 'Touring-1000 Blue, 46', 1262.7592845899999)
+(967, 'Touring-1000 Blue, 50', 1262.7592845899999)
+(968, 'Touring-1000 Blue, 54', 1262.7592845899999)
+(969, 'Touring-1000 Blue, 60', 1262.7592845899999)
+(970, 'Touring-2000 Blue, 46', 643.46399668)
+(971, 'Touring-2000 Blue, 50', 643.46399668)
+(972, 'Touring-2000 Blue, 54', 643.46399668)
+(973, 'Road-350-W Yellow, 40', 922.4067709999999)
+(974, 'Road-350-W Yellow, 42', 922.4067709999999)
+(975, 'Road-350-W Yellow, 44', 922.4067709999999)
+(976, 'Road-350-W Yellow, 48', 922.4067709999999)
+(977, 'Road-750 Black, 58', 368.42673616)
+(978, 'Touring-3000 Blue, 44', 393.19711408)
+(979, 'Touring-3000 Blue, 50', 393.19711408)
+(980, 'Mountain-400-W Silver, 38', 420.65993463999996)
+(981, 'Mountain-400-W Silver, 40', 420.65993463999996)
+(982, 'Mountain-400-W Silver, 42', 420.65993463999996)
+(983, 'Mountain-400-W Silver, 46', 420.65993463999996)
+(984, 'Mountain-500 Silver, 40', 308.8651575899999)
+(985, 'Mountain-500 Silver, 42', 308.8651575899999)
+(986, 'Mountain-500 Silver, 44', 308.8651575899999)
+(987, 'Mountain-500 Silver, 48', 308.8651575899999)
+(988, 'Mountain-500 Silver, 52', 308.8651575899999)
+(989, 'Mountain-500 Black, 40', 315.81889636999995)
+(990, 'Mountain-500 Black, 42', 315.81889636999995)
+(991, 'Mountain-500 Black, 44', 315.81889636999995)
+(992, 'Mountain-500 Black, 48', 315.81889636999995)
+(993, 'Mountain-500 Black, 52', 315.81889636999995)
+(994, 'LL Bottom Bracket', 20.42620036)
+(995, 'ML Bottom Bracket', 38.30240626)
+(996, 'HL Bottom Bracket', 45.96363736)
+(997, 'Road-750 Black, 44', 368.42673616)
+(998, 'Road-750 Black, 48', 368.42673616)
+(999, 'Road-750 Black, 52', 368.42673616)
+{
+    'result': [
+        {'ProductID': 1, 'Name': 'Adjustable Race', 'Margin': 0.0},
+        {'ProductID': 2, 'Name': 'Bearing Ball', 'Margin': 0.0},
+        {'ProductID': 3, 'Name': 'BB Ball Bearing', 'Margin': 0.0},
+        {'ProductID': 4, 'Name': 'Headset Ball Bearings', 'Margin': 0.0},
+        {'ProductID': 316, 'Name': 'Blade', 'Margin': 0.0},
+        {'ProductID': 317, 'Name': 'LL Crankarm', 'Margin': 0.0},
+        {'ProductID': 318, 'Name': 'ML Crankarm', 'Margin': 0.0},
+        {'ProductID': 319, 'Name': 'HL Crankarm', 'Margin': 0.0},
+        {'ProductID': 320, 'Name': 'Chainring Bolts', 'Margin': 0.0},
+        {'ProductID': 321, 'Name': 'Chainring Nut', 'Margin': 0.0},
+        {'ProductID': 322, 'Name': 'Chainring', 'Margin': 0.0},
+        {'ProductID': 323, 'Name': 'Crown Race', 'Margin': 0.0},
+        {'ProductID': 324, 'Name': 'Chain Stays', 'Margin': 0.0},
+        {'ProductID': 325, 'Name': 'Decal 1', 'Margin': 0.0},
+        {'ProductID': 326, 'Name': 'Decal 2', 'Margin': 0.0},
+        {'ProductID': 327, 'Name': 'Down Tube', 'Margin': 0.0},
+        {'ProductID': 328, 'Name': 'Mountain End Caps', 'Margin': 0.0},
+        {'ProductID': 329, 'Name': 'Road End Caps', 'Margin': 0.0},
+        {'ProductID': 330, 'Name': 'Touring End Caps', 'Margin': 0.0},
+        {'ProductID': 331, 'Name': 'Fork End', 'Margin': 0.0},
+        {'ProductID': 332, 'Name': 'Freewheel', 'Margin': 0.0},
+        {'ProductID': 341, 'Name': 'Flat Washer 1', 'Margin': 0.0},
+        {'ProductID': 342, 'Name': 'Flat Washer 6', 'Margin': 0.0},
+        {'ProductID': 343, 'Name': 'Flat Washer 2', 'Margin': 0.0},
+        {'ProductID': 344, 'Name': 'Flat Washer 9', 'Margin': 0.0},
+        {'ProductID': 345, 'Name': 'Flat Washer 4', 'Margin': 0.0},
+        {'ProductID': 346, 'Name': 'Flat Washer 3', 'Margin': 0.0},
+        {'ProductID': 347, 'Name': 'Flat Washer 8', 'Margin': 0.0},
+        {'ProductID': 348, 'Name': 'Flat Washer 5', 'Margin': 0.0},
+        {'ProductID': 349, 'Name': 'Flat Washer 7', 'Margin': 0.0},
+        {'ProductID': 350, 'Name': 'Fork Crown', 'Margin': 0.0},
+        {'ProductID': 351, 'Name': 'Front Derailleur Cage', 'Margin': 0.0},
+        {'ProductID': 352, 'Name': 'Front Derailleur Linkage', 'Margin': 0.0},
+        {'ProductID': 355, 'Name': 'Guide Pulley', 'Margin': 0.0},
+        {'ProductID': 356, 'Name': 'LL Grip Tape', 'Margin': 0.0},
+        {'ProductID': 357, 'Name': 'ML Grip Tape', 'Margin': 0.0},
+        {'ProductID': 358, 'Name': 'HL Grip Tape', 'Margin': 0.0},
+        {'ProductID': 359, 'Name': 'Thin-Jam Hex Nut 9', 'Margin': 0.0},
+        {'ProductID': 360, 'Name': 'Thin-Jam Hex Nut 10', 'Margin': 0.0},
+        {'ProductID': 361, 'Name': 'Thin-Jam Hex Nut 1', 'Margin': 0.0},
+        {'ProductID': 362, 'Name': 'Thin-Jam Hex Nut 2', 'Margin': 0.0},
+        {'ProductID': 363, 'Name': 'Thin-Jam Hex Nut 15', 'Margin': 0.0},
+        {'ProductID': 364, 'Name': 'Thin-Jam Hex Nut 16', 'Margin': 0.0},
+        {'ProductID': 365, 'Name': 'Thin-Jam Hex Nut 5', 'Margin': 0.0},
+        {'ProductID': 366, 'Name': 'Thin-Jam Hex Nut 6', 'Margin': 0.0},
+        {'ProductID': 367, 'Name': 'Thin-Jam Hex Nut 3', 'Margin': 0.0},
+        {'ProductID': 368, 'Name': 'Thin-Jam Hex Nut 4', 'Margin': 0.0},
+        {'ProductID': 369, 'Name': 'Thin-Jam Hex Nut 13', 'Margin': 0.0},
+        {'ProductID': 370, 'Name': 'Thin-Jam Hex Nut 14', 'Margin': 0.0},
+        {'ProductID': 371, 'Name': 'Thin-Jam Hex Nut 7', 'Margin': 0.0},
+        {'ProductID': 372, 'Name': 'Thin-Jam Hex Nut 8', 'Margin': 0.0},
+        {'ProductID': 373, 'Name': 'Thin-Jam Hex Nut 12', 'Margin': 0.0},
+        {'ProductID': 374, 'Name': 'Thin-Jam Hex Nut 11', 'Margin': 0.0},
+        {'ProductID': 375, 'Name': 'Hex Nut 5', 'Margin': 0.0},
+        {'ProductID': 376, 'Name': 'Hex Nut 6', 'Margin': 0.0},
+        {'ProductID': 377, 'Name': 'Hex Nut 16', 'Margin': 0.0},
+        {'ProductID': 378, 'Name': 'Hex Nut 17', 'Margin': 0.0},
+        {'ProductID': 379, 'Name': 'Hex Nut 7', 'Margin': 0.0},
+        {'ProductID': 380, 'Name': 'Hex Nut 8', 'Margin': 0.0},
+        {'ProductID': 381, 'Name': 'Hex Nut 9', 'Margin': 0.0},
+        {'ProductID': 382, 'Name': 'Hex Nut 22', 'Margin': 0.0},
+        {'ProductID': 383, 'Name': 'Hex Nut 23', 'Margin': 0.0},
+        {'ProductID': 384, 'Name': 'Hex Nut 12', 'Margin': 0.0},
+        {'ProductID': 385, 'Name': 'Hex Nut 13', 'Margin': 0.0},
+        {'ProductID': 386, 'Name': 'Hex Nut 1', 'Margin': 0.0},
+        {'ProductID': 387, 'Name': 'Hex Nut 10', 'Margin': 0.0},
+        {'ProductID': 388, 'Name': 'Hex Nut 11', 'Margin': 0.0},
+        {'ProductID': 389, 'Name': 'Hex Nut 2', 'Margin': 0.0},
+        {'ProductID': 390, 'Name': 'Hex Nut 20', 'Margin': 0.0},
+        {'ProductID': 391, 'Name': 'Hex Nut 21', 'Margin': 0.0},
+        {'ProductID': 392, 'Name': 'Hex Nut 3', 'Margin': 0.0},
+        {'ProductID': 393, 'Name': 'Hex Nut 14', 'Margin': 0.0},
+        {'ProductID': 394, 'Name': 'Hex Nut 15', 'Margin': 0.0},
+        {'ProductID': 395, 'Name': 'Hex Nut 4', 'Margin': 0.0},
+        {'ProductID': 396, 'Name': 'Hex Nut 18', 'Margin': 0.0},
+        {'ProductID': 397, 'Name': 'Hex Nut 19', 'Margin': 0.0},
+        {'ProductID': 398, 'Name': 'Handlebar Tube', 'Margin': 0.0},
+        {'ProductID': 399, 'Name': 'Head Tube', 'Margin': 0.0},
+        {'ProductID': 400, 'Name': 'LL Hub', 'Margin': 0.0},
+        {'ProductID': 401, 'Name': 'HL Hub', 'Margin': 0.0},
+        {'ProductID': 402, 'Name': 'Keyed Washer', 'Margin': 0.0},
+        {'ProductID': 403, 'Name': 'External Lock Washer 3', 'Margin': 0.0},
+        {'ProductID': 404, 'Name': 'External Lock Washer 4', 'Margin': 0.0},
+        {'ProductID': 405, 'Name': 'External Lock Washer 9', 'Margin': 0.0},
+        {'ProductID': 406, 'Name': 'External Lock Washer 5', 'Margin': 0.0},
+        {'ProductID': 407, 'Name': 'External Lock Washer 7', 'Margin': 0.0},
+        {'ProductID': 408, 'Name': 'External Lock Washer 6', 'Margin': 0.0},
+        {'ProductID': 409, 'Name': 'External Lock Washer 1', 'Margin': 0.0},
+        {'ProductID': 410, 'Name': 'External Lock Washer 8', 'Margin': 0.0},
+        {'ProductID': 411, 'Name': 'External Lock Washer 2', 'Margin': 0.0},
+        {'ProductID': 412, 'Name': 'Internal Lock Washer 3', 'Margin': 0.0},
+        {'ProductID': 413, 'Name': 'Internal Lock Washer 4', 'Margin': 0.0},
+        {'ProductID': 414, 'Name': 'Internal Lock Washer 9', 'Margin': 0.0},
+        {'ProductID': 415, 'Name': 'Internal Lock Washer 5', 'Margin': 0.0},
+        {'ProductID': 416, 'Name': 'Internal Lock Washer 7', 'Margin': 0.0},
+        {'ProductID': 417, 'Name': 'Internal Lock Washer 6', 'Margin': 0.0},
+        {'ProductID': 418, 'Name': 'Internal Lock Washer 10', 'Margin': 0.0},
+        {'ProductID': 419, 'Name': 'Internal Lock Washer 1', 'Margin': 0.0},
+        {'ProductID': 420, 'Name': 'Internal Lock Washer 8', 'Margin': 0.0},
+        {'ProductID': 421, 'Name': 'Internal Lock Washer 2', 'Margin': 0.0},
+        {'ProductID': 422, 'Name': 'Thin-Jam Lock Nut 9', 'Margin': 0.0},
+        {'ProductID': 423, 'Name': 'Thin-Jam Lock Nut 10', 'Margin': 0.0},
+        {'ProductID': 424, 'Name': 'Thin-Jam Lock Nut 1', 'Margin': 0.0},
+        {'ProductID': 425, 'Name': 'Thin-Jam Lock Nut 2', 'Margin': 0.0},
+        {'ProductID': 426, 'Name': 'Thin-Jam Lock Nut 15', 'Margin': 0.0},
+        {'ProductID': 427, 'Name': 'Thin-Jam Lock Nut 16', 'Margin': 0.0},
+        {'ProductID': 428, 'Name': 'Thin-Jam Lock Nut 5', 'Margin': 0.0},
+        {'ProductID': 429, 'Name': 'Thin-Jam Lock Nut 6', 'Margin': 0.0},
+        {'ProductID': 430, 'Name': 'Thin-Jam Lock Nut 3', 'Margin': 0.0},
+        {'ProductID': 431, 'Name': 'Thin-Jam Lock Nut 4', 'Margin': 0.0},
+        {'ProductID': 432, 'Name': 'Thin-Jam Lock Nut 13', 'Margin': 0.0},
+        {'ProductID': 433, 'Name': 'Thin-Jam Lock Nut 14', 'Margin': 0.0},
+        {'ProductID': 434, 'Name': 'Thin-Jam Lock Nut 7', 'Margin': 0.0},
+        {'ProductID': 435, 'Name': 'Thin-Jam Lock Nut 8', 'Margin': 0.0},
+        {'ProductID': 436, 'Name': 'Thin-Jam Lock Nut 12', 'Margin': 0.0},
+        {'ProductID': 437, 'Name': 'Thin-Jam Lock Nut 11', 'Margin': 0.0},
+        {'ProductID': 438, 'Name': 'Lock Nut 5', 'Margin': 0.0},
+        {'ProductID': 439, 'Name': 'Lock Nut 6', 'Margin': 0.0},
+        {'ProductID': 440, 'Name': 'Lock Nut 16', 'Margin': 0.0},
+        {'ProductID': 441, 'Name': 'Lock Nut 17', 'Margin': 0.0},
+        {'ProductID': 442, 'Name': 'Lock Nut 7', 'Margin': 0.0},
+        {'ProductID': 443, 'Name': 'Lock Nut 8', 'Margin': 0.0},
+        {'ProductID': 444, 'Name': 'Lock Nut 9', 'Margin': 0.0},
+        {'ProductID': 445, 'Name': 'Lock Nut 22', 'Margin': 0.0},
+        {'ProductID': 446, 'Name': 'Lock Nut 23', 'Margin': 0.0},
+        {'ProductID': 447, 'Name': 'Lock Nut 12', 'Margin': 0.0},
+        {'ProductID': 448, 'Name': 'Lock Nut 13', 'Margin': 0.0},
+        {'ProductID': 449, 'Name': 'Lock Nut 1', 'Margin': 0.0},
+        {'ProductID': 450, 'Name': 'Lock Nut 10', 'Margin': 0.0},
+        {'ProductID': 451, 'Name': 'Lock Nut 11', 'Margin': 0.0},
+        {'ProductID': 452, 'Name': 'Lock Nut 2', 'Margin': 0.0},
+        {'ProductID': 453, 'Name': 'Lock Nut 20', 'Margin': 0.0},
+        {'ProductID': 454, 'Name': 'Lock Nut 21', 'Margin': 0.0},
+        {'ProductID': 455, 'Name': 'Lock Nut 3', 'Margin': 0.0},
+        {'ProductID': 456, 'Name': 'Lock Nut 14', 'Margin': 0.0},
+        {'ProductID': 457, 'Name': 'Lock Nut 15', 'Margin': 0.0},
+        {'ProductID': 458, 'Name': 'Lock Nut 4', 'Margin': 0.0},
+        {'ProductID': 459, 'Name': 'Lock Nut 19', 'Margin': 0.0},
+        {'ProductID': 460, 'Name': 'Lock Nut 18', 'Margin': 0.0},
+        {'ProductID': 461, 'Name': 'Lock Ring', 'Margin': 0.0},
+        {'ProductID': 462, 'Name': 'Lower Head Race', 'Margin': 0.0},
+        {'ProductID': 463, 'Name': 'Lock Washer 4', 'Margin': 0.0},
+        {'ProductID': 464, 'Name': 'Lock Washer 5', 'Margin': 0.0},
+        {'ProductID': 465, 'Name': 'Lock Washer 10', 'Margin': 0.0},
+        {'ProductID': 466, 'Name': 'Lock Washer 6', 'Margin': 0.0},
+        {'ProductID': 467, 'Name': 'Lock Washer 13', 'Margin': 0.0},
+        {'ProductID': 468, 'Name': 'Lock Washer 8', 'Margin': 0.0},
+        {'ProductID': 469, 'Name': 'Lock Washer 1', 'Margin': 0.0},
+        {'ProductID': 470, 'Name': 'Lock Washer 7', 'Margin': 0.0},
+        {'ProductID': 471, 'Name': 'Lock Washer 12', 'Margin': 0.0},
+        {'ProductID': 472, 'Name': 'Lock Washer 2', 'Margin': 0.0},
+        {'ProductID': 473, 'Name': 'Lock Washer 9', 'Margin': 0.0},
+        {'ProductID': 474, 'Name': 'Lock Washer 3', 'Margin': 0.0},
+        {'ProductID': 475, 'Name': 'Lock Washer 11', 'Margin': 0.0},
+        {'ProductID': 476, 'Name': 'Metal Angle', 'Margin': 0.0},
+        {'ProductID': 477, 'Name': 'Metal Bar 1', 'Margin': 0.0},
+        {'ProductID': 478, 'Name': 'Metal Bar 2', 'Margin': 0.0},
+        {'ProductID': 479, 'Name': 'Metal Plate 2', 'Margin': 0.0},
+        {'ProductID': 480, 'Name': 'Metal Plate 1', 'Margin': 0.0},
+        {'ProductID': 481, 'Name': 'Metal Plate 3', 'Margin': 0.0},
+        {'ProductID': 482, 'Name': 'Metal Sheet 2', 'Margin': 0.0},
+        {'ProductID': 483, 'Name': 'Metal Sheet 3', 'Margin': 0.0},
+        {'ProductID': 484, 'Name': 'Metal Sheet 7', 'Margin': 0.0},
+        {'ProductID': 485, 'Name': 'Metal Sheet 4', 'Margin': 0.0},
+        {'ProductID': 486, 'Name': 'Metal Sheet 5', 'Margin': 0.0},
+        {'ProductID': 487, 'Name': 'Metal Sheet 6', 'Margin': 0.0},
+        {'ProductID': 488, 'Name': 'Metal Sheet 1', 'Margin': 0.0},
+        {'ProductID': 489, 'Name': 'Metal Tread Plate', 'Margin': 0.0},
+        {'ProductID': 490, 'Name': 'LL Nipple', 'Margin': 0.0},
+        {'ProductID': 491, 'Name': 'HL Nipple', 'Margin': 0.0},
+        {'ProductID': 492, 'Name': 'Paint - Black', 'Margin': 0.0},
+        {'ProductID': 493, 'Name': 'Paint - Red', 'Margin': 0.0},
+        {'ProductID': 494, 'Name': 'Paint - Silver', 'Margin': 0.0},
+        {'ProductID': 495, 'Name': 'Paint - Blue', 'Margin': 0.0},
+        {'ProductID': 496, 'Name': 'Paint - Yellow', 'Margin': 0.0},
+        {'ProductID': 497, 'Name': 'Pinch Bolt', 'Margin': 0.0},
+        {'ProductID': 504, 'Name': 'Cup-Shaped Race', 'Margin': 0.0},
+        {'ProductID': 505, 'Name': 'Cone-Shaped Race', 'Margin': 0.0},
+        {'ProductID': 506, 'Name': 'Reflector', 'Margin': 0.0},
+        {'ProductID': 507, 'Name': 'LL Mountain Rim', 'Margin': 0.0},
+        {'ProductID': 508, 'Name': 'ML Mountain Rim', 'Margin': 0.0},
+        {'ProductID': 509, 'Name': 'HL Mountain Rim', 'Margin': 0.0},
+        {'ProductID': 510, 'Name': 'LL Road Rim', 'Margin': 0.0},
+        {'ProductID': 511, 'Name': 'ML Road Rim', 'Margin': 0.0},
+        {'ProductID': 512, 'Name': 'HL Road Rim', 'Margin': 0.0},
+        {'ProductID': 513, 'Name': 'Touring Rim', 'Margin': 0.0},
+        {'ProductID': 514, 'Name': 'LL Mountain Seat Assembly', 'Margin': 84.16191699999999},
+        {'ProductID': 515, 'Name': 'ML Mountain Seat Assembly', 'Margin': 92.870379},
+        {'ProductID': 516, 'Name': 'HL Mountain Seat Assembly', 'Margin': 124.295827},
+        {'ProductID': 517, 'Name': 'LL Road Seat Assembly', 'Margin': 84.16191699999999},
+        {'ProductID': 518, 'Name': 'ML Road Seat Assembly', 'Margin': 92.870379},
+        {'ProductID': 519, 'Name': 'HL Road Seat Assembly', 'Margin': 124.295827},
+        {'ProductID': 520, 'Name': 'LL Touring Seat Assembly', 'Margin': 84.16191699999999},
+        {'ProductID': 521, 'Name': 'ML Touring Seat Assembly', 'Margin': 92.870379},
+        {'ProductID': 522, 'Name': 'HL Touring Seat Assembly', 'Margin': 124.295827},
+        {'ProductID': 523, 'Name': 'LL Spindle/Axle', 'Margin': 0.0},
+        {'ProductID': 524, 'Name': 'HL Spindle/Axle', 'Margin': 0.0},
+        {'ProductID': 525, 'Name': 'LL Shell', 'Margin': 0.0},
+        {'ProductID': 526, 'Name': 'HL Shell', 'Margin': 0.0},
+        {'ProductID': 527, 'Name': 'Spokes', 'Margin': 0.0},
+        {'ProductID': 528, 'Name': 'Seat Lug', 'Margin': 0.0},
+        {'ProductID': 529, 'Name': 'Stem', 'Margin': 0.0},
+        {'ProductID': 530, 'Name': 'Seat Post', 'Margin': 0.0},
+        {'ProductID': 531, 'Name': 'Steerer', 'Margin': 0.0},
+        {'ProductID': 532, 'Name': 'Seat Stays', 'Margin': 0.0},
+        {'ProductID': 533, 'Name': 'Seat Tube', 'Margin': 0.0},
+        {'ProductID': 534, 'Name': 'Top Tube', 'Margin': 0.0},
+        {'ProductID': 535, 'Name': 'Tension Pulley', 'Margin': 0.0},
+        {'ProductID': 679, 'Name': 'Rear Derailleur Cage', 'Margin': 0.0},
+        {'ProductID': 680, 'Name': 'HL Road Frame - Black, 58', 'Margin': 1135.6862509999999},
+        {'ProductID': 706, 'Name': 'HL Road Frame - Red, 58', 'Margin': 775.5208509999999},
+        {'ProductID': 707, 'Name': 'Sport-100 Helmet, Red', 'Margin': 9.58048023},
+        {'ProductID': 708, 'Name': 'Sport-100 Helmet, Black', 'Margin': 14.029822229999999},
+        {'ProductID': 709, 'Name': 'Mountain Bike Socks, M', 'Margin': 32.04798578625503},
+        {'ProductID': 710, 'Name': 'Mountain Bike Socks, L', 'Margin': 32.04798578625503},
+        {'ProductID': 711, 'Name': 'Sport-100 Helmet, Blue', 'Margin': 11.15083623},
+        {'ProductID': 712, 'Name': 'AWC Logo Cap', 'Margin': 6.24460683},
+        {'ProductID': 713, 'Name': 'Long-Sleeve Logo Jersey, S', 'Margin': 34.723903830000005},
+        {'ProductID': 714, 'Name': 'Long-Sleeve Logo Jersey, M', 'Margin': 34.723903830000005},
+        {'ProductID': 715, 'Name': 'Long-Sleeve Logo Jersey, L', 'Margin': 34.723903830000005},
+        {'ProductID': 716, 'Name': 'Long-Sleeve Logo Jersey, XL', 'Margin': 34.723903830000005},
+        {'ProductID': 717, 'Name': 'HL Road Frame - Red, 62', 'Margin': 635.92709782},
+        {'ProductID': 718, 'Name': 'HL Road Frame - Red, 44', 'Margin': 635.92709782},
+        {'ProductID': 719, 'Name': 'HL Road Frame - Red, 48', 'Margin': 635.92709782},
+        {'ProductID': 720, 'Name': 'HL Road Frame - Red, 52', 'Margin': 635.92709782},
+        {'ProductID': 721, 'Name': 'HL Road Frame - Red, 56', 'Margin': 635.92709782},
+        {'ProductID': 722, 'Name': 'LL Road Frame - Black, 58', 'Margin': 219.37856971},
+        {'ProductID': 723, 'Name': 'LL Road Frame - Black, 60', 'Margin': 219.37856971},
+        {'ProductID': 724, 'Name': 'LL Road Frame - Black, 62', 'Margin': 219.37856971},
+        {'ProductID': 725, 'Name': 'LL Road Frame - Red, 44', 'Margin': 137.01771291},
+        {'ProductID': 726, 'Name': 'LL Road Frame - Red, 48', 'Margin': 137.01771291},
+        {'ProductID': 727, 'Name': 'LL Road Frame - Red, 52', 'Margin': 137.01771291},
+        {'ProductID': 728, 'Name': 'LL Road Frame - Red, 58', 'Margin': 137.01771291},
+        {'ProductID': 729, 'Name': 'LL Road Frame - Red, 60', 'Margin': 137.01771291},
+        {'ProductID': 730, 'Name': 'LL Road Frame - Red, 62', 'Margin': 137.01771291},
+        {'ProductID': 731, 'Name': 'ML Road Frame - Red, 44', 'Margin': 257.80125474},
+        {'ProductID': 732, 'Name': 'ML Road Frame - Red, 48', 'Margin': 257.80125474},
+        {'ProductID': 733, 'Name': 'ML Road Frame - Red, 52', 'Margin': 257.80125474},
+        {'ProductID': 734, 'Name': 'ML Road Frame - Red, 58', 'Margin': 257.80125474},
+        {'ProductID': 735, 'Name': 'ML Road Frame - Red, 60', 'Margin': 257.80125474},
+        {'ProductID': 736, 'Name': 'LL Road Frame - Black, 44', 'Margin': 219.37856971},
+        {'ProductID': 737, 'Name': 'LL Road Frame - Black, 48', 'Margin': 219.37856971},
+        {'ProductID': 738, 'Name': 'LL Road Frame - Black, 52', 'Margin': 219.37856971},
+        {'ProductID': 739, 'Name': 'HL Mountain Frame - Silver, 42', 'Margin': 748.76932042},
+        {'ProductID': 740, 'Name': 'HL Mountain Frame - Silver, 44', 'Margin': 708.2953031},
+        {'ProductID': 741, 'Name': 'HL Mountain Frame - Silver, 48', 'Margin': 708.2953031},
+        {'ProductID': 742, 'Name': 'HL Mountain Frame - Silver, 46', 'Margin': 748.76932042},
+        {'ProductID': 743, 'Name': 'HL Mountain Frame - Black, 42', 'Margin': 792.3258561},
+        {'ProductID': 744, 'Name': 'HL Mountain Frame - Black, 44', 'Margin': 749.4973908799999},
+        {'ProductID': 745, 'Name': 'HL Mountain Frame - Black, 48', 'Margin': 749.4973908799999},
+        {'ProductID': 746, 'Name': 'HL Mountain Frame - Black, 46', 'Margin': 792.3258561},
+        {'ProductID': 747, 'Name': 'HL Mountain Frame - Black, 38', 'Margin': 792.3258561},
+        {'ProductID': 748, 'Name': 'HL Mountain Frame - Silver, 38', 'Margin': 748.76932042},
+        {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'Margin': 1589.6044838199998},
+        {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'Margin': 1589.6044838199998},
+        {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'Margin': 1589.6044838199998},
+        {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'Margin': 1589.6044838199998},
+        {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'Margin': 1589.6044838199998},
+        {'ProductID': 754, 'Name': 'Road-450 Red, 58', 'Margin': 647.6949464300001},
+        {'ProductID': 755, 'Name': 'Road-450 Red, 60', 'Margin': 647.6949464300001},
+        {'ProductID': 756, 'Name': 'Road-450 Red, 44', 'Margin': 647.6949464300001},
+        {'ProductID': 757, 'Name': 'Road-450 Red, 48', 'Margin': 647.6949464300001},
+        {'ProductID': 758, 'Name': 'Road-450 Red, 52', 'Margin': 647.6949464300001},
+        {'ProductID': 759, 'Name': 'Road-650 Red, 58', 'Margin': 356.31790186},
+        {'ProductID': 760, 'Name': 'Road-650 Red, 60', 'Margin': 356.31790186},
+        {'ProductID': 761, 'Name': 'Road-650 Red, 62', 'Margin': 356.31790186},
+        {'ProductID': 762, 'Name': 'Road-650 Red, 44', 'Margin': 356.31790186},
+        {'ProductID': 763, 'Name': 'Road-650 Red, 48', 'Margin': 356.31790186},
+        {'ProductID': 764, 'Name': 'Road-650 Red, 52', 'Margin': 356.31790186},
+        {'ProductID': 765, 'Name': 'Road-650 Black, 58', 'Margin': 521.7981458599999},
+        {'ProductID': 766, 'Name': 'Road-650 Black, 60', 'Margin': 521.7981458599999},
+        {'ProductID': 767, 'Name': 'Road-650 Black, 62', 'Margin': 521.7981458599999},
+        {'ProductID': 768, 'Name': 'Road-650 Black, 44', 'Margin': 521.7981458599999},
+        {'ProductID': 769, 'Name': 'Road-650 Black, 48', 'Margin': 521.7981458599999},
+        {'ProductID': 770, 'Name': 'Road-650 Black, 52', 'Margin': 521.7981458599999},
+        {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'Margin': 1916.1699242399998},
+        {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'Margin': 1916.1699242399998},
+        {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'Margin': 1916.1699242399998},
+        {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'Margin': 1916.1699242399998},
+        {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'Margin': 2034.9470062399998},
+        {'ProductID': 776, 'Name': 'Mountain-100 Black, 42', 'Margin': 2034.9470062399998},
+        {'ProductID': 777, 'Name': 'Mountain-100 Black, 44', 'Margin': 2034.9470062399998},
+        {'ProductID': 778, 'Name': 'Mountain-100 Black, 48', 'Margin': 2034.9470062399998},
+        {'ProductID': 779, 'Name': 'Mountain-200 Silver, 38', 'Margin': 1268.27730095},
+        {'ProductID': 780, 'Name': 'Mountain-200 Silver, 42', 'Margin': 1268.27730095},
+        {'ProductID': 781, 'Name': 'Mountain-200 Silver, 46', 'Margin': 1268.27730095},
+        {'ProductID': 782, 'Name': 'Mountain-200 Black, 38', 'Margin': 1342.24915173},
+        {'ProductID': 783, 'Name': 'Mountain-200 Black, 42', 'Margin': 1342.24915173},
+        {'ProductID': 784, 'Name': 'Mountain-200 Black, 46', 'Margin': 1342.24915173},
+        {'ProductID': 785, 'Name': 'Mountain-300 Black, 38', 'Margin': 641.58259234},
+        {'ProductID': 786, 'Name': 'Mountain-300 Black, 40', 'Margin': 641.58259234},
+        {'ProductID': 787, 'Name': 'Mountain-300 Black, 44', 'Margin': 641.58259234},
+        {'ProductID': 788, 'Name': 'Mountain-300 Black, 48', 'Margin': 641.58259234},
+        {'ProductID': 789, 'Name': 'Road-250 Red, 44', 'Margin': 1111.90352344},
+        {'ProductID': 790, 'Name': 'Road-250 Red, 48', 'Margin': 1111.90352344},
+        {'ProductID': 791, 'Name': 'Road-250 Red, 52', 'Margin': 1111.90352344},
+        {'ProductID': 792, 'Name': 'Road-250 Red, 58', 'Margin': 1138.37735759},
+        {'ProductID': 793, 'Name': 'Road-250 Black, 44', 'Margin': 1667.05964359},
+        {'ProductID': 794, 'Name': 'Road-250 Black, 48', 'Margin': 1667.05964359},
+        {'ProductID': 795, 'Name': 'Road-250 Black, 52', 'Margin': 1667.05964359},
+        {'ProductID': 796, 'Name': 'Road-250 Black, 58', 'Margin': 1667.05964359},
+        {'ProductID': 797, 'Name': 'Road-550-W Yellow, 38', 'Margin': 607.61529758},
+        {'ProductID': 798, 'Name': 'Road-550-W Yellow, 40', 'Margin': 607.61529758},
+        {'ProductID': 799, 'Name': 'Road-550-W Yellow, 42', 'Margin': 607.61529758},
+        {'ProductID': 800, 'Name': 'Road-550-W Yellow, 44', 'Margin': 607.61529758},
+        {'ProductID': 801, 'Name': 'Road-550-W Yellow, 48', 'Margin': 607.61529758},
+        {'ProductID': 802, 'Name': 'LL Fork', 'Margin': 56.07644537000001},
+        {'ProductID': 803, 'Name': 'ML Fork', 'Margin': 66.39358696},
+        {'ProductID': 804, 'Name': 'HL Fork', 'Margin': 86.82353656000001},
+        {'ProductID': 805, 'Name': 'LL Headset', 'Margin': 12.938968079999999},
+        {'ProductID': 806, 'Name': 'ML Headset', 'Margin': 38.69965528},
+        {'ProductID': 807, 'Name': 'HL Headset', 'Margin': 47.18938321},
+        {'ProductID': 808, 'Name': 'LL Mountain Handlebars', 'Margin': 16.85095918},
+        {'ProductID': 809, 'Name': 'ML Mountain Handlebars', 'Margin': 23.42635925},
+        {'ProductID': 810, 'Name': 'HL Mountain Handlebars', 'Margin': 45.50205479},
+        {'ProductID': 811, 'Name': 'LL Road Handlebars', 'Margin': 16.85095918},
+        {'ProductID': 812, 'Name': 'ML Road Handlebars', 'Margin': 23.42635925},
+        {'ProductID': 813, 'Name': 'HL Road Handlebars', 'Margin': 45.50205479},
+        {'ProductID': 814, 'Name': 'ML Mountain Frame - Black, 38', 'Margin': 199.21687153},
+        {'ProductID': 815, 'Name': 'LL Mountain Front Wheel', 'Margin': 28.91539468},
+        {'ProductID': 816, 'Name': 'ML Mountain Front Wheel', 'Margin': 99.49849191000001},
+        {'ProductID': 817, 'Name': 'HL Mountain Front Wheel', 'Margin': 142.90610555},
+        {'ProductID': 818, 'Name': 'LL Road Front Wheel', 'Margin': 40.730043890000005},
+        {'ProductID': 819, 'Name': 'ML Road Front Wheel', 'Margin': 118.23429709000001},
+        {'ProductID': 820, 'Name': 'HL Road Front Wheel', 'Margin': 157.11260986000002},
+        {'ProductID': 821, 'Name': 'Touring Front Wheel', 'Margin': 103.77542044},
+        {'ProductID': 822, 'Name': 'ML Road Frame-W - Yellow, 38', 'Margin': 307.55935988},
+        {'ProductID': 823, 'Name': 'LL Mountain Rear Wheel', 'Margin': 41.76772947999999},
+        {'ProductID': 824, 'Name': 'ML Mountain Rear Wheel', 'Margin': 112.35082671},
+        {'ProductID': 825, 'Name': 'HL Mountain Rear Wheel', 'Margin': 155.75844035},
+        {'ProductID': 826, 'Name': 'LL Road Rear Wheel', 'Margin': 53.58237869},
+        {'ProductID': 827, 'Name': 'ML Road Rear Wheel', 'Margin': 131.08663188999998},
+        {'ProductID': 828, 'Name': 'HL Road Rear Wheel', 'Margin': 169.96494466000001},
+        {'ProductID': 829, 'Name': 'Touring Rear Wheel', 'Margin': 116.62775524000001},
+        {'ProductID': 830, 'Name': 'ML Mountain Frame - Black, 40', 'Margin': 199.21687153},
+        {'ProductID': 831, 'Name': 'ML Mountain Frame - Black, 44', 'Margin': 199.21687153},
+        {'ProductID': 832, 'Name': 'ML Mountain Frame - Black, 48', 'Margin': 199.21687153},
+        {'ProductID': 833, 'Name': 'ML Road Frame-W - Yellow, 40', 'Margin': 307.55935988},
+        {'ProductID': 834, 'Name': 'ML Road Frame-W - Yellow, 42', 'Margin': 307.55935988},
+        {'ProductID': 835, 'Name': 'ML Road Frame-W - Yellow, 44', 'Margin': 307.55935988},
+        {'ProductID': 836, 'Name': 'ML Road Frame-W - Yellow, 48', 'Margin': 307.55935988},
+        {'ProductID': 837, 'Name': 'HL Road Frame - Black, 62', 'Margin': 931.2627258199999},
+        {'ProductID': 838, 'Name': 'HL Road Frame - Black, 44', 'Margin': 931.2627258199999},
+        {'ProductID': 839, 'Name': 'HL Road Frame - Black, 48', 'Margin': 931.2627258199999},
+        {'ProductID': 840, 'Name': 'HL Road Frame - Black, 52', 'Margin': 931.2627258199999},
+        {'ProductID': 841, 'Name': "Men's Sports Shorts, S", 'Margin': 26.530079389999997},
+        {'ProductID': 842, 'Name': 'Touring-Panniers, Large', 'Margin': 43.93640625},
+        {'ProductID': 843, 'Name': 'Cable Lock', 'Margin': 8.78728125},
+        {'ProductID': 844, 'Name': 'Minipump', 'Margin': 7.026331390000001},
+        {'ProductID': 845, 'Name': 'Mountain Pump', 'Margin': 8.78378764},
+        {'ProductID': 846, 'Name': 'Taillights - Battery-Powered', 'Margin': 4.91738389},
+        {'ProductID': 847, 'Name': 'Headlights - Dual-Beam', 'Margin': 12.298700140000001},
+        {'ProductID': 848, 'Name': 'Headlights - Weatherproof', 'Margin': 15.813612639999999},
+        {'ProductID': 849, 'Name': "Men's Sports Shorts, M", 'Margin': 26.530079389999997},
+        {'ProductID': 850, 'Name': "Men's Sports Shorts, L", 'Margin': 26.530079389999997},
+        {'ProductID': 851, 'Name': "Men's Sports Shorts, XL", 'Margin': 26.530079389999997},
+        {'ProductID': 852, 'Name': "Women's Tights, S", 'Margin': 33.16369814},
+        {'ProductID': 853, 'Name': "Women's Tights, M", 'Margin': 33.16369814},
+        {'ProductID': 854, 'Name': "Women's Tights, L", 'Margin': 33.16369814},
+        {'ProductID': 855, 'Name': "Men's Bib-Shorts, S", 'Margin': 33.48676389},
+        {'ProductID': 856, 'Name': "Men's Bib-Shorts, M", 'Margin': 33.48676389},
+        {'ProductID': 857, 'Name': "Men's Bib-Shorts, L", 'Margin': 33.48676389},
+        {'ProductID': 858, 'Name': 'Half-Finger Gloves, S', 'Margin': 9.81968553},
+        {'ProductID': 859, 'Name': 'Half-Finger Gloves, M', 'Margin': 9.81968553},
+        {'ProductID': 860, 'Name': 'Half-Finger Gloves, L', 'Margin': 9.81968553},
+        {'ProductID': 861, 'Name': 'Full-Finger Gloves, S', 'Margin': 16.80077189},
+        {'ProductID': 862, 'Name': 'Full-Finger Gloves, M', 'Margin': 16.80077189},
+        {'ProductID': 863, 'Name': 'Full-Finger Gloves, L', 'Margin': 16.80077189},
+        {'ProductID': 864, 'Name': 'Classic Vest, S', 'Margin': 20.236522899999997},
+        {'ProductID': 865, 'Name': 'Classic Vest, M', 'Margin': 20.236522899999997},
+        {'ProductID': 866, 'Name': 'Classic Vest, L', 'Margin': 20.236522899999997},
+        {'ProductID': 867, 'Name': "Women's Mountain Shorts, S", 'Margin': 28.063611230000003},
+        {'ProductID': 868, 'Name': "Women's Mountain Shorts, M", 'Margin': 28.063611230000003},
+        {'ProductID': 869, 'Name': "Women's Mountain Shorts, L", 'Margin': 28.063611230000003},
+        {'ProductID': 870, 'Name': 'Water Bottle - 30 oz.', 'Margin': 1.5902742300000001},
+        {'ProductID': 871, 'Name': 'Mountain Bottle Cage', 'Margin': 3.18370123},
+        {'ProductID': 872, 'Name': 'Road Bottle Cage', 'Margin': 2.86501583},
+        {'ProductID': 873, 'Name': 'Patch Kit/8 Patches', 'Margin': 0.72982365},
+        {'ProductID': 874, 'Name': 'Racing Socks, M', 'Margin': 31.565453339275386},
+        {'ProductID': 875, 'Name': 'Racing Socks, L', 'Margin': 31.565453339275386},
+        {'ProductID': 876, 'Name': 'Hitch Rack - 4-Bike', 'Margin': 38.242248000000004},
+        {'ProductID': 877, 'Name': 'Bike Wash - Dissolver', 'Margin': 2.5335489300000003},
+        {'ProductID': 878, 'Name': 'Fender Set - Mountain', 'Margin': 7.0046880499999995},
+        {'ProductID': 879, 'Name': 'All-Purpose Bike Stand', 'Margin': 50.6709786},
+        {'ProductID': 880, 'Name': 'Hydration Pack - 70 oz.', 'Margin': 20.609489229999994},
+        {'ProductID': 881, 'Name': 'Short-Sleeve Classic Jersey, S', 'Margin': 35.42375683},
+        {'ProductID': 882, 'Name': 'Short-Sleeve Classic Jersey, M', 'Margin': 35.42375683},
+        {'ProductID': 883, 'Name': 'Short-Sleeve Classic Jersey, L', 'Margin': 35.42375683},
+        {'ProductID': 884, 'Name': 'Short-Sleeve Classic Jersey, XL', 'Margin': 35.42375683},
+        {'ProductID': 885, 'Name': 'HL Touring Frame - Yellow, 60', 'Margin': 512.74580677},
+        {'ProductID': 886, 'Name': 'LL Touring Frame - Yellow, 62', 'Margin': 170.29380399000001},
+        {'ProductID': 887, 'Name': 'HL Touring Frame - Yellow, 46', 'Margin': 512.74580677},
+        {'ProductID': 888, 'Name': 'HL Touring Frame - Yellow, 50', 'Margin': 512.74580677},
+        {'ProductID': 889, 'Name': 'HL Touring Frame - Yellow, 54', 'Margin': 512.74580677},
+        {'ProductID': 890, 'Name': 'HL Touring Frame - Blue, 46', 'Margin': 512.74580677},
+        {'ProductID': 891, 'Name': 'HL Touring Frame - Blue, 50', 'Margin': 512.74580677},
+        {'ProductID': 892, 'Name': 'HL Touring Frame - Blue, 54', 'Margin': 512.74580677},
+        {'ProductID': 893, 'Name': 'HL Touring Frame - Blue, 60', 'Margin': 512.74580677},
+        {'ProductID': 894, 'Name': 'Rear Derailleur', 'Margin': 54.04144921999999},
+        {'ProductID': 895, 'Name': 'LL Touring Frame - Blue, 50', 'Margin': 170.29380399000001},
+        {'ProductID': 896, 'Name': 'LL Touring Frame - Blue, 54', 'Margin': 170.29380399000001},
+        {'ProductID': 897, 'Name': 'LL Touring Frame - Blue, 58', 'Margin': 170.29380399000001},
+        {'ProductID': 898, 'Name': 'LL Touring Frame - Blue, 62', 'Margin': 170.29380399000001},
+        {'ProductID': 899, 'Name': 'LL Touring Frame - Yellow, 44', 'Margin': 170.29380399000001},
+        {'ProductID': 900, 'Name': 'LL Touring Frame - Yellow, 50', 'Margin': 170.29380399000001},
+        {'ProductID': 901, 'Name': 'LL Touring Frame - Yellow, 54', 'Margin': 170.29380399000001},
+        {'ProductID': 902, 'Name': 'LL Touring Frame - Yellow, 58', 'Margin': 170.29380399000001},
+        {'ProductID': 903, 'Name': 'LL Touring Frame - Blue, 44', 'Margin': 170.29380399000001},
+        {'ProductID': 904, 'Name': 'ML Mountain Frame-W - Silver, 40', 'Margin': 199.79438897},
+        {'ProductID': 905, 'Name': 'ML Mountain Frame-W - Silver, 42', 'Margin': 199.79438897},
+        {'ProductID': 906, 'Name': 'ML Mountain Frame-W - Silver, 46', 'Margin': 199.79438897},
+        {'ProductID': 907, 'Name': 'Rear Brakes', 'Margin': 47.385300599999994},
+        {'ProductID': 908, 'Name': 'LL Mountain Seat/Saddle', 'Margin': 10.26039173},
+        {'ProductID': 909, 'Name': 'ML Mountain Seat/Saddle', 'Margin': 14.807964219999999},
+        {'ProductID': 910, 'Name': 'HL Mountain Seat/Saddle', 'Margin': 19.91545162},
+        {'ProductID': 911, 'Name': 'LL Road Seat/Saddle', 'Margin': 10.26039173},
+        {'ProductID': 912, 'Name': 'ML Road Seat/Saddle', 'Margin': 14.807964219999999},
+        {'ProductID': 913, 'Name': 'HL Road Seat/Saddle', 'Margin': 19.91545162},
+        {'ProductID': 914, 'Name': 'LL Touring Seat/Saddle', 'Margin': 10.26039173},
+        {'ProductID': 915, 'Name': 'ML Touring Seat/Saddle', 'Margin': 14.807964219999999},
+        {'ProductID': 916, 'Name': 'HL Touring Seat/Saddle', 'Margin': 19.91545162},
+        {'ProductID': 917, 'Name': 'LL Mountain Frame - Silver, 42', 'Margin': 144.89744697999998},
+        {'ProductID': 918, 'Name': 'LL Mountain Frame - Silver, 44', 'Margin': 144.89744697999998},
+        {'ProductID': 919, 'Name': 'LL Mountain Frame - Silver, 48', 'Margin': 144.89744697999998},
+        {'ProductID': 920, 'Name': 'LL Mountain Frame - Silver, 52', 'Margin': 144.89744697999998},
+        {'ProductID': 921, 'Name': 'Mountain Tire Tube', 'Margin': 1.5902742300000001},
+        {'ProductID': 922, 'Name': 'Road Tire Tube', 'Margin': 1.27158883},
+        {'ProductID': 923, 'Name': 'Touring Tire Tube', 'Margin': 1.5902742300000001},
+        {'ProductID': 924, 'Name': 'LL Mountain Frame - Black, 42', 'Margin': 146.6471985},
+        {'ProductID': 925, 'Name': 'LL Mountain Frame - Black, 44', 'Margin': 146.6471985},
+        {'ProductID': 926, 'Name': 'LL Mountain Frame - Black, 48', 'Margin': 146.6471985},
+        {'ProductID': 927, 'Name': 'LL Mountain Frame - Black, 52', 'Margin': 146.6471985},
+        {'ProductID': 928, 'Name': 'LL Mountain Tire', 'Margin': 7.963982229999999},
+        {'ProductID': 929, 'Name': 'ML Mountain Tire', 'Margin': 9.557409230000001},
+        {'ProductID': 930, 'Name': 'HL Mountain Tire', 'Margin': 11.153989},
+        {'ProductID': 931, 'Name': 'LL Road Tire', 'Margin': 6.84858333},
+        {'ProductID': 932, 'Name': 'ML Road Tire', 'Margin': 7.963982229999999},
+        {'ProductID': 933, 'Name': 'HL Road Tire', 'Margin': 10.38914404},
+        {'ProductID': 934, 'Name': 'Touring Tire', 'Margin': 9.23872383},
+        {'ProductID': 935, 'Name': 'LL Mountain Pedal', 'Margin': 15.31871296},
+        {'ProductID': 936, 'Name': 'ML Mountain Pedal', 'Margin': 23.4906928},
+        {'ProductID': 937, 'Name': 'HL Mountain Pedal', 'Margin': 30.641175160000003},
+        {'ProductID': 938, 'Name': 'LL Road Pedal', 'Margin': 15.31871296},
+        {'ProductID': 939, 'Name': 'ML Road Pedal', 'Margin': 23.4906928},
+        {'ProductID': 940, 'Name': 'HL Road Pedal', 'Margin': 30.641175160000003},
+        {'ProductID': 941, 'Name': 'Touring Pedal', 'Margin': 30.641175160000003},
+        {'ProductID': 942, 'Name': 'ML Mountain Frame-W - Silver, 38', 'Margin': 199.79438897},
+        {'ProductID': 943, 'Name': 'LL Mountain Frame - Black, 40', 'Margin': 146.6471985},
+        {'ProductID': 944, 'Name': 'LL Mountain Frame - Silver, 40', 'Margin': 144.89744697999998},
+        {'ProductID': 945, 'Name': 'Front Derailleur', 'Margin': 40.70690535999999},
+        {'ProductID': 946, 'Name': 'LL Touring Handlebars', 'Margin': 17.4373744},
+        {'ProductID': 947, 'Name': 'HL Touring Handlebars', 'Margin': 34.64391491},
+        {'ProductID': 948, 'Name': 'Front Brakes', 'Margin': 47.385300599999994},
+        {'ProductID': 949, 'Name': 'LL Crankset', 'Margin': 83.53545895999999},
+        {'ProductID': 950, 'Name': 'ML Crankset', 'Margin': 122.09246336},
+        {'ProductID': 951, 'Name': 'HL Crankset', 'Margin': 192.78030475999998},
+        {'ProductID': 952, 'Name': 'Chain', 'Margin': 9.005471859999998},
+        {'ProductID': 953, 'Name': 'Touring-2000 Blue, 60', 'Margin': 643.46399668},
+        {'ProductID': 954, 'Name': 'Touring-1000 Yellow, 46', 'Margin': 1262.7592845899999},
+        {'ProductID': 955, 'Name': 'Touring-1000 Yellow, 50', 'Margin': 1262.7592845899999},
+        {'ProductID': 956, 'Name': 'Touring-1000 Yellow, 54', 'Margin': 1262.7592845899999},
+        {'ProductID': 957, 'Name': 'Touring-1000 Yellow, 60', 'Margin': 1262.7592845899999},
+        {'ProductID': 958, 'Name': 'Touring-3000 Blue, 54', 'Margin': 393.19711408},
+        {'ProductID': 959, 'Name': 'Touring-3000 Blue, 58', 'Margin': 393.19711408},
+        {'ProductID': 960, 'Name': 'Touring-3000 Blue, 62', 'Margin': 393.19711408},
+        {'ProductID': 961, 'Name': 'Touring-3000 Yellow, 44', 'Margin': 393.19711408},
+        {'ProductID': 962, 'Name': 'Touring-3000 Yellow, 50', 'Margin': 393.19711408},
+        {'ProductID': 963, 'Name': 'Touring-3000 Yellow, 54', 'Margin': 393.19711408},
+        {'ProductID': 964, 'Name': 'Touring-3000 Yellow, 58', 'Margin': 393.19711408},
+        {'ProductID': 965, 'Name': 'Touring-3000 Yellow, 62', 'Margin': 393.19711408},
+        {'ProductID': 966, 'Name': 'Touring-1000 Blue, 46', 'Margin': 1262.7592845899999},
+        {'ProductID': 967, 'Name': 'Touring-1000 Blue, 50', 'Margin': 1262.7592845899999},
+        {'ProductID': 968, 'Name': 'Touring-1000 Blue, 54', 'Margin': 1262.7592845899999},
+        {'ProductID': 969, 'Name': 'Touring-1000 Blue, 60', 'Margin': 1262.7592845899999},
+        {'ProductID': 970, 'Name': 'Touring-2000 Blue, 46', 'Margin': 643.46399668},
+        {'ProductID': 971, 'Name': 'Touring-2000 Blue, 50', 'Margin': 643.46399668},
+        {'ProductID': 972, 'Name': 'Touring-2000 Blue, 54', 'Margin': 643.46399668},
+        {'ProductID': 973, 'Name': 'Road-350-W Yellow, 40', 'Margin': 922.4067709999999},
+        {'ProductID': 974, 'Name': 'Road-350-W Yellow, 42', 'Margin': 922.4067709999999},
+        {'ProductID': 975, 'Name': 'Road-350-W Yellow, 44', 'Margin': 922.4067709999999},
+        {'ProductID': 976, 'Name': 'Road-350-W Yellow, 48', 'Margin': 922.4067709999999},
+        {'ProductID': 977, 'Name': 'Road-750 Black, 58', 'Margin': 368.42673616},
+        {'ProductID': 978, 'Name': 'Touring-3000 Blue, 44', 'Margin': 393.19711408},
+        {'ProductID': 979, 'Name': 'Touring-3000 Blue, 50', 'Margin': 393.19711408},
+        {'ProductID': 980, 'Name': 'Mountain-400-W Silver, 38', 'Margin': 420.65993463999996},
+        {'ProductID': 981, 'Name': 'Mountain-400-W Silver, 40', 'Margin': 420.65993463999996},
+        {'ProductID': 982, 'Name': 'Mountain-400-W Silver, 42', 'Margin': 420.65993463999996},
+        {'ProductID': 983, 'Name': 'Mountain-400-W Silver, 46', 'Margin': 420.65993463999996},
+        {'ProductID': 984, 'Name': 'Mountain-500 Silver, 40', 'Margin': 308.8651575899999},
+        {'ProductID': 985, 'Name': 'Mountain-500 Silver, 42', 'Margin': 308.8651575899999},
+        {'ProductID': 986, 'Name': 'Mountain-500 Silver, 44', 'Margin': 308.8651575899999},
+        {'ProductID': 987, 'Name': 'Mountain-500 Silver, 48', 'Margin': 308.8651575899999},
+        {'ProductID': 988, 'Name': 'Mountain-500 Silver, 52', 'Margin': 308.8651575899999},
+        {'ProductID': 989, 'Name': 'Mountain-500 Black, 40', 'Margin': 315.81889636999995},
+        {'ProductID': 990, 'Name': 'Mountain-500 Black, 42', 'Margin': 315.81889636999995},
+        {'ProductID': 991, 'Name': 'Mountain-500 Black, 44', 'Margin': 315.81889636999995},
+        {'ProductID': 992, 'Name': 'Mountain-500 Black, 48', 'Margin': 315.81889636999995},
+        {'ProductID': 993, 'Name': 'Mountain-500 Black, 52', 'Margin': 315.81889636999995},
+        {'ProductID': 994, 'Name': 'LL Bottom Bracket', 'Margin': 20.42620036},
+        {'ProductID': 995, 'Name': 'ML Bottom Bracket', 'Margin': 38.30240626},
+        {'ProductID': 996, 'Name': 'HL Bottom Bracket', 'Margin': 45.96363736},
+        {'ProductID': 997, 'Name': 'Road-750 Black, 44', 'Margin': 368.42673616},
+        {'ProductID': 998, 'Name': 'Road-750 Black, 48', 'Margin': 368.42673616},
+        {'ProductID': 999, 'Name': 'Road-750 Black, 52', 'Margin': 368.42673616}
+    ]
+}
+SQL execution succeeded.
+resp_dd
+{
+    'query': 'If commission is calculated based on 14.790% of standard cost, extract product item and calculate the margin if standard cost is increased or 
+decreased as follows for each product colours as follows: Black +22%, Red - 12%, Silver +15%, Multi +5% White (2) times original price divided by the square 
+root of the margin price ,while other colours remain the same.',
+    'response': {
+        'result': [
+            {'ProductID': 1, 'Name': 'Adjustable Race', 'Margin': 0.0},
+            {'ProductID': 2, 'Name': 'Bearing Ball', 'Margin': 0.0},
+            {'ProductID': 3, 'Name': 'BB Ball Bearing', 'Margin': 0.0},
+            {'ProductID': 4, 'Name': 'Headset Ball Bearings', 'Margin': 0.0},
+            {'ProductID': 316, 'Name': 'Blade', 'Margin': 0.0},
+            {'ProductID': 317, 'Name': 'LL Crankarm', 'Margin': 0.0},
+            {'ProductID': 318, 'Name': 'ML Crankarm', 'Margin': 0.0},
+            {'ProductID': 319, 'Name': 'HL Crankarm', 'Margin': 0.0},
+            {'ProductID': 320, 'Name': 'Chainring Bolts', 'Margin': 0.0},
+            {'ProductID': 321, 'Name': 'Chainring Nut', 'Margin': 0.0},
+            {'ProductID': 322, 'Name': 'Chainring', 'Margin': 0.0},
+            {'ProductID': 323, 'Name': 'Crown Race', 'Margin': 0.0},
+            {'ProductID': 324, 'Name': 'Chain Stays', 'Margin': 0.0},
+            {'ProductID': 325, 'Name': 'Decal 1', 'Margin': 0.0},
+            {'ProductID': 326, 'Name': 'Decal 2', 'Margin': 0.0},
+            {'ProductID': 327, 'Name': 'Down Tube', 'Margin': 0.0},
+            {'ProductID': 328, 'Name': 'Mountain End Caps', 'Margin': 0.0},
+            {'ProductID': 329, 'Name': 'Road End Caps', 'Margin': 0.0},
+            {'ProductID': 330, 'Name': 'Touring End Caps', 'Margin': 0.0},
+            {'ProductID': 331, 'Name': 'Fork End', 'Margin': 0.0},
+            {'ProductID': 332, 'Name': 'Freewheel', 'Margin': 0.0},
+            {'ProductID': 341, 'Name': 'Flat Washer 1', 'Margin': 0.0},
+            {'ProductID': 342, 'Name': 'Flat Washer 6', 'Margin': 0.0},
+            {'ProductID': 343, 'Name': 'Flat Washer 2', 'Margin': 0.0},
+            {'ProductID': 344, 'Name': 'Flat Washer 9', 'Margin': 0.0},
+            {'ProductID': 345, 'Name': 'Flat Washer 4', 'Margin': 0.0},
+            {'ProductID': 346, 'Name': 'Flat Washer 3', 'Margin': 0.0},
+            {'ProductID': 347, 'Name': 'Flat Washer 8', 'Margin': 0.0},
+            {'ProductID': 348, 'Name': 'Flat Washer 5', 'Margin': 0.0},
+            {'ProductID': 349, 'Name': 'Flat Washer 7', 'Margin': 0.0},
+            {'ProductID': 350, 'Name': 'Fork Crown', 'Margin': 0.0},
+            {'ProductID': 351, 'Name': 'Front Derailleur Cage', 'Margin': 0.0},
+            {'ProductID': 352, 'Name': 'Front Derailleur Linkage', 'Margin': 0.0},
+            {'ProductID': 355, 'Name': 'Guide Pulley', 'Margin': 0.0},
+            {'ProductID': 356, 'Name': 'LL Grip Tape', 'Margin': 0.0},
+            {'ProductID': 357, 'Name': 'ML Grip Tape', 'Margin': 0.0},
+            {'ProductID': 358, 'Name': 'HL Grip Tape', 'Margin': 0.0},
+            {'ProductID': 359, 'Name': 'Thin-Jam Hex Nut 9', 'Margin': 0.0},
+            {'ProductID': 360, 'Name': 'Thin-Jam Hex Nut 10', 'Margin': 0.0},
+            {'ProductID': 361, 'Name': 'Thin-Jam Hex Nut 1', 'Margin': 0.0},
+            {'ProductID': 362, 'Name': 'Thin-Jam Hex Nut 2', 'Margin': 0.0},
+            {'ProductID': 363, 'Name': 'Thin-Jam Hex Nut 15', 'Margin': 0.0},
+            {'ProductID': 364, 'Name': 'Thin-Jam Hex Nut 16', 'Margin': 0.0},
+            {'ProductID': 365, 'Name': 'Thin-Jam Hex Nut 5', 'Margin': 0.0},
+            {'ProductID': 366, 'Name': 'Thin-Jam Hex Nut 6', 'Margin': 0.0},
+            {'ProductID': 367, 'Name': 'Thin-Jam Hex Nut 3', 'Margin': 0.0},
+            {'ProductID': 368, 'Name': 'Thin-Jam Hex Nut 4', 'Margin': 0.0},
+            {'ProductID': 369, 'Name': 'Thin-Jam Hex Nut 13', 'Margin': 0.0},
+            {'ProductID': 370, 'Name': 'Thin-Jam Hex Nut 14', 'Margin': 0.0},
+            {'ProductID': 371, 'Name': 'Thin-Jam Hex Nut 7', 'Margin': 0.0},
+            {'ProductID': 372, 'Name': 'Thin-Jam Hex Nut 8', 'Margin': 0.0},
+            {'ProductID': 373, 'Name': 'Thin-Jam Hex Nut 12', 'Margin': 0.0},
+            {'ProductID': 374, 'Name': 'Thin-Jam Hex Nut 11', 'Margin': 0.0},
+            {'ProductID': 375, 'Name': 'Hex Nut 5', 'Margin': 0.0},
+            {'ProductID': 376, 'Name': 'Hex Nut 6', 'Margin': 0.0},
+            {'ProductID': 377, 'Name': 'Hex Nut 16', 'Margin': 0.0},
+            {'ProductID': 378, 'Name': 'Hex Nut 17', 'Margin': 0.0},
+            {'ProductID': 379, 'Name': 'Hex Nut 7', 'Margin': 0.0},
+            {'ProductID': 380, 'Name': 'Hex Nut 8', 'Margin': 0.0},
+            {'ProductID': 381, 'Name': 'Hex Nut 9', 'Margin': 0.0},
+            {'ProductID': 382, 'Name': 'Hex Nut 22', 'Margin': 0.0},
+            {'ProductID': 383, 'Name': 'Hex Nut 23', 'Margin': 0.0},
+            {'ProductID': 384, 'Name': 'Hex Nut 12', 'Margin': 0.0},
+            {'ProductID': 385, 'Name': 'Hex Nut 13', 'Margin': 0.0},
+            {'ProductID': 386, 'Name': 'Hex Nut 1', 'Margin': 0.0},
+            {'ProductID': 387, 'Name': 'Hex Nut 10', 'Margin': 0.0},
+            {'ProductID': 388, 'Name': 'Hex Nut 11', 'Margin': 0.0},
+            {'ProductID': 389, 'Name': 'Hex Nut 2', 'Margin': 0.0},
+            {'ProductID': 390, 'Name': 'Hex Nut 20', 'Margin': 0.0},
+            {'ProductID': 391, 'Name': 'Hex Nut 21', 'Margin': 0.0},
+            {'ProductID': 392, 'Name': 'Hex Nut 3', 'Margin': 0.0},
+            {'ProductID': 393, 'Name': 'Hex Nut 14', 'Margin': 0.0},
+            {'ProductID': 394, 'Name': 'Hex Nut 15', 'Margin': 0.0},
+            {'ProductID': 395, 'Name': 'Hex Nut 4', 'Margin': 0.0},
+            {'ProductID': 396, 'Name': 'Hex Nut 18', 'Margin': 0.0},
+            {'ProductID': 397, 'Name': 'Hex Nut 19', 'Margin': 0.0},
+            {'ProductID': 398, 'Name': 'Handlebar Tube', 'Margin': 0.0},
+            {'ProductID': 399, 'Name': 'Head Tube', 'Margin': 0.0},
+            {'ProductID': 400, 'Name': 'LL Hub', 'Margin': 0.0},
+            {'ProductID': 401, 'Name': 'HL Hub', 'Margin': 0.0},
+            {'ProductID': 402, 'Name': 'Keyed Washer', 'Margin': 0.0},
+            {'ProductID': 403, 'Name': 'External Lock Washer 3', 'Margin': 0.0},
+            {'ProductID': 404, 'Name': 'External Lock Washer 4', 'Margin': 0.0},
+            {'ProductID': 405, 'Name': 'External Lock Washer 9', 'Margin': 0.0},
+            {'ProductID': 406, 'Name': 'External Lock Washer 5', 'Margin': 0.0},
+            {'ProductID': 407, 'Name': 'External Lock Washer 7', 'Margin': 0.0},
+            {'ProductID': 408, 'Name': 'External Lock Washer 6', 'Margin': 0.0},
+            {'ProductID': 409, 'Name': 'External Lock Washer 1', 'Margin': 0.0},
+            {'ProductID': 410, 'Name': 'External Lock Washer 8', 'Margin': 0.0},
+            {'ProductID': 411, 'Name': 'External Lock Washer 2', 'Margin': 0.0},
+            {'ProductID': 412, 'Name': 'Internal Lock Washer 3', 'Margin': 0.0},
+            {'ProductID': 413, 'Name': 'Internal Lock Washer 4', 'Margin': 0.0},
+            {'ProductID': 414, 'Name': 'Internal Lock Washer 9', 'Margin': 0.0},
+            {'ProductID': 415, 'Name': 'Internal Lock Washer 5', 'Margin': 0.0},
+            {'ProductID': 416, 'Name': 'Internal Lock Washer 7', 'Margin': 0.0},
+            {'ProductID': 417, 'Name': 'Internal Lock Washer 6', 'Margin': 0.0},
+            {'ProductID': 418, 'Name': 'Internal Lock Washer 10', 'Margin': 0.0},
+            {'ProductID': 419, 'Name': 'Internal Lock Washer 1', 'Margin': 0.0},
+            {'ProductID': 420, 'Name': 'Internal Lock Washer 8', 'Margin': 0.0},
+            {'ProductID': 421, 'Name': 'Internal Lock Washer 2', 'Margin': 0.0},
+            {'ProductID': 422, 'Name': 'Thin-Jam Lock Nut 9', 'Margin': 0.0},
+            {'ProductID': 423, 'Name': 'Thin-Jam Lock Nut 10', 'Margin': 0.0},
+            {'ProductID': 424, 'Name': 'Thin-Jam Lock Nut 1', 'Margin': 0.0},
+            {'ProductID': 425, 'Name': 'Thin-Jam Lock Nut 2', 'Margin': 0.0},
+            {'ProductID': 426, 'Name': 'Thin-Jam Lock Nut 15', 'Margin': 0.0},
+            {'ProductID': 427, 'Name': 'Thin-Jam Lock Nut 16', 'Margin': 0.0},
+            {'ProductID': 428, 'Name': 'Thin-Jam Lock Nut 5', 'Margin': 0.0},
+            {'ProductID': 429, 'Name': 'Thin-Jam Lock Nut 6', 'Margin': 0.0},
+            {'ProductID': 430, 'Name': 'Thin-Jam Lock Nut 3', 'Margin': 0.0},
+            {'ProductID': 431, 'Name': 'Thin-Jam Lock Nut 4', 'Margin': 0.0},
+            {'ProductID': 432, 'Name': 'Thin-Jam Lock Nut 13', 'Margin': 0.0},
+            {'ProductID': 433, 'Name': 'Thin-Jam Lock Nut 14', 'Margin': 0.0},
+            {'ProductID': 434, 'Name': 'Thin-Jam Lock Nut 7', 'Margin': 0.0},
+            {'ProductID': 435, 'Name': 'Thin-Jam Lock Nut 8', 'Margin': 0.0},
+            {'ProductID': 436, 'Name': 'Thin-Jam Lock Nut 12', 'Margin': 0.0},
+            {'ProductID': 437, 'Name': 'Thin-Jam Lock Nut 11', 'Margin': 0.0},
+            {'ProductID': 438, 'Name': 'Lock Nut 5', 'Margin': 0.0},
+            {'ProductID': 439, 'Name': 'Lock Nut 6', 'Margin': 0.0},
+            {'ProductID': 440, 'Name': 'Lock Nut 16', 'Margin': 0.0},
+            {'ProductID': 441, 'Name': 'Lock Nut 17', 'Margin': 0.0},
+            {'ProductID': 442, 'Name': 'Lock Nut 7', 'Margin': 0.0},
+            {'ProductID': 443, 'Name': 'Lock Nut 8', 'Margin': 0.0},
+            {'ProductID': 444, 'Name': 'Lock Nut 9', 'Margin': 0.0},
+            {'ProductID': 445, 'Name': 'Lock Nut 22', 'Margin': 0.0},
+            {'ProductID': 446, 'Name': 'Lock Nut 23', 'Margin': 0.0},
+            {'ProductID': 447, 'Name': 'Lock Nut 12', 'Margin': 0.0},
+            {'ProductID': 448, 'Name': 'Lock Nut 13', 'Margin': 0.0},
+            {'ProductID': 449, 'Name': 'Lock Nut 1', 'Margin': 0.0},
+            {'ProductID': 450, 'Name': 'Lock Nut 10', 'Margin': 0.0},
+            {'ProductID': 451, 'Name': 'Lock Nut 11', 'Margin': 0.0},
+            {'ProductID': 452, 'Name': 'Lock Nut 2', 'Margin': 0.0},
+            {'ProductID': 453, 'Name': 'Lock Nut 20', 'Margin': 0.0},
+            {'ProductID': 454, 'Name': 'Lock Nut 21', 'Margin': 0.0},
+            {'ProductID': 455, 'Name': 'Lock Nut 3', 'Margin': 0.0},
+            {'ProductID': 456, 'Name': 'Lock Nut 14', 'Margin': 0.0},
+            {'ProductID': 457, 'Name': 'Lock Nut 15', 'Margin': 0.0},
+            {'ProductID': 458, 'Name': 'Lock Nut 4', 'Margin': 0.0},
+            {'ProductID': 459, 'Name': 'Lock Nut 19', 'Margin': 0.0},
+            {'ProductID': 460, 'Name': 'Lock Nut 18', 'Margin': 0.0},
+            {'ProductID': 461, 'Name': 'Lock Ring', 'Margin': 0.0},
+            {'ProductID': 462, 'Name': 'Lower Head Race', 'Margin': 0.0},
+            {'ProductID': 463, 'Name': 'Lock Washer 4', 'Margin': 0.0},
+            {'ProductID': 464, 'Name': 'Lock Washer 5', 'Margin': 0.0},
+            {'ProductID': 465, 'Name': 'Lock Washer 10', 'Margin': 0.0},
+            {'ProductID': 466, 'Name': 'Lock Washer 6', 'Margin': 0.0},
+            {'ProductID': 467, 'Name': 'Lock Washer 13', 'Margin': 0.0},
+            {'ProductID': 468, 'Name': 'Lock Washer 8', 'Margin': 0.0},
+            {'ProductID': 469, 'Name': 'Lock Washer 1', 'Margin': 0.0},
+            {'ProductID': 470, 'Name': 'Lock Washer 7', 'Margin': 0.0},
+            {'ProductID': 471, 'Name': 'Lock Washer 12', 'Margin': 0.0},
+            {'ProductID': 472, 'Name': 'Lock Washer 2', 'Margin': 0.0},
+            {'ProductID': 473, 'Name': 'Lock Washer 9', 'Margin': 0.0},
+            {'ProductID': 474, 'Name': 'Lock Washer 3', 'Margin': 0.0},
+            {'ProductID': 475, 'Name': 'Lock Washer 11', 'Margin': 0.0},
+            {'ProductID': 476, 'Name': 'Metal Angle', 'Margin': 0.0},
+            {'ProductID': 477, 'Name': 'Metal Bar 1', 'Margin': 0.0},
+            {'ProductID': 478, 'Name': 'Metal Bar 2', 'Margin': 0.0},
+            {'ProductID': 479, 'Name': 'Metal Plate 2', 'Margin': 0.0},
+            {'ProductID': 480, 'Name': 'Metal Plate 1', 'Margin': 0.0},
+            {'ProductID': 481, 'Name': 'Metal Plate 3', 'Margin': 0.0},
+            {'ProductID': 482, 'Name': 'Metal Sheet 2', 'Margin': 0.0},
+            {'ProductID': 483, 'Name': 'Metal Sheet 3', 'Margin': 0.0},
+            {'ProductID': 484, 'Name': 'Metal Sheet 7', 'Margin': 0.0},
+            {'ProductID': 485, 'Name': 'Metal Sheet 4', 'Margin': 0.0},
+            {'ProductID': 486, 'Name': 'Metal Sheet 5', 'Margin': 0.0},
+            {'ProductID': 487, 'Name': 'Metal Sheet 6', 'Margin': 0.0},
+            {'ProductID': 488, 'Name': 'Metal Sheet 1', 'Margin': 0.0},
+            {'ProductID': 489, 'Name': 'Metal Tread Plate', 'Margin': 0.0},
+            {'ProductID': 490, 'Name': 'LL Nipple', 'Margin': 0.0},
+            {'ProductID': 491, 'Name': 'HL Nipple', 'Margin': 0.0},
+            {'ProductID': 492, 'Name': 'Paint - Black', 'Margin': 0.0},
+            {'ProductID': 493, 'Name': 'Paint - Red', 'Margin': 0.0},
+            {'ProductID': 494, 'Name': 'Paint - Silver', 'Margin': 0.0},
+            {'ProductID': 495, 'Name': 'Paint - Blue', 'Margin': 0.0},
+            {'ProductID': 496, 'Name': 'Paint - Yellow', 'Margin': 0.0},
+            {'ProductID': 497, 'Name': 'Pinch Bolt', 'Margin': 0.0},
+            {'ProductID': 504, 'Name': 'Cup-Shaped Race', 'Margin': 0.0},
+            {'ProductID': 505, 'Name': 'Cone-Shaped Race', 'Margin': 0.0},
+            {'ProductID': 506, 'Name': 'Reflector', 'Margin': 0.0},
+            {'ProductID': 507, 'Name': 'LL Mountain Rim', 'Margin': 0.0},
+            {'ProductID': 508, 'Name': 'ML Mountain Rim', 'Margin': 0.0},
+            {'ProductID': 509, 'Name': 'HL Mountain Rim', 'Margin': 0.0},
+            {'ProductID': 510, 'Name': 'LL Road Rim', 'Margin': 0.0},
+            {'ProductID': 511, 'Name': 'ML Road Rim', 'Margin': 0.0},
+            {'ProductID': 512, 'Name': 'HL Road Rim', 'Margin': 0.0},
+            {'ProductID': 513, 'Name': 'Touring Rim', 'Margin': 0.0},
+            {'ProductID': 514, 'Name': 'LL Mountain Seat Assembly', 'Margin': 84.16191699999999},
+            {'ProductID': 515, 'Name': 'ML Mountain Seat Assembly', 'Margin': 92.870379},
+            {'ProductID': 516, 'Name': 'HL Mountain Seat Assembly', 'Margin': 124.295827},
+            {'ProductID': 517, 'Name': 'LL Road Seat Assembly', 'Margin': 84.16191699999999},
+            {'ProductID': 518, 'Name': 'ML Road Seat Assembly', 'Margin': 92.870379},
+            {'ProductID': 519, 'Name': 'HL Road Seat Assembly', 'Margin': 124.295827},
+            {'ProductID': 520, 'Name': 'LL Touring Seat Assembly', 'Margin': 84.16191699999999},
+            {'ProductID': 521, 'Name': 'ML Touring Seat Assembly', 'Margin': 92.870379},
+            {'ProductID': 522, 'Name': 'HL Touring Seat Assembly', 'Margin': 124.295827},
+            {'ProductID': 523, 'Name': 'LL Spindle/Axle', 'Margin': 0.0},
+            {'ProductID': 524, 'Name': 'HL Spindle/Axle', 'Margin': 0.0},
+            {'ProductID': 525, 'Name': 'LL Shell', 'Margin': 0.0},
+            {'ProductID': 526, 'Name': 'HL Shell', 'Margin': 0.0},
+            {'ProductID': 527, 'Name': 'Spokes', 'Margin': 0.0},
+            {'ProductID': 528, 'Name': 'Seat Lug', 'Margin': 0.0},
+            {'ProductID': 529, 'Name': 'Stem', 'Margin': 0.0},
+            {'ProductID': 530, 'Name': 'Seat Post', 'Margin': 0.0},
+            {'ProductID': 531, 'Name': 'Steerer', 'Margin': 0.0},
+            {'ProductID': 532, 'Name': 'Seat Stays', 'Margin': 0.0},
+            {'ProductID': 533, 'Name': 'Seat Tube', 'Margin': 0.0},
+            {'ProductID': 534, 'Name': 'Top Tube', 'Margin': 0.0},
+            {'ProductID': 535, 'Name': 'Tension Pulley', 'Margin': 0.0},
+            {'ProductID': 679, 'Name': 'Rear Derailleur Cage', 'Margin': 0.0},
+            {'ProductID': 680, 'Name': 'HL Road Frame - Black, 58', 'Margin': 1135.6862509999999},
+            {'ProductID': 706, 'Name': 'HL Road Frame - Red, 58', 'Margin': 775.5208509999999},
+            {'ProductID': 707, 'Name': 'Sport-100 Helmet, Red', 'Margin': 9.58048023},
+            {'ProductID': 708, 'Name': 'Sport-100 Helmet, Black', 'Margin': 14.029822229999999},
+            {'ProductID': 709, 'Name': 'Mountain Bike Socks, M', 'Margin': 32.04798578625503},
+            {'ProductID': 710, 'Name': 'Mountain Bike Socks, L', 'Margin': 32.04798578625503},
+            {'ProductID': 711, 'Name': 'Sport-100 Helmet, Blue', 'Margin': 11.15083623},
+            {'ProductID': 712, 'Name': 'AWC Logo Cap', 'Margin': 6.24460683},
+            {'ProductID': 713, 'Name': 'Long-Sleeve Logo Jersey, S', 'Margin': 34.723903830000005},
+            {'ProductID': 714, 'Name': 'Long-Sleeve Logo Jersey, M', 'Margin': 34.723903830000005},
+            {'ProductID': 715, 'Name': 'Long-Sleeve Logo Jersey, L', 'Margin': 34.723903830000005},
+            {'ProductID': 716, 'Name': 'Long-Sleeve Logo Jersey, XL', 'Margin': 34.723903830000005},
+            {'ProductID': 717, 'Name': 'HL Road Frame - Red, 62', 'Margin': 635.92709782},
+            {'ProductID': 718, 'Name': 'HL Road Frame - Red, 44', 'Margin': 635.92709782},
+            {'ProductID': 719, 'Name': 'HL Road Frame - Red, 48', 'Margin': 635.92709782},
+            {'ProductID': 720, 'Name': 'HL Road Frame - Red, 52', 'Margin': 635.92709782},
+            {'ProductID': 721, 'Name': 'HL Road Frame - Red, 56', 'Margin': 635.92709782},
+            {'ProductID': 722, 'Name': 'LL Road Frame - Black, 58', 'Margin': 219.37856971},
+            {'ProductID': 723, 'Name': 'LL Road Frame - Black, 60', 'Margin': 219.37856971},
+            {'ProductID': 724, 'Name': 'LL Road Frame - Black, 62', 'Margin': 219.37856971},
+            {'ProductID': 725, 'Name': 'LL Road Frame - Red, 44', 'Margin': 137.01771291},
+            {'ProductID': 726, 'Name': 'LL Road Frame - Red, 48', 'Margin': 137.01771291},
+            {'ProductID': 727, 'Name': 'LL Road Frame - Red, 52', 'Margin': 137.01771291},
+            {'ProductID': 728, 'Name': 'LL Road Frame - Red, 58', 'Margin': 137.01771291},
+            {'ProductID': 729, 'Name': 'LL Road Frame - Red, 60', 'Margin': 137.01771291},
+            {'ProductID': 730, 'Name': 'LL Road Frame - Red, 62', 'Margin': 137.01771291},
+            {'ProductID': 731, 'Name': 'ML Road Frame - Red, 44', 'Margin': 257.80125474},
+            {'ProductID': 732, 'Name': 'ML Road Frame - Red, 48', 'Margin': 257.80125474},
+            {'ProductID': 733, 'Name': 'ML Road Frame - Red, 52', 'Margin': 257.80125474},
+            {'ProductID': 734, 'Name': 'ML Road Frame - Red, 58', 'Margin': 257.80125474},
+            {'ProductID': 735, 'Name': 'ML Road Frame - Red, 60', 'Margin': 257.80125474},
+            {'ProductID': 736, 'Name': 'LL Road Frame - Black, 44', 'Margin': 219.37856971},
+            {'ProductID': 737, 'Name': 'LL Road Frame - Black, 48', 'Margin': 219.37856971},
+            {'ProductID': 738, 'Name': 'LL Road Frame - Black, 52', 'Margin': 219.37856971},
+            {'ProductID': 739, 'Name': 'HL Mountain Frame - Silver, 42', 'Margin': 748.76932042},
+            {'ProductID': 740, 'Name': 'HL Mountain Frame - Silver, 44', 'Margin': 708.2953031},
+            {'ProductID': 741, 'Name': 'HL Mountain Frame - Silver, 48', 'Margin': 708.2953031},
+            {'ProductID': 742, 'Name': 'HL Mountain Frame - Silver, 46', 'Margin': 748.76932042},
+            {'ProductID': 743, 'Name': 'HL Mountain Frame - Black, 42', 'Margin': 792.3258561},
+            {'ProductID': 744, 'Name': 'HL Mountain Frame - Black, 44', 'Margin': 749.4973908799999},
+            {'ProductID': 745, 'Name': 'HL Mountain Frame - Black, 48', 'Margin': 749.4973908799999},
+            {'ProductID': 746, 'Name': 'HL Mountain Frame - Black, 46', 'Margin': 792.3258561},
+            {'ProductID': 747, 'Name': 'HL Mountain Frame - Black, 38', 'Margin': 792.3258561},
+            {'ProductID': 748, 'Name': 'HL Mountain Frame - Silver, 38', 'Margin': 748.76932042},
+            {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'Margin': 1589.6044838199998},
+            {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'Margin': 1589.6044838199998},
+            {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'Margin': 1589.6044838199998},
+            {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'Margin': 1589.6044838199998},
+            {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'Margin': 1589.6044838199998},
+            {'ProductID': 754, 'Name': 'Road-450 Red, 58', 'Margin': 647.6949464300001},
+            {'ProductID': 755, 'Name': 'Road-450 Red, 60', 'Margin': 647.6949464300001},
+            {'ProductID': 756, 'Name': 'Road-450 Red, 44', 'Margin': 647.6949464300001},
+            {'ProductID': 757, 'Name': 'Road-450 Red, 48', 'Margin': 647.6949464300001},
+            {'ProductID': 758, 'Name': 'Road-450 Red, 52', 'Margin': 647.6949464300001},
+            {'ProductID': 759, 'Name': 'Road-650 Red, 58', 'Margin': 356.31790186},
+            {'ProductID': 760, 'Name': 'Road-650 Red, 60', 'Margin': 356.31790186},
+            {'ProductID': 761, 'Name': 'Road-650 Red, 62', 'Margin': 356.31790186},
+            {'ProductID': 762, 'Name': 'Road-650 Red, 44', 'Margin': 356.31790186},
+            {'ProductID': 763, 'Name': 'Road-650 Red, 48', 'Margin': 356.31790186},
+            {'ProductID': 764, 'Name': 'Road-650 Red, 52', 'Margin': 356.31790186},
+            {'ProductID': 765, 'Name': 'Road-650 Black, 58', 'Margin': 521.7981458599999},
+            {'ProductID': 766, 'Name': 'Road-650 Black, 60', 'Margin': 521.7981458599999},
+            {'ProductID': 767, 'Name': 'Road-650 Black, 62', 'Margin': 521.7981458599999},
+            {'ProductID': 768, 'Name': 'Road-650 Black, 44', 'Margin': 521.7981458599999},
+            {'ProductID': 769, 'Name': 'Road-650 Black, 48', 'Margin': 521.7981458599999},
+            {'ProductID': 770, 'Name': 'Road-650 Black, 52', 'Margin': 521.7981458599999},
+            {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'Margin': 1916.1699242399998},
+            {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'Margin': 1916.1699242399998},
+            {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'Margin': 1916.1699242399998},
+            {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'Margin': 1916.1699242399998},
+            {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'Margin': 2034.9470062399998},
+            {'ProductID': 776, 'Name': 'Mountain-100 Black, 42', 'Margin': 2034.9470062399998},
+            {'ProductID': 777, 'Name': 'Mountain-100 Black, 44', 'Margin': 2034.9470062399998},
+            {'ProductID': 778, 'Name': 'Mountain-100 Black, 48', 'Margin': 2034.9470062399998},
+            {'ProductID': 779, 'Name': 'Mountain-200 Silver, 38', 'Margin': 1268.27730095},
+            {'ProductID': 780, 'Name': 'Mountain-200 Silver, 42', 'Margin': 1268.27730095},
+            {'ProductID': 781, 'Name': 'Mountain-200 Silver, 46', 'Margin': 1268.27730095},
+            {'ProductID': 782, 'Name': 'Mountain-200 Black, 38', 'Margin': 1342.24915173},
+            {'ProductID': 783, 'Name': 'Mountain-200 Black, 42', 'Margin': 1342.24915173},
+            {'ProductID': 784, 'Name': 'Mountain-200 Black, 46', 'Margin': 1342.24915173},
+            {'ProductID': 785, 'Name': 'Mountain-300 Black, 38', 'Margin': 641.58259234},
+            {'ProductID': 786, 'Name': 'Mountain-300 Black, 40', 'Margin': 641.58259234},
+            {'ProductID': 787, 'Name': 'Mountain-300 Black, 44', 'Margin': 641.58259234},
+            {'ProductID': 788, 'Name': 'Mountain-300 Black, 48', 'Margin': 641.58259234},
+            {'ProductID': 789, 'Name': 'Road-250 Red, 44', 'Margin': 1111.90352344},
+            {'ProductID': 790, 'Name': 'Road-250 Red, 48', 'Margin': 1111.90352344},
+            {'ProductID': 791, 'Name': 'Road-250 Red, 52', 'Margin': 1111.90352344},
+            {'ProductID': 792, 'Name': 'Road-250 Red, 58', 'Margin': 1138.37735759},
+            {'ProductID': 793, 'Name': 'Road-250 Black, 44', 'Margin': 1667.05964359},
+            {'ProductID': 794, 'Name': 'Road-250 Black, 48', 'Margin': 1667.05964359},
+            {'ProductID': 795, 'Name': 'Road-250 Black, 52', 'Margin': 1667.05964359},
+            {'ProductID': 796, 'Name': 'Road-250 Black, 58', 'Margin': 1667.05964359},
+            {'ProductID': 797, 'Name': 'Road-550-W Yellow, 38', 'Margin': 607.61529758},
+            {'ProductID': 798, 'Name': 'Road-550-W Yellow, 40', 'Margin': 607.61529758},
+            {'ProductID': 799, 'Name': 'Road-550-W Yellow, 42', 'Margin': 607.61529758},
+            {'ProductID': 800, 'Name': 'Road-550-W Yellow, 44', 'Margin': 607.61529758},
+            {'ProductID': 801, 'Name': 'Road-550-W Yellow, 48', 'Margin': 607.61529758},
+            {'ProductID': 802, 'Name': 'LL Fork', 'Margin': 56.07644537000001},
+            {'ProductID': 803, 'Name': 'ML Fork', 'Margin': 66.39358696},
+            {'ProductID': 804, 'Name': 'HL Fork', 'Margin': 86.82353656000001},
+            {'ProductID': 805, 'Name': 'LL Headset', 'Margin': 12.938968079999999},
+            {'ProductID': 806, 'Name': 'ML Headset', 'Margin': 38.69965528},
+            {'ProductID': 807, 'Name': 'HL Headset', 'Margin': 47.18938321},
+            {'ProductID': 808, 'Name': 'LL Mountain Handlebars', 'Margin': 16.85095918},
+            {'ProductID': 809, 'Name': 'ML Mountain Handlebars', 'Margin': 23.42635925},
+            {'ProductID': 810, 'Name': 'HL Mountain Handlebars', 'Margin': 45.50205479},
+            {'ProductID': 811, 'Name': 'LL Road Handlebars', 'Margin': 16.85095918},
+            {'ProductID': 812, 'Name': 'ML Road Handlebars', 'Margin': 23.42635925},
+            {'ProductID': 813, 'Name': 'HL Road Handlebars', 'Margin': 45.50205479},
+            {'ProductID': 814, 'Name': 'ML Mountain Frame - Black, 38', 'Margin': 199.21687153},
+            {'ProductID': 815, 'Name': 'LL Mountain Front Wheel', 'Margin': 28.91539468},
+            {'ProductID': 816, 'Name': 'ML Mountain Front Wheel', 'Margin': 99.49849191000001},
+            {'ProductID': 817, 'Name': 'HL Mountain Front Wheel', 'Margin': 142.90610555},
+            {'ProductID': 818, 'Name': 'LL Road Front Wheel', 'Margin': 40.730043890000005},
+            {'ProductID': 819, 'Name': 'ML Road Front Wheel', 'Margin': 118.23429709000001},
+            {'ProductID': 820, 'Name': 'HL Road Front Wheel', 'Margin': 157.11260986000002},
+            {'ProductID': 821, 'Name': 'Touring Front Wheel', 'Margin': 103.77542044},
+            {'ProductID': 822, 'Name': 'ML Road Frame-W - Yellow, 38', 'Margin': 307.55935988},
+            {'ProductID': 823, 'Name': 'LL Mountain Rear Wheel', 'Margin': 41.76772947999999},
+            {'ProductID': 824, 'Name': 'ML Mountain Rear Wheel', 'Margin': 112.35082671},
+            {'ProductID': 825, 'Name': 'HL Mountain Rear Wheel', 'Margin': 155.75844035},
+            {'ProductID': 826, 'Name': 'LL Road Rear Wheel', 'Margin': 53.58237869},
+            {'ProductID': 827, 'Name': 'ML Road Rear Wheel', 'Margin': 131.08663188999998},
+            {'ProductID': 828, 'Name': 'HL Road Rear Wheel', 'Margin': 169.96494466000001},
+            {'ProductID': 829, 'Name': 'Touring Rear Wheel', 'Margin': 116.62775524000001},
+            {'ProductID': 830, 'Name': 'ML Mountain Frame - Black, 40', 'Margin': 199.21687153},
+            {'ProductID': 831, 'Name': 'ML Mountain Frame - Black, 44', 'Margin': 199.21687153},
+            {'ProductID': 832, 'Name': 'ML Mountain Frame - Black, 48', 'Margin': 199.21687153},
+            {'ProductID': 833, 'Name': 'ML Road Frame-W - Yellow, 40', 'Margin': 307.55935988},
+            {'ProductID': 834, 'Name': 'ML Road Frame-W - Yellow, 42', 'Margin': 307.55935988},
+            {'ProductID': 835, 'Name': 'ML Road Frame-W - Yellow, 44', 'Margin': 307.55935988},
+            {'ProductID': 836, 'Name': 'ML Road Frame-W - Yellow, 48', 'Margin': 307.55935988},
+            {'ProductID': 837, 'Name': 'HL Road Frame - Black, 62', 'Margin': 931.2627258199999},
+            {'ProductID': 838, 'Name': 'HL Road Frame - Black, 44', 'Margin': 931.2627258199999},
+            {'ProductID': 839, 'Name': 'HL Road Frame - Black, 48', 'Margin': 931.2627258199999},
+            {'ProductID': 840, 'Name': 'HL Road Frame - Black, 52', 'Margin': 931.2627258199999},
+            {'ProductID': 841, 'Name': "Men's Sports Shorts, S", 'Margin': 26.530079389999997},
+            {'ProductID': 842, 'Name': 'Touring-Panniers, Large', 'Margin': 43.93640625},
+            {'ProductID': 843, 'Name': 'Cable Lock', 'Margin': 8.78728125},
+            {'ProductID': 844, 'Name': 'Minipump', 'Margin': 7.026331390000001},
+            {'ProductID': 845, 'Name': 'Mountain Pump', 'Margin': 8.78378764},
+            {'ProductID': 846, 'Name': 'Taillights - Battery-Powered', 'Margin': 4.91738389},
+            {'ProductID': 847, 'Name': 'Headlights - Dual-Beam', 'Margin': 12.298700140000001},
+            {'ProductID': 848, 'Name': 'Headlights - Weatherproof', 'Margin': 15.813612639999999},
+            {'ProductID': 849, 'Name': "Men's Sports Shorts, M", 'Margin': 26.530079389999997},
+            {'ProductID': 850, 'Name': "Men's Sports Shorts, L", 'Margin': 26.530079389999997},
+            {'ProductID': 851, 'Name': "Men's Sports Shorts, XL", 'Margin': 26.530079389999997},
+            {'ProductID': 852, 'Name': "Women's Tights, S", 'Margin': 33.16369814},
+            {'ProductID': 853, 'Name': "Women's Tights, M", 'Margin': 33.16369814},
+            {'ProductID': 854, 'Name': "Women's Tights, L", 'Margin': 33.16369814},
+            {'ProductID': 855, 'Name': "Men's Bib-Shorts, S", 'Margin': 33.48676389},
+            {'ProductID': 856, 'Name': "Men's Bib-Shorts, M", 'Margin': 33.48676389},
+            {'ProductID': 857, 'Name': "Men's Bib-Shorts, L", 'Margin': 33.48676389},
+            {'ProductID': 858, 'Name': 'Half-Finger Gloves, S', 'Margin': 9.81968553},
+            {'ProductID': 859, 'Name': 'Half-Finger Gloves, M', 'Margin': 9.81968553},
+            {'ProductID': 860, 'Name': 'Half-Finger Gloves, L', 'Margin': 9.81968553},
+            {'ProductID': 861, 'Name': 'Full-Finger Gloves, S', 'Margin': 16.80077189},
+            {'ProductID': 862, 'Name': 'Full-Finger Gloves, M', 'Margin': 16.80077189},
+            {'ProductID': 863, 'Name': 'Full-Finger Gloves, L', 'Margin': 16.80077189},
+            {'ProductID': 864, 'Name': 'Classic Vest, S', 'Margin': 20.236522899999997},
+            {'ProductID': 865, 'Name': 'Classic Vest, M', 'Margin': 20.236522899999997},
+            {'ProductID': 866, 'Name': 'Classic Vest, L', 'Margin': 20.236522899999997},
+            {'ProductID': 867, 'Name': "Women's Mountain Shorts, S", 'Margin': 28.063611230000003},
+            {'ProductID': 868, 'Name': "Women's Mountain Shorts, M", 'Margin': 28.063611230000003},
+            {'ProductID': 869, 'Name': "Women's Mountain Shorts, L", 'Margin': 28.063611230000003},
+            {'ProductID': 870, 'Name': 'Water Bottle - 30 oz.', 'Margin': 1.5902742300000001},
+            {'ProductID': 871, 'Name': 'Mountain Bottle Cage', 'Margin': 3.18370123},
+            {'ProductID': 872, 'Name': 'Road Bottle Cage', 'Margin': 2.86501583},
+            {'ProductID': 873, 'Name': 'Patch Kit/8 Patches', 'Margin': 0.72982365},
+            {'ProductID': 874, 'Name': 'Racing Socks, M', 'Margin': 31.565453339275386},
+            {'ProductID': 875, 'Name': 'Racing Socks, L', 'Margin': 31.565453339275386},
+            {'ProductID': 876, 'Name': 'Hitch Rack - 4-Bike', 'Margin': 38.242248000000004},
+            {'ProductID': 877, 'Name': 'Bike Wash - Dissolver', 'Margin': 2.5335489300000003},
+            {'ProductID': 878, 'Name': 'Fender Set - Mountain', 'Margin': 7.0046880499999995},
+            {'ProductID': 879, 'Name': 'All-Purpose Bike Stand', 'Margin': 50.6709786},
+            {'ProductID': 880, 'Name': 'Hydration Pack - 70 oz.', 'Margin': 20.609489229999994},
+            {'ProductID': 881, 'Name': 'Short-Sleeve Classic Jersey, S', 'Margin': 35.42375683},
+            {'ProductID': 882, 'Name': 'Short-Sleeve Classic Jersey, M', 'Margin': 35.42375683},
+            {'ProductID': 883, 'Name': 'Short-Sleeve Classic Jersey, L', 'Margin': 35.42375683},
+            {'ProductID': 884, 'Name': 'Short-Sleeve Classic Jersey, XL', 'Margin': 35.42375683},
+            {'ProductID': 885, 'Name': 'HL Touring Frame - Yellow, 60', 'Margin': 512.74580677},
+            {'ProductID': 886, 'Name': 'LL Touring Frame - Yellow, 62', 'Margin': 170.29380399000001},
+            {'ProductID': 887, 'Name': 'HL Touring Frame - Yellow, 46', 'Margin': 512.74580677},
+            {'ProductID': 888, 'Name': 'HL Touring Frame - Yellow, 50', 'Margin': 512.74580677},
+            {'ProductID': 889, 'Name': 'HL Touring Frame - Yellow, 54', 'Margin': 512.74580677},
+            {'ProductID': 890, 'Name': 'HL Touring Frame - Blue, 46', 'Margin': 512.74580677},
+            {'ProductID': 891, 'Name': 'HL Touring Frame - Blue, 50', 'Margin': 512.74580677},
+            {'ProductID': 892, 'Name': 'HL Touring Frame - Blue, 54', 'Margin': 512.74580677},
+            {'ProductID': 893, 'Name': 'HL Touring Frame - Blue, 60', 'Margin': 512.74580677},
+            {'ProductID': 894, 'Name': 'Rear Derailleur', 'Margin': 54.04144921999999},
+            {'ProductID': 895, 'Name': 'LL Touring Frame - Blue, 50', 'Margin': 170.29380399000001},
+            {'ProductID': 896, 'Name': 'LL Touring Frame - Blue, 54', 'Margin': 170.29380399000001},
+            {'ProductID': 897, 'Name': 'LL Touring Frame - Blue, 58', 'Margin': 170.29380399000001},
+            {'ProductID': 898, 'Name': 'LL Touring Frame - Blue, 62', 'Margin': 170.29380399000001},
+            {'ProductID': 899, 'Name': 'LL Touring Frame - Yellow, 44', 'Margin': 170.29380399000001},
+            {'ProductID': 900, 'Name': 'LL Touring Frame - Yellow, 50', 'Margin': 170.29380399000001},
+            {'ProductID': 901, 'Name': 'LL Touring Frame - Yellow, 54', 'Margin': 170.29380399000001},
+            {'ProductID': 902, 'Name': 'LL Touring Frame - Yellow, 58', 'Margin': 170.29380399000001},
+            {'ProductID': 903, 'Name': 'LL Touring Frame - Blue, 44', 'Margin': 170.29380399000001},
+            {'ProductID': 904, 'Name': 'ML Mountain Frame-W - Silver, 40', 'Margin': 199.79438897},
+            {'ProductID': 905, 'Name': 'ML Mountain Frame-W - Silver, 42', 'Margin': 199.79438897},
+            {'ProductID': 906, 'Name': 'ML Mountain Frame-W - Silver, 46', 'Margin': 199.79438897},
+            {'ProductID': 907, 'Name': 'Rear Brakes', 'Margin': 47.385300599999994},
+            {'ProductID': 908, 'Name': 'LL Mountain Seat/Saddle', 'Margin': 10.26039173},
+            {'ProductID': 909, 'Name': 'ML Mountain Seat/Saddle', 'Margin': 14.807964219999999},
+            {'ProductID': 910, 'Name': 'HL Mountain Seat/Saddle', 'Margin': 19.91545162},
+            {'ProductID': 911, 'Name': 'LL Road Seat/Saddle', 'Margin': 10.26039173},
+            {'ProductID': 912, 'Name': 'ML Road Seat/Saddle', 'Margin': 14.807964219999999},
+            {'ProductID': 913, 'Name': 'HL Road Seat/Saddle', 'Margin': 19.91545162},
+            {'ProductID': 914, 'Name': 'LL Touring Seat/Saddle', 'Margin': 10.26039173},
+            {'ProductID': 915, 'Name': 'ML Touring Seat/Saddle', 'Margin': 14.807964219999999},
+            {'ProductID': 916, 'Name': 'HL Touring Seat/Saddle', 'Margin': 19.91545162},
+            {'ProductID': 917, 'Name': 'LL Mountain Frame - Silver, 42', 'Margin': 144.89744697999998},
+            {'ProductID': 918, 'Name': 'LL Mountain Frame - Silver, 44', 'Margin': 144.89744697999998},
+            {'ProductID': 919, 'Name': 'LL Mountain Frame - Silver, 48', 'Margin': 144.89744697999998},
+            {'ProductID': 920, 'Name': 'LL Mountain Frame - Silver, 52', 'Margin': 144.89744697999998},
+            {'ProductID': 921, 'Name': 'Mountain Tire Tube', 'Margin': 1.5902742300000001},
+            {'ProductID': 922, 'Name': 'Road Tire Tube', 'Margin': 1.27158883},
+            {'ProductID': 923, 'Name': 'Touring Tire Tube', 'Margin': 1.5902742300000001},
+            {'ProductID': 924, 'Name': 'LL Mountain Frame - Black, 42', 'Margin': 146.6471985},
+            {'ProductID': 925, 'Name': 'LL Mountain Frame - Black, 44', 'Margin': 146.6471985},
+            {'ProductID': 926, 'Name': 'LL Mountain Frame - Black, 48', 'Margin': 146.6471985},
+            {'ProductID': 927, 'Name': 'LL Mountain Frame - Black, 52', 'Margin': 146.6471985},
+            {'ProductID': 928, 'Name': 'LL Mountain Tire', 'Margin': 7.963982229999999},
+            {'ProductID': 929, 'Name': 'ML Mountain Tire', 'Margin': 9.557409230000001},
+            {'ProductID': 930, 'Name': 'HL Mountain Tire', 'Margin': 11.153989},
+            {'ProductID': 931, 'Name': 'LL Road Tire', 'Margin': 6.84858333},
+            {'ProductID': 932, 'Name': 'ML Road Tire', 'Margin': 7.963982229999999},
+            {'ProductID': 933, 'Name': 'HL Road Tire', 'Margin': 10.38914404},
+            {'ProductID': 934, 'Name': 'Touring Tire', 'Margin': 9.23872383},
+            {'ProductID': 935, 'Name': 'LL Mountain Pedal', 'Margin': 15.31871296},
+            {'ProductID': 936, 'Name': 'ML Mountain Pedal', 'Margin': 23.4906928},
+            {'ProductID': 937, 'Name': 'HL Mountain Pedal', 'Margin': 30.641175160000003},
+            {'ProductID': 938, 'Name': 'LL Road Pedal', 'Margin': 15.31871296},
+            {'ProductID': 939, 'Name': 'ML Road Pedal', 'Margin': 23.4906928},
+            {'ProductID': 940, 'Name': 'HL Road Pedal', 'Margin': 30.641175160000003},
+            {'ProductID': 941, 'Name': 'Touring Pedal', 'Margin': 30.641175160000003},
+            {'ProductID': 942, 'Name': 'ML Mountain Frame-W - Silver, 38', 'Margin': 199.79438897},
+            {'ProductID': 943, 'Name': 'LL Mountain Frame - Black, 40', 'Margin': 146.6471985},
+            {'ProductID': 944, 'Name': 'LL Mountain Frame - Silver, 40', 'Margin': 144.89744697999998},
+            {'ProductID': 945, 'Name': 'Front Derailleur', 'Margin': 40.70690535999999},
+            {'ProductID': 946, 'Name': 'LL Touring Handlebars', 'Margin': 17.4373744},
+            {'ProductID': 947, 'Name': 'HL Touring Handlebars', 'Margin': 34.64391491},
+            {'ProductID': 948, 'Name': 'Front Brakes', 'Margin': 47.385300599999994},
+            {'ProductID': 949, 'Name': 'LL Crankset', 'Margin': 83.53545895999999},
+            {'ProductID': 950, 'Name': 'ML Crankset', 'Margin': 122.09246336},
+            {'ProductID': 951, 'Name': 'HL Crankset', 'Margin': 192.78030475999998},
+            {'ProductID': 952, 'Name': 'Chain', 'Margin': 9.005471859999998},
+            {'ProductID': 953, 'Name': 'Touring-2000 Blue, 60', 'Margin': 643.46399668},
+            {'ProductID': 954, 'Name': 'Touring-1000 Yellow, 46', 'Margin': 1262.7592845899999},
+            {'ProductID': 955, 'Name': 'Touring-1000 Yellow, 50', 'Margin': 1262.7592845899999},
+            {'ProductID': 956, 'Name': 'Touring-1000 Yellow, 54', 'Margin': 1262.7592845899999},
+            {'ProductID': 957, 'Name': 'Touring-1000 Yellow, 60', 'Margin': 1262.7592845899999},
+            {'ProductID': 958, 'Name': 'Touring-3000 Blue, 54', 'Margin': 393.19711408},
+            {'ProductID': 959, 'Name': 'Touring-3000 Blue, 58', 'Margin': 393.19711408},
+            {'ProductID': 960, 'Name': 'Touring-3000 Blue, 62', 'Margin': 393.19711408},
+            {'ProductID': 961, 'Name': 'Touring-3000 Yellow, 44', 'Margin': 393.19711408},
+            {'ProductID': 962, 'Name': 'Touring-3000 Yellow, 50', 'Margin': 393.19711408},
+            {'ProductID': 963, 'Name': 'Touring-3000 Yellow, 54', 'Margin': 393.19711408},
+            {'ProductID': 964, 'Name': 'Touring-3000 Yellow, 58', 'Margin': 393.19711408},
+            {'ProductID': 965, 'Name': 'Touring-3000 Yellow, 62', 'Margin': 393.19711408},
+            {'ProductID': 966, 'Name': 'Touring-1000 Blue, 46', 'Margin': 1262.7592845899999},
+            {'ProductID': 967, 'Name': 'Touring-1000 Blue, 50', 'Margin': 1262.7592845899999},
+            {'ProductID': 968, 'Name': 'Touring-1000 Blue, 54', 'Margin': 1262.7592845899999},
+            {'ProductID': 969, 'Name': 'Touring-1000 Blue, 60', 'Margin': 1262.7592845899999},
+            {'ProductID': 970, 'Name': 'Touring-2000 Blue, 46', 'Margin': 643.46399668},
+            {'ProductID': 971, 'Name': 'Touring-2000 Blue, 50', 'Margin': 643.46399668},
+            {'ProductID': 972, 'Name': 'Touring-2000 Blue, 54', 'Margin': 643.46399668},
+            {'ProductID': 973, 'Name': 'Road-350-W Yellow, 40', 'Margin': 922.4067709999999},
+            {'ProductID': 974, 'Name': 'Road-350-W Yellow, 42', 'Margin': 922.4067709999999},
+            {'ProductID': 975, 'Name': 'Road-350-W Yellow, 44', 'Margin': 922.4067709999999},
+            {'ProductID': 976, 'Name': 'Road-350-W Yellow, 48', 'Margin': 922.4067709999999},
+            {'ProductID': 977, 'Name': 'Road-750 Black, 58', 'Margin': 368.42673616},
+            {'ProductID': 978, 'Name': 'Touring-3000 Blue, 44', 'Margin': 393.19711408},
+            {'ProductID': 979, 'Name': 'Touring-3000 Blue, 50', 'Margin': 393.19711408},
+            {'ProductID': 980, 'Name': 'Mountain-400-W Silver, 38', 'Margin': 420.65993463999996},
+            {'ProductID': 981, 'Name': 'Mountain-400-W Silver, 40', 'Margin': 420.65993463999996},
+            {'ProductID': 982, 'Name': 'Mountain-400-W Silver, 42', 'Margin': 420.65993463999996},
+            {'ProductID': 983, 'Name': 'Mountain-400-W Silver, 46', 'Margin': 420.65993463999996},
+            {'ProductID': 984, 'Name': 'Mountain-500 Silver, 40', 'Margin': 308.8651575899999},
+            {'ProductID': 985, 'Name': 'Mountain-500 Silver, 42', 'Margin': 308.8651575899999},
+            {'ProductID': 986, 'Name': 'Mountain-500 Silver, 44', 'Margin': 308.8651575899999},
+            {'ProductID': 987, 'Name': 'Mountain-500 Silver, 48', 'Margin': 308.8651575899999},
+            {'ProductID': 988, 'Name': 'Mountain-500 Silver, 52', 'Margin': 308.8651575899999},
+            {'ProductID': 989, 'Name': 'Mountain-500 Black, 40', 'Margin': 315.81889636999995},
+            {'ProductID': 990, 'Name': 'Mountain-500 Black, 42', 'Margin': 315.81889636999995},
+            {'ProductID': 991, 'Name': 'Mountain-500 Black, 44', 'Margin': 315.81889636999995},
+            {'ProductID': 992, 'Name': 'Mountain-500 Black, 48', 'Margin': 315.81889636999995},
+            {'ProductID': 993, 'Name': 'Mountain-500 Black, 52', 'Margin': 315.81889636999995},
+            {'ProductID': 994, 'Name': 'LL Bottom Bracket', 'Margin': 20.42620036},
+            {'ProductID': 995, 'Name': 'ML Bottom Bracket', 'Margin': 38.30240626},
+            {'ProductID': 996, 'Name': 'HL Bottom Bracket', 'Margin': 45.96363736},
+            {'ProductID': 997, 'Name': 'Road-750 Black, 44', 'Margin': 368.42673616},
+            {'ProductID': 998, 'Name': 'Road-750 Black, 48', 'Margin': 368.42673616},
+            {'ProductID': 999, 'Name': 'Road-750 Black, 52', 'Margin': 368.42673616}
+        ]
+    }
+}
+Execution success completed.
+SQL executed successfully!
+
+Process completed!
+SQL Result:
+{
+    'result': [
+        {'ProductID': 1, 'Name': 'Adjustable Race', 'Margin': 0.0},
+        {'ProductID': 2, 'Name': 'Bearing Ball', 'Margin': 0.0},
+        {'ProductID': 3, 'Name': 'BB Ball Bearing', 'Margin': 0.0},
+        {'ProductID': 4, 'Name': 'Headset Ball Bearings', 'Margin': 0.0},
+        {'ProductID': 316, 'Name': 'Blade', 'Margin': 0.0},
+        {'ProductID': 317, 'Name': 'LL Crankarm', 'Margin': 0.0},
+        {'ProductID': 318, 'Name': 'ML Crankarm', 'Margin': 0.0},
+        {'ProductID': 319, 'Name': 'HL Crankarm', 'Margin': 0.0},
+        {'ProductID': 320, 'Name': 'Chainring Bolts', 'Margin': 0.0},
+        {'ProductID': 321, 'Name': 'Chainring Nut', 'Margin': 0.0},
+        {'ProductID': 322, 'Name': 'Chainring', 'Margin': 0.0},
+        {'ProductID': 323, 'Name': 'Crown Race', 'Margin': 0.0},
+        {'ProductID': 324, 'Name': 'Chain Stays', 'Margin': 0.0},
+        {'ProductID': 325, 'Name': 'Decal 1', 'Margin': 0.0},
+        {'ProductID': 326, 'Name': 'Decal 2', 'Margin': 0.0},
+        {'ProductID': 327, 'Name': 'Down Tube', 'Margin': 0.0},
+        {'ProductID': 328, 'Name': 'Mountain End Caps', 'Margin': 0.0},
+        {'ProductID': 329, 'Name': 'Road End Caps', 'Margin': 0.0},
+        {'ProductID': 330, 'Name': 'Touring End Caps', 'Margin': 0.0},
+        {'ProductID': 331, 'Name': 'Fork End', 'Margin': 0.0},
+        {'ProductID': 332, 'Name': 'Freewheel', 'Margin': 0.0},
+        {'ProductID': 341, 'Name': 'Flat Washer 1', 'Margin': 0.0},
+        {'ProductID': 342, 'Name': 'Flat Washer 6', 'Margin': 0.0},
+        {'ProductID': 343, 'Name': 'Flat Washer 2', 'Margin': 0.0},
+        {'ProductID': 344, 'Name': 'Flat Washer 9', 'Margin': 0.0},
+        {'ProductID': 345, 'Name': 'Flat Washer 4', 'Margin': 0.0},
+        {'ProductID': 346, 'Name': 'Flat Washer 3', 'Margin': 0.0},
+        {'ProductID': 347, 'Name': 'Flat Washer 8', 'Margin': 0.0},
+        {'ProductID': 348, 'Name': 'Flat Washer 5', 'Margin': 0.0},
+        {'ProductID': 349, 'Name': 'Flat Washer 7', 'Margin': 0.0},
+        {'ProductID': 350, 'Name': 'Fork Crown', 'Margin': 0.0},
+        {'ProductID': 351, 'Name': 'Front Derailleur Cage', 'Margin': 0.0},
+        {'ProductID': 352, 'Name': 'Front Derailleur Linkage', 'Margin': 0.0},
+        {'ProductID': 355, 'Name': 'Guide Pulley', 'Margin': 0.0},
+        {'ProductID': 356, 'Name': 'LL Grip Tape', 'Margin': 0.0},
+        {'ProductID': 357, 'Name': 'ML Grip Tape', 'Margin': 0.0},
+        {'ProductID': 358, 'Name': 'HL Grip Tape', 'Margin': 0.0},
+        {'ProductID': 359, 'Name': 'Thin-Jam Hex Nut 9', 'Margin': 0.0},
+        {'ProductID': 360, 'Name': 'Thin-Jam Hex Nut 10', 'Margin': 0.0},
+        {'ProductID': 361, 'Name': 'Thin-Jam Hex Nut 1', 'Margin': 0.0},
+        {'ProductID': 362, 'Name': 'Thin-Jam Hex Nut 2', 'Margin': 0.0},
+        {'ProductID': 363, 'Name': 'Thin-Jam Hex Nut 15', 'Margin': 0.0},
+        {'ProductID': 364, 'Name': 'Thin-Jam Hex Nut 16', 'Margin': 0.0},
+        {'ProductID': 365, 'Name': 'Thin-Jam Hex Nut 5', 'Margin': 0.0},
+        {'ProductID': 366, 'Name': 'Thin-Jam Hex Nut 6', 'Margin': 0.0},
+        {'ProductID': 367, 'Name': 'Thin-Jam Hex Nut 3', 'Margin': 0.0},
+        {'ProductID': 368, 'Name': 'Thin-Jam Hex Nut 4', 'Margin': 0.0},
+        {'ProductID': 369, 'Name': 'Thin-Jam Hex Nut 13', 'Margin': 0.0},
+        {'ProductID': 370, 'Name': 'Thin-Jam Hex Nut 14', 'Margin': 0.0},
+        {'ProductID': 371, 'Name': 'Thin-Jam Hex Nut 7', 'Margin': 0.0},
+        {'ProductID': 372, 'Name': 'Thin-Jam Hex Nut 8', 'Margin': 0.0},
+        {'ProductID': 373, 'Name': 'Thin-Jam Hex Nut 12', 'Margin': 0.0},
+        {'ProductID': 374, 'Name': 'Thin-Jam Hex Nut 11', 'Margin': 0.0},
+        {'ProductID': 375, 'Name': 'Hex Nut 5', 'Margin': 0.0},
+        {'ProductID': 376, 'Name': 'Hex Nut 6', 'Margin': 0.0},
+        {'ProductID': 377, 'Name': 'Hex Nut 16', 'Margin': 0.0},
+        {'ProductID': 378, 'Name': 'Hex Nut 17', 'Margin': 0.0},
+        {'ProductID': 379, 'Name': 'Hex Nut 7', 'Margin': 0.0},
+        {'ProductID': 380, 'Name': 'Hex Nut 8', 'Margin': 0.0},
+        {'ProductID': 381, 'Name': 'Hex Nut 9', 'Margin': 0.0},
+        {'ProductID': 382, 'Name': 'Hex Nut 22', 'Margin': 0.0},
+        {'ProductID': 383, 'Name': 'Hex Nut 23', 'Margin': 0.0},
+        {'ProductID': 384, 'Name': 'Hex Nut 12', 'Margin': 0.0},
+        {'ProductID': 385, 'Name': 'Hex Nut 13', 'Margin': 0.0},
+        {'ProductID': 386, 'Name': 'Hex Nut 1', 'Margin': 0.0},
+        {'ProductID': 387, 'Name': 'Hex Nut 10', 'Margin': 0.0},
+        {'ProductID': 388, 'Name': 'Hex Nut 11', 'Margin': 0.0},
+        {'ProductID': 389, 'Name': 'Hex Nut 2', 'Margin': 0.0},
+        {'ProductID': 390, 'Name': 'Hex Nut 20', 'Margin': 0.0},
+        {'ProductID': 391, 'Name': 'Hex Nut 21', 'Margin': 0.0},
+        {'ProductID': 392, 'Name': 'Hex Nut 3', 'Margin': 0.0},
+        {'ProductID': 393, 'Name': 'Hex Nut 14', 'Margin': 0.0},
+        {'ProductID': 394, 'Name': 'Hex Nut 15', 'Margin': 0.0},
+        {'ProductID': 395, 'Name': 'Hex Nut 4', 'Margin': 0.0},
+        {'ProductID': 396, 'Name': 'Hex Nut 18', 'Margin': 0.0},
+        {'ProductID': 397, 'Name': 'Hex Nut 19', 'Margin': 0.0},
+        {'ProductID': 398, 'Name': 'Handlebar Tube', 'Margin': 0.0},
+        {'ProductID': 399, 'Name': 'Head Tube', 'Margin': 0.0},
+        {'ProductID': 400, 'Name': 'LL Hub', 'Margin': 0.0},
+        {'ProductID': 401, 'Name': 'HL Hub', 'Margin': 0.0},
+        {'ProductID': 402, 'Name': 'Keyed Washer', 'Margin': 0.0},
+        {'ProductID': 403, 'Name': 'External Lock Washer 3', 'Margin': 0.0},
+        {'ProductID': 404, 'Name': 'External Lock Washer 4', 'Margin': 0.0},
+        {'ProductID': 405, 'Name': 'External Lock Washer 9', 'Margin': 0.0},
+        {'ProductID': 406, 'Name': 'External Lock Washer 5', 'Margin': 0.0},
+        {'ProductID': 407, 'Name': 'External Lock Washer 7', 'Margin': 0.0},
+        {'ProductID': 408, 'Name': 'External Lock Washer 6', 'Margin': 0.0},
+        {'ProductID': 409, 'Name': 'External Lock Washer 1', 'Margin': 0.0},
+        {'ProductID': 410, 'Name': 'External Lock Washer 8', 'Margin': 0.0},
+        {'ProductID': 411, 'Name': 'External Lock Washer 2', 'Margin': 0.0},
+        {'ProductID': 412, 'Name': 'Internal Lock Washer 3', 'Margin': 0.0},
+        {'ProductID': 413, 'Name': 'Internal Lock Washer 4', 'Margin': 0.0},
+        {'ProductID': 414, 'Name': 'Internal Lock Washer 9', 'Margin': 0.0},
+        {'ProductID': 415, 'Name': 'Internal Lock Washer 5', 'Margin': 0.0},
+        {'ProductID': 416, 'Name': 'Internal Lock Washer 7', 'Margin': 0.0},
+        {'ProductID': 417, 'Name': 'Internal Lock Washer 6', 'Margin': 0.0},
+        {'ProductID': 418, 'Name': 'Internal Lock Washer 10', 'Margin': 0.0},
+        {'ProductID': 419, 'Name': 'Internal Lock Washer 1', 'Margin': 0.0},
+        {'ProductID': 420, 'Name': 'Internal Lock Washer 8', 'Margin': 0.0},
+        {'ProductID': 421, 'Name': 'Internal Lock Washer 2', 'Margin': 0.0},
+        {'ProductID': 422, 'Name': 'Thin-Jam Lock Nut 9', 'Margin': 0.0},
+        {'ProductID': 423, 'Name': 'Thin-Jam Lock Nut 10', 'Margin': 0.0},
+        {'ProductID': 424, 'Name': 'Thin-Jam Lock Nut 1', 'Margin': 0.0},
+        {'ProductID': 425, 'Name': 'Thin-Jam Lock Nut 2', 'Margin': 0.0},
+        {'ProductID': 426, 'Name': 'Thin-Jam Lock Nut 15', 'Margin': 0.0},
+        {'ProductID': 427, 'Name': 'Thin-Jam Lock Nut 16', 'Margin': 0.0},
+        {'ProductID': 428, 'Name': 'Thin-Jam Lock Nut 5', 'Margin': 0.0},
+        {'ProductID': 429, 'Name': 'Thin-Jam Lock Nut 6', 'Margin': 0.0},
+        {'ProductID': 430, 'Name': 'Thin-Jam Lock Nut 3', 'Margin': 0.0},
+        {'ProductID': 431, 'Name': 'Thin-Jam Lock Nut 4', 'Margin': 0.0},
+        {'ProductID': 432, 'Name': 'Thin-Jam Lock Nut 13', 'Margin': 0.0},
+        {'ProductID': 433, 'Name': 'Thin-Jam Lock Nut 14', 'Margin': 0.0},
+        {'ProductID': 434, 'Name': 'Thin-Jam Lock Nut 7', 'Margin': 0.0},
+        {'ProductID': 435, 'Name': 'Thin-Jam Lock Nut 8', 'Margin': 0.0},
+        {'ProductID': 436, 'Name': 'Thin-Jam Lock Nut 12', 'Margin': 0.0},
+        {'ProductID': 437, 'Name': 'Thin-Jam Lock Nut 11', 'Margin': 0.0},
+        {'ProductID': 438, 'Name': 'Lock Nut 5', 'Margin': 0.0},
+        {'ProductID': 439, 'Name': 'Lock Nut 6', 'Margin': 0.0},
+        {'ProductID': 440, 'Name': 'Lock Nut 16', 'Margin': 0.0},
+        {'ProductID': 441, 'Name': 'Lock Nut 17', 'Margin': 0.0},
+        {'ProductID': 442, 'Name': 'Lock Nut 7', 'Margin': 0.0},
+        {'ProductID': 443, 'Name': 'Lock Nut 8', 'Margin': 0.0},
+        {'ProductID': 444, 'Name': 'Lock Nut 9', 'Margin': 0.0},
+        {'ProductID': 445, 'Name': 'Lock Nut 22', 'Margin': 0.0},
+        {'ProductID': 446, 'Name': 'Lock Nut 23', 'Margin': 0.0},
+        {'ProductID': 447, 'Name': 'Lock Nut 12', 'Margin': 0.0},
+        {'ProductID': 448, 'Name': 'Lock Nut 13', 'Margin': 0.0},
+        {'ProductID': 449, 'Name': 'Lock Nut 1', 'Margin': 0.0},
+        {'ProductID': 450, 'Name': 'Lock Nut 10', 'Margin': 0.0},
+        {'ProductID': 451, 'Name': 'Lock Nut 11', 'Margin': 0.0},
+        {'ProductID': 452, 'Name': 'Lock Nut 2', 'Margin': 0.0},
+        {'ProductID': 453, 'Name': 'Lock Nut 20', 'Margin': 0.0},
+        {'ProductID': 454, 'Name': 'Lock Nut 21', 'Margin': 0.0},
+        {'ProductID': 455, 'Name': 'Lock Nut 3', 'Margin': 0.0},
+        {'ProductID': 456, 'Name': 'Lock Nut 14', 'Margin': 0.0},
+        {'ProductID': 457, 'Name': 'Lock Nut 15', 'Margin': 0.0},
+        {'ProductID': 458, 'Name': 'Lock Nut 4', 'Margin': 0.0},
+        {'ProductID': 459, 'Name': 'Lock Nut 19', 'Margin': 0.0},
+        {'ProductID': 460, 'Name': 'Lock Nut 18', 'Margin': 0.0},
+        {'ProductID': 461, 'Name': 'Lock Ring', 'Margin': 0.0},
+        {'ProductID': 462, 'Name': 'Lower Head Race', 'Margin': 0.0},
+        {'ProductID': 463, 'Name': 'Lock Washer 4', 'Margin': 0.0},
+        {'ProductID': 464, 'Name': 'Lock Washer 5', 'Margin': 0.0},
+        {'ProductID': 465, 'Name': 'Lock Washer 10', 'Margin': 0.0},
+        {'ProductID': 466, 'Name': 'Lock Washer 6', 'Margin': 0.0},
+        {'ProductID': 467, 'Name': 'Lock Washer 13', 'Margin': 0.0},
+        {'ProductID': 468, 'Name': 'Lock Washer 8', 'Margin': 0.0},
+        {'ProductID': 469, 'Name': 'Lock Washer 1', 'Margin': 0.0},
+        {'ProductID': 470, 'Name': 'Lock Washer 7', 'Margin': 0.0},
+        {'ProductID': 471, 'Name': 'Lock Washer 12', 'Margin': 0.0},
+        {'ProductID': 472, 'Name': 'Lock Washer 2', 'Margin': 0.0},
+        {'ProductID': 473, 'Name': 'Lock Washer 9', 'Margin': 0.0},
+        {'ProductID': 474, 'Name': 'Lock Washer 3', 'Margin': 0.0},
+        {'ProductID': 475, 'Name': 'Lock Washer 11', 'Margin': 0.0},
+        {'ProductID': 476, 'Name': 'Metal Angle', 'Margin': 0.0},
+        {'ProductID': 477, 'Name': 'Metal Bar 1', 'Margin': 0.0},
+        {'ProductID': 478, 'Name': 'Metal Bar 2', 'Margin': 0.0},
+        {'ProductID': 479, 'Name': 'Metal Plate 2', 'Margin': 0.0},
+        {'ProductID': 480, 'Name': 'Metal Plate 1', 'Margin': 0.0},
+        {'ProductID': 481, 'Name': 'Metal Plate 3', 'Margin': 0.0},
+        {'ProductID': 482, 'Name': 'Metal Sheet 2', 'Margin': 0.0},
+        {'ProductID': 483, 'Name': 'Metal Sheet 3', 'Margin': 0.0},
+        {'ProductID': 484, 'Name': 'Metal Sheet 7', 'Margin': 0.0},
+        {'ProductID': 485, 'Name': 'Metal Sheet 4', 'Margin': 0.0},
+        {'ProductID': 486, 'Name': 'Metal Sheet 5', 'Margin': 0.0},
+        {'ProductID': 487, 'Name': 'Metal Sheet 6', 'Margin': 0.0},
+        {'ProductID': 488, 'Name': 'Metal Sheet 1', 'Margin': 0.0},
+        {'ProductID': 489, 'Name': 'Metal Tread Plate', 'Margin': 0.0},
+        {'ProductID': 490, 'Name': 'LL Nipple', 'Margin': 0.0},
+        {'ProductID': 491, 'Name': 'HL Nipple', 'Margin': 0.0},
+        {'ProductID': 492, 'Name': 'Paint - Black', 'Margin': 0.0},
+        {'ProductID': 493, 'Name': 'Paint - Red', 'Margin': 0.0},
+        {'ProductID': 494, 'Name': 'Paint - Silver', 'Margin': 0.0},
+        {'ProductID': 495, 'Name': 'Paint - Blue', 'Margin': 0.0},
+        {'ProductID': 496, 'Name': 'Paint - Yellow', 'Margin': 0.0},
+        {'ProductID': 497, 'Name': 'Pinch Bolt', 'Margin': 0.0},
+        {'ProductID': 504, 'Name': 'Cup-Shaped Race', 'Margin': 0.0},
+        {'ProductID': 505, 'Name': 'Cone-Shaped Race', 'Margin': 0.0},
+        {'ProductID': 506, 'Name': 'Reflector', 'Margin': 0.0},
+        {'ProductID': 507, 'Name': 'LL Mountain Rim', 'Margin': 0.0},
+        {'ProductID': 508, 'Name': 'ML Mountain Rim', 'Margin': 0.0},
+        {'ProductID': 509, 'Name': 'HL Mountain Rim', 'Margin': 0.0},
+        {'ProductID': 510, 'Name': 'LL Road Rim', 'Margin': 0.0},
+        {'ProductID': 511, 'Name': 'ML Road Rim', 'Margin': 0.0},
+        {'ProductID': 512, 'Name': 'HL Road Rim', 'Margin': 0.0},
+        {'ProductID': 513, 'Name': 'Touring Rim', 'Margin': 0.0},
+        {'ProductID': 514, 'Name': 'LL Mountain Seat Assembly', 'Margin': 84.16191699999999},
+        {'ProductID': 515, 'Name': 'ML Mountain Seat Assembly', 'Margin': 92.870379},
+        {'ProductID': 516, 'Name': 'HL Mountain Seat Assembly', 'Margin': 124.295827},
+        {'ProductID': 517, 'Name': 'LL Road Seat Assembly', 'Margin': 84.16191699999999},
+        {'ProductID': 518, 'Name': 'ML Road Seat Assembly', 'Margin': 92.870379},
+        {'ProductID': 519, 'Name': 'HL Road Seat Assembly', 'Margin': 124.295827},
+        {'ProductID': 520, 'Name': 'LL Touring Seat Assembly', 'Margin': 84.16191699999999},
+        {'ProductID': 521, 'Name': 'ML Touring Seat Assembly', 'Margin': 92.870379},
+        {'ProductID': 522, 'Name': 'HL Touring Seat Assembly', 'Margin': 124.295827},
+        {'ProductID': 523, 'Name': 'LL Spindle/Axle', 'Margin': 0.0},
+        {'ProductID': 524, 'Name': 'HL Spindle/Axle', 'Margin': 0.0},
+        {'ProductID': 525, 'Name': 'LL Shell', 'Margin': 0.0},
+        {'ProductID': 526, 'Name': 'HL Shell', 'Margin': 0.0},
+        {'ProductID': 527, 'Name': 'Spokes', 'Margin': 0.0},
+        {'ProductID': 528, 'Name': 'Seat Lug', 'Margin': 0.0},
+        {'ProductID': 529, 'Name': 'Stem', 'Margin': 0.0},
+        {'ProductID': 530, 'Name': 'Seat Post', 'Margin': 0.0},
+        {'ProductID': 531, 'Name': 'Steerer', 'Margin': 0.0},
+        {'ProductID': 532, 'Name': 'Seat Stays', 'Margin': 0.0},
+        {'ProductID': 533, 'Name': 'Seat Tube', 'Margin': 0.0},
+        {'ProductID': 534, 'Name': 'Top Tube', 'Margin': 0.0},
+        {'ProductID': 535, 'Name': 'Tension Pulley', 'Margin': 0.0},
+        {'ProductID': 679, 'Name': 'Rear Derailleur Cage', 'Margin': 0.0},
+        {'ProductID': 680, 'Name': 'HL Road Frame - Black, 58', 'Margin': 1135.6862509999999},
+        {'ProductID': 706, 'Name': 'HL Road Frame - Red, 58', 'Margin': 775.5208509999999},
+        {'ProductID': 707, 'Name': 'Sport-100 Helmet, Red', 'Margin': 9.58048023},
+        {'ProductID': 708, 'Name': 'Sport-100 Helmet, Black', 'Margin': 14.029822229999999},
+        {'ProductID': 709, 'Name': 'Mountain Bike Socks, M', 'Margin': 32.04798578625503},
+        {'ProductID': 710, 'Name': 'Mountain Bike Socks, L', 'Margin': 32.04798578625503},
+        {'ProductID': 711, 'Name': 'Sport-100 Helmet, Blue', 'Margin': 11.15083623},
+        {'ProductID': 712, 'Name': 'AWC Logo Cap', 'Margin': 6.24460683},
+        {'ProductID': 713, 'Name': 'Long-Sleeve Logo Jersey, S', 'Margin': 34.723903830000005},
+        {'ProductID': 714, 'Name': 'Long-Sleeve Logo Jersey, M', 'Margin': 34.723903830000005},
+        {'ProductID': 715, 'Name': 'Long-Sleeve Logo Jersey, L', 'Margin': 34.723903830000005},
+        {'ProductID': 716, 'Name': 'Long-Sleeve Logo Jersey, XL', 'Margin': 34.723903830000005},
+        {'ProductID': 717, 'Name': 'HL Road Frame - Red, 62', 'Margin': 635.92709782},
+        {'ProductID': 718, 'Name': 'HL Road Frame - Red, 44', 'Margin': 635.92709782},
+        {'ProductID': 719, 'Name': 'HL Road Frame - Red, 48', 'Margin': 635.92709782},
+        {'ProductID': 720, 'Name': 'HL Road Frame - Red, 52', 'Margin': 635.92709782},
+        {'ProductID': 721, 'Name': 'HL Road Frame - Red, 56', 'Margin': 635.92709782},
+        {'ProductID': 722, 'Name': 'LL Road Frame - Black, 58', 'Margin': 219.37856971},
+        {'ProductID': 723, 'Name': 'LL Road Frame - Black, 60', 'Margin': 219.37856971},
+        {'ProductID': 724, 'Name': 'LL Road Frame - Black, 62', 'Margin': 219.37856971},
+        {'ProductID': 725, 'Name': 'LL Road Frame - Red, 44', 'Margin': 137.01771291},
+        {'ProductID': 726, 'Name': 'LL Road Frame - Red, 48', 'Margin': 137.01771291},
+        {'ProductID': 727, 'Name': 'LL Road Frame - Red, 52', 'Margin': 137.01771291},
+        {'ProductID': 728, 'Name': 'LL Road Frame - Red, 58', 'Margin': 137.01771291},
+        {'ProductID': 729, 'Name': 'LL Road Frame - Red, 60', 'Margin': 137.01771291},
+        {'ProductID': 730, 'Name': 'LL Road Frame - Red, 62', 'Margin': 137.01771291},
+        {'ProductID': 731, 'Name': 'ML Road Frame - Red, 44', 'Margin': 257.80125474},
+        {'ProductID': 732, 'Name': 'ML Road Frame - Red, 48', 'Margin': 257.80125474},
+        {'ProductID': 733, 'Name': 'ML Road Frame - Red, 52', 'Margin': 257.80125474},
+        {'ProductID': 734, 'Name': 'ML Road Frame - Red, 58', 'Margin': 257.80125474},
+        {'ProductID': 735, 'Name': 'ML Road Frame - Red, 60', 'Margin': 257.80125474},
+        {'ProductID': 736, 'Name': 'LL Road Frame - Black, 44', 'Margin': 219.37856971},
+        {'ProductID': 737, 'Name': 'LL Road Frame - Black, 48', 'Margin': 219.37856971},
+        {'ProductID': 738, 'Name': 'LL Road Frame - Black, 52', 'Margin': 219.37856971},
+        {'ProductID': 739, 'Name': 'HL Mountain Frame - Silver, 42', 'Margin': 748.76932042},
+        {'ProductID': 740, 'Name': 'HL Mountain Frame - Silver, 44', 'Margin': 708.2953031},
+        {'ProductID': 741, 'Name': 'HL Mountain Frame - Silver, 48', 'Margin': 708.2953031},
+        {'ProductID': 742, 'Name': 'HL Mountain Frame - Silver, 46', 'Margin': 748.76932042},
+        {'ProductID': 743, 'Name': 'HL Mountain Frame - Black, 42', 'Margin': 792.3258561},
+        {'ProductID': 744, 'Name': 'HL Mountain Frame - Black, 44', 'Margin': 749.4973908799999},
+        {'ProductID': 745, 'Name': 'HL Mountain Frame - Black, 48', 'Margin': 749.4973908799999},
+        {'ProductID': 746, 'Name': 'HL Mountain Frame - Black, 46', 'Margin': 792.3258561},
+        {'ProductID': 747, 'Name': 'HL Mountain Frame - Black, 38', 'Margin': 792.3258561},
+        {'ProductID': 748, 'Name': 'HL Mountain Frame - Silver, 38', 'Margin': 748.76932042},
+        {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'Margin': 1589.6044838199998},
+        {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'Margin': 1589.6044838199998},
+        {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'Margin': 1589.6044838199998},
+        {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'Margin': 1589.6044838199998},
+        {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'Margin': 1589.6044838199998},
+        {'ProductID': 754, 'Name': 'Road-450 Red, 58', 'Margin': 647.6949464300001},
+        {'ProductID': 755, 'Name': 'Road-450 Red, 60', 'Margin': 647.6949464300001},
+        {'ProductID': 756, 'Name': 'Road-450 Red, 44', 'Margin': 647.6949464300001},
+        {'ProductID': 757, 'Name': 'Road-450 Red, 48', 'Margin': 647.6949464300001},
+        {'ProductID': 758, 'Name': 'Road-450 Red, 52', 'Margin': 647.6949464300001},
+        {'ProductID': 759, 'Name': 'Road-650 Red, 58', 'Margin': 356.31790186},
+        {'ProductID': 760, 'Name': 'Road-650 Red, 60', 'Margin': 356.31790186},
+        {'ProductID': 761, 'Name': 'Road-650 Red, 62', 'Margin': 356.31790186},
+        {'ProductID': 762, 'Name': 'Road-650 Red, 44', 'Margin': 356.31790186},
+        {'ProductID': 763, 'Name': 'Road-650 Red, 48', 'Margin': 356.31790186},
+        {'ProductID': 764, 'Name': 'Road-650 Red, 52', 'Margin': 356.31790186},
+        {'ProductID': 765, 'Name': 'Road-650 Black, 58', 'Margin': 521.7981458599999},
+        {'ProductID': 766, 'Name': 'Road-650 Black, 60', 'Margin': 521.7981458599999},
+        {'ProductID': 767, 'Name': 'Road-650 Black, 62', 'Margin': 521.7981458599999},
+        {'ProductID': 768, 'Name': 'Road-650 Black, 44', 'Margin': 521.7981458599999},
+        {'ProductID': 769, 'Name': 'Road-650 Black, 48', 'Margin': 521.7981458599999},
+        {'ProductID': 770, 'Name': 'Road-650 Black, 52', 'Margin': 521.7981458599999},
+        {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'Margin': 1916.1699242399998},
+        {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'Margin': 1916.1699242399998},
+        {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'Margin': 1916.1699242399998},
+        {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'Margin': 1916.1699242399998},
+        {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'Margin': 2034.9470062399998},
+        {'ProductID': 776, 'Name': 'Mountain-100 Black, 42', 'Margin': 2034.9470062399998},
+        {'ProductID': 777, 'Name': 'Mountain-100 Black, 44', 'Margin': 2034.9470062399998},
+        {'ProductID': 778, 'Name': 'Mountain-100 Black, 48', 'Margin': 2034.9470062399998},
+        {'ProductID': 779, 'Name': 'Mountain-200 Silver, 38', 'Margin': 1268.27730095},
+        {'ProductID': 780, 'Name': 'Mountain-200 Silver, 42', 'Margin': 1268.27730095},
+        {'ProductID': 781, 'Name': 'Mountain-200 Silver, 46', 'Margin': 1268.27730095},
+        {'ProductID': 782, 'Name': 'Mountain-200 Black, 38', 'Margin': 1342.24915173},
+        {'ProductID': 783, 'Name': 'Mountain-200 Black, 42', 'Margin': 1342.24915173},
+        {'ProductID': 784, 'Name': 'Mountain-200 Black, 46', 'Margin': 1342.24915173},
+        {'ProductID': 785, 'Name': 'Mountain-300 Black, 38', 'Margin': 641.58259234},
+        {'ProductID': 786, 'Name': 'Mountain-300 Black, 40', 'Margin': 641.58259234},
+        {'ProductID': 787, 'Name': 'Mountain-300 Black, 44', 'Margin': 641.58259234},
+        {'ProductID': 788, 'Name': 'Mountain-300 Black, 48', 'Margin': 641.58259234},
+        {'ProductID': 789, 'Name': 'Road-250 Red, 44', 'Margin': 1111.90352344},
+        {'ProductID': 790, 'Name': 'Road-250 Red, 48', 'Margin': 1111.90352344},
+        {'ProductID': 791, 'Name': 'Road-250 Red, 52', 'Margin': 1111.90352344},
+        {'ProductID': 792, 'Name': 'Road-250 Red, 58', 'Margin': 1138.37735759},
+        {'ProductID': 793, 'Name': 'Road-250 Black, 44', 'Margin': 1667.05964359},
+        {'ProductID': 794, 'Name': 'Road-250 Black, 48', 'Margin': 1667.05964359},
+        {'ProductID': 795, 'Name': 'Road-250 Black, 52', 'Margin': 1667.05964359},
+        {'ProductID': 796, 'Name': 'Road-250 Black, 58', 'Margin': 1667.05964359},
+        {'ProductID': 797, 'Name': 'Road-550-W Yellow, 38', 'Margin': 607.61529758},
+        {'ProductID': 798, 'Name': 'Road-550-W Yellow, 40', 'Margin': 607.61529758},
+        {'ProductID': 799, 'Name': 'Road-550-W Yellow, 42', 'Margin': 607.61529758},
+        {'ProductID': 800, 'Name': 'Road-550-W Yellow, 44', 'Margin': 607.61529758},
+        {'ProductID': 801, 'Name': 'Road-550-W Yellow, 48', 'Margin': 607.61529758},
+        {'ProductID': 802, 'Name': 'LL Fork', 'Margin': 56.07644537000001},
+        {'ProductID': 803, 'Name': 'ML Fork', 'Margin': 66.39358696},
+        {'ProductID': 804, 'Name': 'HL Fork', 'Margin': 86.82353656000001},
+        {'ProductID': 805, 'Name': 'LL Headset', 'Margin': 12.938968079999999},
+        {'ProductID': 806, 'Name': 'ML Headset', 'Margin': 38.69965528},
+        {'ProductID': 807, 'Name': 'HL Headset', 'Margin': 47.18938321},
+        {'ProductID': 808, 'Name': 'LL Mountain Handlebars', 'Margin': 16.85095918},
+        {'ProductID': 809, 'Name': 'ML Mountain Handlebars', 'Margin': 23.42635925},
+        {'ProductID': 810, 'Name': 'HL Mountain Handlebars', 'Margin': 45.50205479},
+        {'ProductID': 811, 'Name': 'LL Road Handlebars', 'Margin': 16.85095918},
+        {'ProductID': 812, 'Name': 'ML Road Handlebars', 'Margin': 23.42635925},
+        {'ProductID': 813, 'Name': 'HL Road Handlebars', 'Margin': 45.50205479},
+        {'ProductID': 814, 'Name': 'ML Mountain Frame - Black, 38', 'Margin': 199.21687153},
+        {'ProductID': 815, 'Name': 'LL Mountain Front Wheel', 'Margin': 28.91539468},
+        {'ProductID': 816, 'Name': 'ML Mountain Front Wheel', 'Margin': 99.49849191000001},
+        {'ProductID': 817, 'Name': 'HL Mountain Front Wheel', 'Margin': 142.90610555},
+        {'ProductID': 818, 'Name': 'LL Road Front Wheel', 'Margin': 40.730043890000005},
+        {'ProductID': 819, 'Name': 'ML Road Front Wheel', 'Margin': 118.23429709000001},
+        {'ProductID': 820, 'Name': 'HL Road Front Wheel', 'Margin': 157.11260986000002},
+        {'ProductID': 821, 'Name': 'Touring Front Wheel', 'Margin': 103.77542044},
+        {'ProductID': 822, 'Name': 'ML Road Frame-W - Yellow, 38', 'Margin': 307.55935988},
+        {'ProductID': 823, 'Name': 'LL Mountain Rear Wheel', 'Margin': 41.76772947999999},
+        {'ProductID': 824, 'Name': 'ML Mountain Rear Wheel', 'Margin': 112.35082671},
+        {'ProductID': 825, 'Name': 'HL Mountain Rear Wheel', 'Margin': 155.75844035},
+        {'ProductID': 826, 'Name': 'LL Road Rear Wheel', 'Margin': 53.58237869},
+        {'ProductID': 827, 'Name': 'ML Road Rear Wheel', 'Margin': 131.08663188999998},
+        {'ProductID': 828, 'Name': 'HL Road Rear Wheel', 'Margin': 169.96494466000001},
+        {'ProductID': 829, 'Name': 'Touring Rear Wheel', 'Margin': 116.62775524000001},
+        {'ProductID': 830, 'Name': 'ML Mountain Frame - Black, 40', 'Margin': 199.21687153},
+        {'ProductID': 831, 'Name': 'ML Mountain Frame - Black, 44', 'Margin': 199.21687153},
+        {'ProductID': 832, 'Name': 'ML Mountain Frame - Black, 48', 'Margin': 199.21687153},
+        {'ProductID': 833, 'Name': 'ML Road Frame-W - Yellow, 40', 'Margin': 307.55935988},
+        {'ProductID': 834, 'Name': 'ML Road Frame-W - Yellow, 42', 'Margin': 307.55935988},
+        {'ProductID': 835, 'Name': 'ML Road Frame-W - Yellow, 44', 'Margin': 307.55935988},
+        {'ProductID': 836, 'Name': 'ML Road Frame-W - Yellow, 48', 'Margin': 307.55935988},
+        {'ProductID': 837, 'Name': 'HL Road Frame - Black, 62', 'Margin': 931.2627258199999},
+        {'ProductID': 838, 'Name': 'HL Road Frame - Black, 44', 'Margin': 931.2627258199999},
+        {'ProductID': 839, 'Name': 'HL Road Frame - Black, 48', 'Margin': 931.2627258199999},
+        {'ProductID': 840, 'Name': 'HL Road Frame - Black, 52', 'Margin': 931.2627258199999},
+        {'ProductID': 841, 'Name': "Men's Sports Shorts, S", 'Margin': 26.530079389999997},
+        {'ProductID': 842, 'Name': 'Touring-Panniers, Large', 'Margin': 43.93640625},
+        {'ProductID': 843, 'Name': 'Cable Lock', 'Margin': 8.78728125},
+        {'ProductID': 844, 'Name': 'Minipump', 'Margin': 7.026331390000001},
+        {'ProductID': 845, 'Name': 'Mountain Pump', 'Margin': 8.78378764},
+        {'ProductID': 846, 'Name': 'Taillights - Battery-Powered', 'Margin': 4.91738389},
+        {'ProductID': 847, 'Name': 'Headlights - Dual-Beam', 'Margin': 12.298700140000001},
+        {'ProductID': 848, 'Name': 'Headlights - Weatherproof', 'Margin': 15.813612639999999},
+        {'ProductID': 849, 'Name': "Men's Sports Shorts, M", 'Margin': 26.530079389999997},
+        {'ProductID': 850, 'Name': "Men's Sports Shorts, L", 'Margin': 26.530079389999997},
+        {'ProductID': 851, 'Name': "Men's Sports Shorts, XL", 'Margin': 26.530079389999997},
+        {'ProductID': 852, 'Name': "Women's Tights, S", 'Margin': 33.16369814},
+        {'ProductID': 853, 'Name': "Women's Tights, M", 'Margin': 33.16369814},
+        {'ProductID': 854, 'Name': "Women's Tights, L", 'Margin': 33.16369814},
+        {'ProductID': 855, 'Name': "Men's Bib-Shorts, S", 'Margin': 33.48676389},
+        {'ProductID': 856, 'Name': "Men's Bib-Shorts, M", 'Margin': 33.48676389},
+        {'ProductID': 857, 'Name': "Men's Bib-Shorts, L", 'Margin': 33.48676389},
+        {'ProductID': 858, 'Name': 'Half-Finger Gloves, S', 'Margin': 9.81968553},
+        {'ProductID': 859, 'Name': 'Half-Finger Gloves, M', 'Margin': 9.81968553},
+        {'ProductID': 860, 'Name': 'Half-Finger Gloves, L', 'Margin': 9.81968553},
+        {'ProductID': 861, 'Name': 'Full-Finger Gloves, S', 'Margin': 16.80077189},
+        {'ProductID': 862, 'Name': 'Full-Finger Gloves, M', 'Margin': 16.80077189},
+        {'ProductID': 863, 'Name': 'Full-Finger Gloves, L', 'Margin': 16.80077189},
+        {'ProductID': 864, 'Name': 'Classic Vest, S', 'Margin': 20.236522899999997},
+        {'ProductID': 865, 'Name': 'Classic Vest, M', 'Margin': 20.236522899999997},
+        {'ProductID': 866, 'Name': 'Classic Vest, L', 'Margin': 20.236522899999997},
+        {'ProductID': 867, 'Name': "Women's Mountain Shorts, S", 'Margin': 28.063611230000003},
+        {'ProductID': 868, 'Name': "Women's Mountain Shorts, M", 'Margin': 28.063611230000003},
+        {'ProductID': 869, 'Name': "Women's Mountain Shorts, L", 'Margin': 28.063611230000003},
+        {'ProductID': 870, 'Name': 'Water Bottle - 30 oz.', 'Margin': 1.5902742300000001},
+        {'ProductID': 871, 'Name': 'Mountain Bottle Cage', 'Margin': 3.18370123},
+        {'ProductID': 872, 'Name': 'Road Bottle Cage', 'Margin': 2.86501583},
+        {'ProductID': 873, 'Name': 'Patch Kit/8 Patches', 'Margin': 0.72982365},
+        {'ProductID': 874, 'Name': 'Racing Socks, M', 'Margin': 31.565453339275386},
+        {'ProductID': 875, 'Name': 'Racing Socks, L', 'Margin': 31.565453339275386},
+        {'ProductID': 876, 'Name': 'Hitch Rack - 4-Bike', 'Margin': 38.242248000000004},
+        {'ProductID': 877, 'Name': 'Bike Wash - Dissolver', 'Margin': 2.5335489300000003},
+        {'ProductID': 878, 'Name': 'Fender Set - Mountain', 'Margin': 7.0046880499999995},
+        {'ProductID': 879, 'Name': 'All-Purpose Bike Stand', 'Margin': 50.6709786},
+        {'ProductID': 880, 'Name': 'Hydration Pack - 70 oz.', 'Margin': 20.609489229999994},
+        {'ProductID': 881, 'Name': 'Short-Sleeve Classic Jersey, S', 'Margin': 35.42375683},
+        {'ProductID': 882, 'Name': 'Short-Sleeve Classic Jersey, M', 'Margin': 35.42375683},
+        {'ProductID': 883, 'Name': 'Short-Sleeve Classic Jersey, L', 'Margin': 35.42375683},
+        {'ProductID': 884, 'Name': 'Short-Sleeve Classic Jersey, XL', 'Margin': 35.42375683},
+        {'ProductID': 885, 'Name': 'HL Touring Frame - Yellow, 60', 'Margin': 512.74580677},
+        {'ProductID': 886, 'Name': 'LL Touring Frame - Yellow, 62', 'Margin': 170.29380399000001},
+        {'ProductID': 887, 'Name': 'HL Touring Frame - Yellow, 46', 'Margin': 512.74580677},
+        {'ProductID': 888, 'Name': 'HL Touring Frame - Yellow, 50', 'Margin': 512.74580677},
+        {'ProductID': 889, 'Name': 'HL Touring Frame - Yellow, 54', 'Margin': 512.74580677},
+        {'ProductID': 890, 'Name': 'HL Touring Frame - Blue, 46', 'Margin': 512.74580677},
+        {'ProductID': 891, 'Name': 'HL Touring Frame - Blue, 50', 'Margin': 512.74580677},
+        {'ProductID': 892, 'Name': 'HL Touring Frame - Blue, 54', 'Margin': 512.74580677},
+        {'ProductID': 893, 'Name': 'HL Touring Frame - Blue, 60', 'Margin': 512.74580677},
+        {'ProductID': 894, 'Name': 'Rear Derailleur', 'Margin': 54.04144921999999},
+        {'ProductID': 895, 'Name': 'LL Touring Frame - Blue, 50', 'Margin': 170.29380399000001},
+        {'ProductID': 896, 'Name': 'LL Touring Frame - Blue, 54', 'Margin': 170.29380399000001},
+        {'ProductID': 897, 'Name': 'LL Touring Frame - Blue, 58', 'Margin': 170.29380399000001},
+        {'ProductID': 898, 'Name': 'LL Touring Frame - Blue, 62', 'Margin': 170.29380399000001},
+        {'ProductID': 899, 'Name': 'LL Touring Frame - Yellow, 44', 'Margin': 170.29380399000001},
+        {'ProductID': 900, 'Name': 'LL Touring Frame - Yellow, 50', 'Margin': 170.29380399000001},
+        {'ProductID': 901, 'Name': 'LL Touring Frame - Yellow, 54', 'Margin': 170.29380399000001},
+        {'ProductID': 902, 'Name': 'LL Touring Frame - Yellow, 58', 'Margin': 170.29380399000001},
+        {'ProductID': 903, 'Name': 'LL Touring Frame - Blue, 44', 'Margin': 170.29380399000001},
+        {'ProductID': 904, 'Name': 'ML Mountain Frame-W - Silver, 40', 'Margin': 199.79438897},
+        {'ProductID': 905, 'Name': 'ML Mountain Frame-W - Silver, 42', 'Margin': 199.79438897},
+        {'ProductID': 906, 'Name': 'ML Mountain Frame-W - Silver, 46', 'Margin': 199.79438897},
+        {'ProductID': 907, 'Name': 'Rear Brakes', 'Margin': 47.385300599999994},
+        {'ProductID': 908, 'Name': 'LL Mountain Seat/Saddle', 'Margin': 10.26039173},
+        {'ProductID': 909, 'Name': 'ML Mountain Seat/Saddle', 'Margin': 14.807964219999999},
+        {'ProductID': 910, 'Name': 'HL Mountain Seat/Saddle', 'Margin': 19.91545162},
+        {'ProductID': 911, 'Name': 'LL Road Seat/Saddle', 'Margin': 10.26039173},
+        {'ProductID': 912, 'Name': 'ML Road Seat/Saddle', 'Margin': 14.807964219999999},
+        {'ProductID': 913, 'Name': 'HL Road Seat/Saddle', 'Margin': 19.91545162},
+        {'ProductID': 914, 'Name': 'LL Touring Seat/Saddle', 'Margin': 10.26039173},
+        {'ProductID': 915, 'Name': 'ML Touring Seat/Saddle', 'Margin': 14.807964219999999},
+        {'ProductID': 916, 'Name': 'HL Touring Seat/Saddle', 'Margin': 19.91545162},
+        {'ProductID': 917, 'Name': 'LL Mountain Frame - Silver, 42', 'Margin': 144.89744697999998},
+        {'ProductID': 918, 'Name': 'LL Mountain Frame - Silver, 44', 'Margin': 144.89744697999998},
+        {'ProductID': 919, 'Name': 'LL Mountain Frame - Silver, 48', 'Margin': 144.89744697999998},
+        {'ProductID': 920, 'Name': 'LL Mountain Frame - Silver, 52', 'Margin': 144.89744697999998},
+        {'ProductID': 921, 'Name': 'Mountain Tire Tube', 'Margin': 1.5902742300000001},
+        {'ProductID': 922, 'Name': 'Road Tire Tube', 'Margin': 1.27158883},
+        {'ProductID': 923, 'Name': 'Touring Tire Tube', 'Margin': 1.5902742300000001},
+        {'ProductID': 924, 'Name': 'LL Mountain Frame - Black, 42', 'Margin': 146.6471985},
+        {'ProductID': 925, 'Name': 'LL Mountain Frame - Black, 44', 'Margin': 146.6471985},
+        {'ProductID': 926, 'Name': 'LL Mountain Frame - Black, 48', 'Margin': 146.6471985},
+        {'ProductID': 927, 'Name': 'LL Mountain Frame - Black, 52', 'Margin': 146.6471985},
+        {'ProductID': 928, 'Name': 'LL Mountain Tire', 'Margin': 7.963982229999999},
+        {'ProductID': 929, 'Name': 'ML Mountain Tire', 'Margin': 9.557409230000001},
+        {'ProductID': 930, 'Name': 'HL Mountain Tire', 'Margin': 11.153989},
+        {'ProductID': 931, 'Name': 'LL Road Tire', 'Margin': 6.84858333},
+        {'ProductID': 932, 'Name': 'ML Road Tire', 'Margin': 7.963982229999999},
+        {'ProductID': 933, 'Name': 'HL Road Tire', 'Margin': 10.38914404},
+        {'ProductID': 934, 'Name': 'Touring Tire', 'Margin': 9.23872383},
+        {'ProductID': 935, 'Name': 'LL Mountain Pedal', 'Margin': 15.31871296},
+        {'ProductID': 936, 'Name': 'ML Mountain Pedal', 'Margin': 23.4906928},
+        {'ProductID': 937, 'Name': 'HL Mountain Pedal', 'Margin': 30.641175160000003},
+        {'ProductID': 938, 'Name': 'LL Road Pedal', 'Margin': 15.31871296},
+        {'ProductID': 939, 'Name': 'ML Road Pedal', 'Margin': 23.4906928},
+        {'ProductID': 940, 'Name': 'HL Road Pedal', 'Margin': 30.641175160000003},
+        {'ProductID': 941, 'Name': 'Touring Pedal', 'Margin': 30.641175160000003},
+        {'ProductID': 942, 'Name': 'ML Mountain Frame-W - Silver, 38', 'Margin': 199.79438897},
+        {'ProductID': 943, 'Name': 'LL Mountain Frame - Black, 40', 'Margin': 146.6471985},
+        {'ProductID': 944, 'Name': 'LL Mountain Frame - Silver, 40', 'Margin': 144.89744697999998},
+        {'ProductID': 945, 'Name': 'Front Derailleur', 'Margin': 40.70690535999999},
+        {'ProductID': 946, 'Name': 'LL Touring Handlebars', 'Margin': 17.4373744},
+        {'ProductID': 947, 'Name': 'HL Touring Handlebars', 'Margin': 34.64391491},
+        {'ProductID': 948, 'Name': 'Front Brakes', 'Margin': 47.385300599999994},
+        {'ProductID': 949, 'Name': 'LL Crankset', 'Margin': 83.53545895999999},
+        {'ProductID': 950, 'Name': 'ML Crankset', 'Margin': 122.09246336},
+        {'ProductID': 951, 'Name': 'HL Crankset', 'Margin': 192.78030475999998},
+        {'ProductID': 952, 'Name': 'Chain', 'Margin': 9.005471859999998},
+        {'ProductID': 953, 'Name': 'Touring-2000 Blue, 60', 'Margin': 643.46399668},
+        {'ProductID': 954, 'Name': 'Touring-1000 Yellow, 46', 'Margin': 1262.7592845899999},
+        {'ProductID': 955, 'Name': 'Touring-1000 Yellow, 50', 'Margin': 1262.7592845899999},
+        {'ProductID': 956, 'Name': 'Touring-1000 Yellow, 54', 'Margin': 1262.7592845899999},
+        {'ProductID': 957, 'Name': 'Touring-1000 Yellow, 60', 'Margin': 1262.7592845899999},
+        {'ProductID': 958, 'Name': 'Touring-3000 Blue, 54', 'Margin': 393.19711408},
+        {'ProductID': 959, 'Name': 'Touring-3000 Blue, 58', 'Margin': 393.19711408},
+        {'ProductID': 960, 'Name': 'Touring-3000 Blue, 62', 'Margin': 393.19711408},
+        {'ProductID': 961, 'Name': 'Touring-3000 Yellow, 44', 'Margin': 393.19711408},
+        {'ProductID': 962, 'Name': 'Touring-3000 Yellow, 50', 'Margin': 393.19711408},
+        {'ProductID': 963, 'Name': 'Touring-3000 Yellow, 54', 'Margin': 393.19711408},
+        {'ProductID': 964, 'Name': 'Touring-3000 Yellow, 58', 'Margin': 393.19711408},
+        {'ProductID': 965, 'Name': 'Touring-3000 Yellow, 62', 'Margin': 393.19711408},
+        {'ProductID': 966, 'Name': 'Touring-1000 Blue, 46', 'Margin': 1262.7592845899999},
+        {'ProductID': 967, 'Name': 'Touring-1000 Blue, 50', 'Margin': 1262.7592845899999},
+        {'ProductID': 968, 'Name': 'Touring-1000 Blue, 54', 'Margin': 1262.7592845899999},
+        {'ProductID': 969, 'Name': 'Touring-1000 Blue, 60', 'Margin': 1262.7592845899999},
+        {'ProductID': 970, 'Name': 'Touring-2000 Blue, 46', 'Margin': 643.46399668},
+        {'ProductID': 971, 'Name': 'Touring-2000 Blue, 50', 'Margin': 643.46399668},
+        {'ProductID': 972, 'Name': 'Touring-2000 Blue, 54', 'Margin': 643.46399668},
+        {'ProductID': 973, 'Name': 'Road-350-W Yellow, 40', 'Margin': 922.4067709999999},
+        {'ProductID': 974, 'Name': 'Road-350-W Yellow, 42', 'Margin': 922.4067709999999},
+        {'ProductID': 975, 'Name': 'Road-350-W Yellow, 44', 'Margin': 922.4067709999999},
+        {'ProductID': 976, 'Name': 'Road-350-W Yellow, 48', 'Margin': 922.4067709999999},
+        {'ProductID': 977, 'Name': 'Road-750 Black, 58', 'Margin': 368.42673616},
+        {'ProductID': 978, 'Name': 'Touring-3000 Blue, 44', 'Margin': 393.19711408},
+        {'ProductID': 979, 'Name': 'Touring-3000 Blue, 50', 'Margin': 393.19711408},
+        {'ProductID': 980, 'Name': 'Mountain-400-W Silver, 38', 'Margin': 420.65993463999996},
+        {'ProductID': 981, 'Name': 'Mountain-400-W Silver, 40', 'Margin': 420.65993463999996},
+        {'ProductID': 982, 'Name': 'Mountain-400-W Silver, 42', 'Margin': 420.65993463999996},
+        {'ProductID': 983, 'Name': 'Mountain-400-W Silver, 46', 'Margin': 420.65993463999996},
+        {'ProductID': 984, 'Name': 'Mountain-500 Silver, 40', 'Margin': 308.8651575899999},
+        {'ProductID': 985, 'Name': 'Mountain-500 Silver, 42', 'Margin': 308.8651575899999},
+        {'ProductID': 986, 'Name': 'Mountain-500 Silver, 44', 'Margin': 308.8651575899999},
+        {'ProductID': 987, 'Name': 'Mountain-500 Silver, 48', 'Margin': 308.8651575899999},
+        {'ProductID': 988, 'Name': 'Mountain-500 Silver, 52', 'Margin': 308.8651575899999},
+        {'ProductID': 989, 'Name': 'Mountain-500 Black, 40', 'Margin': 315.81889636999995},
+        {'ProductID': 990, 'Name': 'Mountain-500 Black, 42', 'Margin': 315.81889636999995},
+        {'ProductID': 991, 'Name': 'Mountain-500 Black, 44', 'Margin': 315.81889636999995},
+        {'ProductID': 992, 'Name': 'Mountain-500 Black, 48', 'Margin': 315.81889636999995},
+        {'ProductID': 993, 'Name': 'Mountain-500 Black, 52', 'Margin': 315.81889636999995},
+        {'ProductID': 994, 'Name': 'LL Bottom Bracket', 'Margin': 20.42620036},
+        {'ProductID': 995, 'Name': 'ML Bottom Bracket', 'Margin': 38.30240626},
+        {'ProductID': 996, 'Name': 'HL Bottom Bracket', 'Margin': 45.96363736},
+        {'ProductID': 997, 'Name': 'Road-750 Black, 44', 'Margin': 368.42673616},
+        {'ProductID': 998, 'Name': 'Road-750 Black, 48', 'Margin': 368.42673616},
+        {'ProductID': 999, 'Name': 'Road-750 Black, 52', 'Margin': 368.42673616}
+    ]
+}
+Model used: global-4o
+Final Answer:
+To calculate the margins based on the given conditions, follow the steps for each specified product color:
+
+1. **Black**: Increase the standard cost by 22%.
+2. **Red**: Decrease the standard cost by 12%.
+3. **Silver**: Increase the standard cost by 15%.
+4. **Multi**: Increase the standard cost by 5%.
+5. **White**: Two times the original price divided by the square root of the margin price.
+6. **Other colors**: Remain the same.
+
+For each product color, calculate the new margin based on these adjustments:
+
+### Step-by-Step Calculation:
+
+- **Commission Calculation**: Margin = Standard Cost * 14.790%
+
+For products with known margins in various colors:
+
+1. Start by identifying products with specified colors such as "Black," "Red," "Silver," "Multi," and "White."
+
+2. Apply the given percentage change to the original margin value:
+   - For Black: Original Margin * (1 + 0.22)
+   - For Red: Original Margin * (1 - 0.12)
+   - For Silver: Original Margin * (1 + 0.15)
+   - For Multi: Original Margin * (1 + 0.05)
+   - For White: (2 * Original Margin) / √(Original Margin)
+
+3. Other colors keep the existing margin as no change is specified.
+
+### Example Calculations for Each Color
+
+Assuming the margin from an example product where the margin is initially 100 for demonstration purposes:
+
+- **Black**: New Margin = 100 * (1 + 0.22) = 122
+- **Red**: New Margin = 100 * (1 - 0.12) = 88
+- **Silver**: New Margin = 100 * (1 + 0.15) = 115
+- **Multi**: New Margin = 100 * (1 + 0.05) = 105
+- **White**: New Margin = (2 * 100) / √100 = 20
+
+### Final Output
+
+Now, choose any product from the database context and apply the modifications along with calculations from the steps above. Based on your query, you would repeat 
+this for all identified product color situations in your database to extract modified margins.
+
+
+Ground Truth: 
+Note: The splution provided  as ground truth is bit correct as it completely misses out the the calculation for the white color margin.
+
+``` sql:
+
+SELECT  P.Color, 
+    CASE 
+        WHEN P.Color = 'Black' THEN P.StandardCost * 1.22 
+        WHEN P.Color = 'Red' THEN P.StandardCost * 0.88 
+        WHEN P.Color = 'Silver' THEN P.StandardCost * 1.15 
+        WHEN P.Color = 'Multi' THEN P.StandardCost * 1.05 
+        WHEN P.Color = 'White' THEN (2 * P.StandardCost) / SQRT(P.StandardCost * (1 - 0.1479)) 
+        ELSE P.StandardCost 
+    END AS ModifiedStandardCost, 
+        P.StandardCost * (1 - 0.1479) AS Margin 
+    FROM Production.Product AS P;
+
+```
+Assessment: The generated sql is more correct than the ground truth provided. , but more columns are selected than needed. The ground truth is not correct as it does not calculate the margin for the white color.
+

@@ -1,0 +1,153 @@
+Q3:  Create a list of 10 most expensive products from the Production.Product table that have a product number beginning with ‘BK’. Include only the product ID, Name and colour.
+
+
+
+Output: 
+```sql generated:
+SELECT TOP 10 ProductID, Name, Color
+FROM Production.Product
+WHERE ProductNumber LIKE 'BK%'
+ORDER BY ListPrice DESC;
+```
+
+python src\main.py "Create a list of 10 most expensive products from the Production.Product table that have a product number beginning with ‘BK’. Include only the product ID, Name and colour." 
+AzureChatCompletion service registered with kernel.
+SQL Process initialized
+Processing query: Create a list of 10 most expensive products from the Production.Product table that have a product number beginning with ‘BK’. Include only 
+the product ID, Name and colour.
+Executing TableNameStep...
+Running TableNameStep...
+Received user query: Create a list of 10 most expensive products from the Production.Product table that have a product number beginning with ‘BK’. Include only the product ID, Name and colour.
+Model used: global-4o
+Extracted table names:
+
+GetTableNames(table_names=[ValidTableName(table_name='Production.Product')])
+Executing ColumnNameStep...
+Running ColumnNameStep...
+Model used: global-4o
+Extracted column names:
+
+GetColumnNames(
+    table_column_list=[TableColumns(table_name='Production.Product', column_names=['ProductID', 'Name', 'Color', 'ProductNumber', 'ListPrice'])],
+    table_column_names=[TableColumns(table_name='Production.Product', column_names=['ProductID', 'Name', 'Color', 'ProductNumber', 'ListPrice'])]
+)
+Executing SQLGenerationStep...
+Running SQLGenerationStep...
+Writing file to full path: C:\Users\wknupp\Documents\Code\semantic-kernel-advanced-usage\templates\natural_language_to_SQL\output_prompts\prompt_0.txt
+Model used: global-4o
+Generated SQL statement:
+
+SQLGenerateResult(
+    sql_statement="SELECT TOP 10 ProductID, Name, Color FROM Production.Product WHERE ProductNumber LIKE 'BK%' ORDER BY ListPrice DESC;",
+    result="SELECT TOP 10 ProductID, Name, Color FROM Production.Product WHERE ProductNumber LIKE 'BK%' ORDER BY ListPrice DESC;",
+    status='OK',
+    reason=''
+)
+Executing BusinessRulesStep...
+Running BusinessRulesStep...
+Model used: global-4o
+Applied business rules:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ValidationStep...
+Running ValidationStep...
+SQL statement to validate: SELECT TOP 10 ProductID, Name, Color FROM Production.Product WHERE ProductNumber LIKE 'BK%' ORDER BY ListPrice DESC;
+Model used: global-4o
+SQL validation results:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ExecutionStep...
+Running ExecutionStep...
+SQL statement to execute: SELECT TOP 10 ProductID, Name, Color FROM Production.Product WHERE ProductNumber LIKE 'BK%' ORDER BY ListPrice DESC;
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 1/4)
+Using authentication method: Azure CLI Credential Token
+* Running SQL in Azure SQL [SELECT TOP 10 ProductID, Name, Color FROM Production.Product WHERE ProductNumber LIKE 'BK%' ORDER BY ListPrice DESC;]...
+
+(753, 'Road-150 Red, 56', 'Red')
+(752, 'Road-150 Red, 52', 'Red')
+(751, 'Road-150 Red, 48', 'Red')
+(750, 'Road-150 Red, 44', 'Red')
+(749, 'Road-150 Red, 62', 'Red')
+(771, 'Mountain-100 Silver, 38', 'Silver')
+(772, 'Mountain-100 Silver, 42', 'Silver')
+(773, 'Mountain-100 Silver, 44', 'Silver')
+(774, 'Mountain-100 Silver, 48', 'Silver')
+(775, 'Mountain-100 Black, 38', 'Black')
+{
+    'result': [
+        {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'Color': 'Red'},
+        {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'Color': 'Red'},
+        {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'Color': 'Red'},
+        {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'Color': 'Red'},
+        {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'Color': 'Red'},
+        {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'Color': 'Silver'},
+        {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'Color': 'Silver'},
+        {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'Color': 'Silver'},
+        {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'Color': 'Silver'},
+        {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'Color': 'Black'}
+    ]
+}
+SQL execution succeeded.
+resp_dd
+{
+    'query': 'Create a list of 10 most expensive products from the Production.Product table that have a product number beginning with ‘BK’. Include only the 
+product ID, Name and colour.',
+    'response': {
+        'result': [
+            {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'Color': 'Red'},
+            {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'Color': 'Red'},
+            {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'Color': 'Red'},
+            {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'Color': 'Red'},
+            {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'Color': 'Red'},
+            {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'Color': 'Silver'},
+            {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'Color': 'Silver'},
+            {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'Color': 'Silver'},
+            {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'Color': 'Silver'},
+            {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'Color': 'Black'}
+        ]
+    }
+}
+Execution success completed.
+SQL executed successfully!
+
+Process completed!
+SQL Result:
+{
+    'result': [
+        {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'Color': 'Red'},
+        {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'Color': 'Red'},
+        {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'Color': 'Red'},
+        {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'Color': 'Red'},
+        {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'Color': 'Red'},
+        {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'Color': 'Silver'},
+        {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'Color': 'Silver'},
+        {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'Color': 'Silver'},
+        {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'Color': 'Silver'},
+        {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'Color': 'Black'}
+    ]
+}
+Model used: global-4o
+Final Answer:
+Based on the query and the context provided from the SQL database, the goal is to list the 10 most expensive products where the product number begins with 
+‘BK’. The context provided shows a list of products with their IDs, names, and colors, but does not include any pricing information or product numbers. 
+Therefore, additional details are needed regarding the product pricing and product numbers starting with 'BK' to generate the requested list accurately.
+
+Here is what the response would look like with the appropriate data:
+
+1. Retrieve products from the Production.Product table where the ProductNumber starts with 'BK'.
+2. Extract the necessary fields (ProductID, Name, and Color) for those products.
+3. Sort these products by their price in descending order to get the most expensive products.
+4. Select the top 10 products.
+
+Given the context lacks information on product numbers and prices, please ensure that the necessary data is part of the DB context or provide such details for 
+generating an accurate list according to your query.
+
+Ground Truth:
+```sql:
+SELECT TOP 10 ProductID, Name, Color
+FROM Production.Product
+WHERE ProductNumber LIKE 'BK%'
+ORDER BY ListPrice DESC;
+```
+
+Assessment:100%

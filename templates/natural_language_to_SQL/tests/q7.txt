@@ -1,0 +1,1372 @@
+Q7. Create a list of product segmentation by defining criteria that places each item in a predefined segment as follows. If price gets less than 200 then low value. If price is between 201 and 750 then mid value. If between 750 and 1250 then mid to high value else higher value. For colours “black, silver and red” products.
+
+``` sql:
+SELECT  P.Name,  P.Color,P.ListPrice, 
+CASE WHEN P.ListPrice < 200 THEN 'low value' 
+WHEN P.ListPrice BETWEEN 201 AND 750 THEN 'mid value' 
+WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' 
+ELSE 'higher value' END 
+AS ValueSegment 
+FROM Production.Product AS P WHERE P.Color IN ('black','silver','red');
+
+```
+
+Output: 
+
+Generated SQL:
+SELECT P.ProductID, P.Name, P.ListPrice, P.Color, CASE WHEN P.ListPrice < 200 THEN 'low value' WHEN P.ListPrice BETWEEN 201 AND 750 THEN 'mid value' WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' ELSE 'higher value' END AS ValueSegment FROM Production.Product AS P WHERE P.Color IN ('black','silver','red');
+
+python src\main.py "Create a list of product segmentation by defining criteria that places each item in a predefined segment as follows. If price gets less than 200 then low value. If price is between 201 and 750 then mid value. If between 750 and 1250 then mid to high value else higher value. For colours 'black, silver and red' products." 
+AzureChatCompletion service registered with kernel.
+SQL Process initialized
+Processing query: Create a list of product segmentation by defining criteria that places each item in a predefined segment as follows. If price gets less
+than 200 then low value. If price is between 201 and 750 then mid value. If between 750 and 1250 then mid to high value else higher value. For colours 
+'black, silver and red' products.
+Executing TableNameStep...
+Running TableNameStep...
+Received user query: Create a list of product segmentation by defining criteria that places each item in a predefined segment as follows. If price gets less than 200 then low value. If price is between 201 and 750 then mid value. If between 750 and 1250 then mid to high value else higher value. For colours 'black, silver and red' products.
+Model used: o1
+Extracted table names:
+
+GetTableNames(table_names=[ValidTableName(table_name='Production.Product')])
+Executing ColumnNameStep...
+Running ColumnNameStep...
+Model used: o1
+Extracted column names:
+
+GetColumnNames(
+    table_column_list=[
+        TableColumns(
+            table_name='Production.Product',
+            column_names=[
+                'ProductID',
+                'Name',
+                'ListPrice',
+                'Color',
+                'ProductSubcategoryID',
+                'ProductModelID',
+                'SizeUnitMeasureCode',
+                'WeightUnitMeasureCode'
+            ]
+        )
+    ],
+    table_column_names=[
+        TableColumns(
+            table_name='Production.Product',
+            column_names=[
+                'ProductID',
+                'Name',
+                'ListPrice',
+                'Color',
+                'ProductSubcategoryID',
+                'ProductModelID',
+                'SizeUnitMeasureCode',
+                'WeightUnitMeasureCode'
+            ]
+        )
+    ]
+)
+Executing SQLGenerationStep...
+Running SQLGenerationStep...
+Writing file to full path: C:\Users\wknupp\Documents\Code\semantic-kernel-advanced-usage\templates\natural_language_to_SQL\output_prompts\prompt_0.txt
+Model used: o1
+Generated SQL statement:
+
+SQLGenerateResult(
+    sql_statement="SELECT P.ProductID, P.Name, P.ListPrice, P.Color, CASE WHEN P.ListPrice < 200 THEN 'low value' WHEN P.ListPrice BETWEEN 201 AND 750 
+THEN 'mid value' WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' ELSE 'higher value' END AS ValueSegment FROM Production.Product AS P 
+WHERE P.Color IN ('black','silver','red');",
+    result="SELECT P.ProductID, P.Name, P.ListPrice, P.Color, CASE WHEN P.ListPrice < 200 THEN 'low value' WHEN P.ListPrice BETWEEN 201 AND 750 THEN 'mid
+value' WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' ELSE 'higher value' END AS ValueSegment FROM Production.Product AS P WHERE P.Color 
+IN ('black','silver','red');",
+    status='OK',
+    reason=''
+)
+Executing BusinessRulesStep...
+Running BusinessRulesStep...
+Model used: o1
+Applied business rules:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ValidationStep...
+Running ValidationStep...
+SQL statement to validate: SELECT P.ProductID, P.Name, P.ListPrice, P.Color, CASE WHEN P.ListPrice < 200 THEN 'low value' WHEN P.ListPrice BETWEEN 201 AND 750 THEN 'mid value' WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' ELSE 'higher value' END AS ValueSegment FROM Production.Product AS P WHERE P.Color IN ('black','silver','red');
+Model used: o1
+SQL validation results:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ExecutionStep...
+Running ExecutionStep...
+SQL statement to execute: SELECT P.ProductID, P.Name, P.ListPrice, P.Color, CASE WHEN P.ListPrice < 200 THEN 'low value' WHEN P.ListPrice BETWEEN 201 AND 750 THEN 'mid value' WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' ELSE 'higher value' END AS ValueSegment FROM Production.Product AS P WHERE P.Color IN ('black','silver','red');
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 1/4, Auth method: Azure CLI Credential Token, Auth retry: 1)
+* Running SQL in Azure SQL [SELECT P.ProductID, P.Name, P.ListPrice, P.Color, CASE WHEN P.ListPrice < 200 THEN 'low value' WHEN P.ListPrice BETWEEN 201 AND 750 THEN 'mid value' WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' ELSE 'higher value' END AS ValueSegment FROM Production.Product AS P WHERE P.Color IN ('black','silver','red');]...
+
+(317, 'LL Crankarm', Decimal('0.0000'), 'Black', 'low value')
+(318, 'ML Crankarm', Decimal('0.0000'), 'Black', 'low value')
+(319, 'HL Crankarm', Decimal('0.0000'), 'Black', 'low value')
+(320, 'Chainring Bolts', Decimal('0.0000'), 'Silver', 'low value')
+(321, 'Chainring Nut', Decimal('0.0000'), 'Silver', 'low value')
+(322, 'Chainring', Decimal('0.0000'), 'Black', 'low value')
+(332, 'Freewheel', Decimal('0.0000'), 'Silver', 'low value')
+(351, 'Front Derailleur Cage', Decimal('0.0000'), 'Silver', 'low value')
+(352, 'Front Derailleur Linkage', Decimal('0.0000'), 'Silver', 'low value')
+(461, 'Lock Ring', Decimal('0.0000'), 'Silver', 'low value')
+(679, 'Rear Derailleur Cage', Decimal('0.0000'), 'Silver', 'low value')
+(680, 'HL Road Frame - Black, 58', Decimal('1431.5000'), 'Black', 'higher value')
+(706, 'HL Road Frame - Red, 58', Decimal('1431.5000'), 'Red', 'higher value')
+(707, 'Sport-100 Helmet, Red', Decimal('34.9900'), 'Red', 'low value')
+(708, 'Sport-100 Helmet, Black', Decimal('34.9900'), 'Black', 'low value')
+(717, 'HL Road Frame - Red, 62', Decimal('1431.5000'), 'Red', 'higher value')
+(718, 'HL Road Frame - Red, 44', Decimal('1431.5000'), 'Red', 'higher value')
+(719, 'HL Road Frame - Red, 48', Decimal('1431.5000'), 'Red', 'higher value')
+(720, 'HL Road Frame - Red, 52', Decimal('1431.5000'), 'Red', 'higher value')
+(721, 'HL Road Frame - Red, 56', Decimal('1431.5000'), 'Red', 'higher value')
+(722, 'LL Road Frame - Black, 58', Decimal('337.2200'), 'Black', 'mid value')
+(723, 'LL Road Frame - Black, 60', Decimal('337.2200'), 'Black', 'mid value')
+(724, 'LL Road Frame - Black, 62', Decimal('337.2200'), 'Black', 'mid value')
+(725, 'LL Road Frame - Red, 44', Decimal('337.2200'), 'Red', 'mid value')
+(726, 'LL Road Frame - Red, 48', Decimal('337.2200'), 'Red', 'mid value')
+(727, 'LL Road Frame - Red, 52', Decimal('337.2200'), 'Red', 'mid value')
+(728, 'LL Road Frame - Red, 58', Decimal('337.2200'), 'Red', 'mid value')
+(729, 'LL Road Frame - Red, 60', Decimal('337.2200'), 'Red', 'mid value')
+(730, 'LL Road Frame - Red, 62', Decimal('337.2200'), 'Red', 'mid value')
+(731, 'ML Road Frame - Red, 44', Decimal('594.8300'), 'Red', 'mid value')
+(732, 'ML Road Frame - Red, 48', Decimal('594.8300'), 'Red', 'mid value')
+(733, 'ML Road Frame - Red, 52', Decimal('594.8300'), 'Red', 'mid value')
+(734, 'ML Road Frame - Red, 58', Decimal('594.8300'), 'Red', 'mid value')
+(735, 'ML Road Frame - Red, 60', Decimal('594.8300'), 'Red', 'mid value')
+(736, 'LL Road Frame - Black, 44', Decimal('337.2200'), 'Black', 'mid value')
+(737, 'LL Road Frame - Black, 48', Decimal('337.2200'), 'Black', 'mid value')
+(738, 'LL Road Frame - Black, 52', Decimal('337.2200'), 'Black', 'mid value')
+(739, 'HL Mountain Frame - Silver, 42', Decimal('1364.5000'), 'Silver', 'higher value')
+(740, 'HL Mountain Frame - Silver, 44', Decimal('1364.5000'), 'Silver', 'higher value')
+(741, 'HL Mountain Frame - Silver, 48', Decimal('1364.5000'), 'Silver', 'higher value')
+(742, 'HL Mountain Frame - Silver, 46', Decimal('1364.5000'), 'Silver', 'higher value')
+(743, 'HL Mountain Frame - Black, 42', Decimal('1349.6000'), 'Black', 'higher value')
+(744, 'HL Mountain Frame - Black, 44', Decimal('1349.6000'), 'Black', 'higher value')
+(745, 'HL Mountain Frame - Black, 48', Decimal('1349.6000'), 'Black', 'higher value')
+(746, 'HL Mountain Frame - Black, 46', Decimal('1349.6000'), 'Black', 'higher value')
+(747, 'HL Mountain Frame - Black, 38', Decimal('1349.6000'), 'Black', 'higher value')
+(748, 'HL Mountain Frame - Silver, 38', Decimal('1364.5000'), 'Silver', 'higher value')
+(749, 'Road-150 Red, 62', Decimal('3578.2700'), 'Red', 'higher value')
+(750, 'Road-150 Red, 44', Decimal('3578.2700'), 'Red', 'higher value')
+(751, 'Road-150 Red, 48', Decimal('3578.2700'), 'Red', 'higher value')
+(752, 'Road-150 Red, 52', Decimal('3578.2700'), 'Red', 'higher value')
+(753, 'Road-150 Red, 56', Decimal('3578.2700'), 'Red', 'higher value')
+(754, 'Road-450 Red, 58', Decimal('1457.9900'), 'Red', 'higher value')
+(755, 'Road-450 Red, 60', Decimal('1457.9900'), 'Red', 'higher value')
+(756, 'Road-450 Red, 44', Decimal('1457.9900'), 'Red', 'higher value')
+(757, 'Road-450 Red, 48', Decimal('1457.9900'), 'Red', 'higher value')
+(758, 'Road-450 Red, 52', Decimal('1457.9900'), 'Red', 'higher value')
+(759, 'Road-650 Red, 58', Decimal('782.9900'), 'Red', 'mid to high value')
+(760, 'Road-650 Red, 60', Decimal('782.9900'), 'Red', 'mid to high value')
+(761, 'Road-650 Red, 62', Decimal('782.9900'), 'Red', 'mid to high value')
+(762, 'Road-650 Red, 44', Decimal('782.9900'), 'Red', 'mid to high value')
+(763, 'Road-650 Red, 48', Decimal('782.9900'), 'Red', 'mid to high value')
+(764, 'Road-650 Red, 52', Decimal('782.9900'), 'Red', 'mid to high value')
+(765, 'Road-650 Black, 58', Decimal('782.9900'), 'Black', 'mid to high value')
+(766, 'Road-650 Black, 60', Decimal('782.9900'), 'Black', 'mid to high value')
+(767, 'Road-650 Black, 62', Decimal('782.9900'), 'Black', 'mid to high value')
+(768, 'Road-650 Black, 44', Decimal('782.9900'), 'Black', 'mid to high value')
+(769, 'Road-650 Black, 48', Decimal('782.9900'), 'Black', 'mid to high value')
+(770, 'Road-650 Black, 52', Decimal('782.9900'), 'Black', 'mid to high value')
+(771, 'Mountain-100 Silver, 38', Decimal('3399.9900'), 'Silver', 'higher value')
+(772, 'Mountain-100 Silver, 42', Decimal('3399.9900'), 'Silver', 'higher value')
+(773, 'Mountain-100 Silver, 44', Decimal('3399.9900'), 'Silver', 'higher value')
+(774, 'Mountain-100 Silver, 48', Decimal('3399.9900'), 'Silver', 'higher value')
+(775, 'Mountain-100 Black, 38', Decimal('3374.9900'), 'Black', 'higher value')
+(776, 'Mountain-100 Black, 42', Decimal('3374.9900'), 'Black', 'higher value')
+(777, 'Mountain-100 Black, 44', Decimal('3374.9900'), 'Black', 'higher value')
+(778, 'Mountain-100 Black, 48', Decimal('3374.9900'), 'Black', 'higher value')
+(779, 'Mountain-200 Silver, 38', Decimal('2319.9900'), 'Silver', 'higher value')
+(780, 'Mountain-200 Silver, 42', Decimal('2319.9900'), 'Silver', 'higher value')
+(781, 'Mountain-200 Silver, 46', Decimal('2319.9900'), 'Silver', 'higher value')
+(782, 'Mountain-200 Black, 38', Decimal('2294.9900'), 'Black', 'higher value')
+(783, 'Mountain-200 Black, 42', Decimal('2294.9900'), 'Black', 'higher value')
+(784, 'Mountain-200 Black, 46', Decimal('2294.9900'), 'Black', 'higher value')
+(785, 'Mountain-300 Black, 38', Decimal('1079.9900'), 'Black', 'mid to high value')
+(786, 'Mountain-300 Black, 40', Decimal('1079.9900'), 'Black', 'mid to high value')
+(787, 'Mountain-300 Black, 44', Decimal('1079.9900'), 'Black', 'mid to high value')
+(788, 'Mountain-300 Black, 48', Decimal('1079.9900'), 'Black', 'mid to high value')
+(789, 'Road-250 Red, 44', Decimal('2443.3500'), 'Red', 'higher value')
+(790, 'Road-250 Red, 48', Decimal('2443.3500'), 'Red', 'higher value')
+(791, 'Road-250 Red, 52', Decimal('2443.3500'), 'Red', 'higher value')
+(792, 'Road-250 Red, 58', Decimal('2443.3500'), 'Red', 'higher value')
+(793, 'Road-250 Black, 44', Decimal('2443.3500'), 'Black', 'higher value')
+(794, 'Road-250 Black, 48', Decimal('2443.3500'), 'Black', 'higher value')
+(795, 'Road-250 Black, 52', Decimal('2443.3500'), 'Black', 'higher value')
+(796, 'Road-250 Black, 58', Decimal('2443.3500'), 'Black', 'higher value')
+(814, 'ML Mountain Frame - Black, 38', Decimal('348.7600'), 'Black', 'mid value')
+(815, 'LL Mountain Front Wheel', Decimal('60.7450'), 'Black', 'low value')
+(816, 'ML Mountain Front Wheel', Decimal('209.0250'), 'Black', 'mid value')
+(817, 'HL Mountain Front Wheel', Decimal('300.2150'), 'Black', 'mid value')
+(818, 'LL Road Front Wheel', Decimal('85.5650'), 'Black', 'low value')
+(819, 'ML Road Front Wheel', Decimal('248.3850'), 'Black', 'mid value')
+(820, 'HL Road Front Wheel', Decimal('330.0600'), 'Black', 'mid value')
+(821, 'Touring Front Wheel', Decimal('218.0100'), 'Black', 'mid value')
+(823, 'LL Mountain Rear Wheel', Decimal('87.7450'), 'Black', 'low value')
+(824, 'ML Mountain Rear Wheel', Decimal('236.0250'), 'Black', 'mid value')
+(825, 'HL Mountain Rear Wheel', Decimal('327.2150'), 'Black', 'mid value')
+(826, 'LL Road Rear Wheel', Decimal('112.5650'), 'Black', 'low value')
+(827, 'ML Road Rear Wheel', Decimal('275.3850'), 'Black', 'mid value')
+(828, 'HL Road Rear Wheel', Decimal('357.0600'), 'Black', 'mid value')
+(829, 'Touring Rear Wheel', Decimal('245.0100'), 'Black', 'mid value')
+(830, 'ML Mountain Frame - Black, 40', Decimal('348.7600'), 'Black', 'mid value')
+(831, 'ML Mountain Frame - Black, 44', Decimal('348.7600'), 'Black', 'mid value')
+(832, 'ML Mountain Frame - Black, 48', Decimal('348.7600'), 'Black', 'mid value')
+(837, 'HL Road Frame - Black, 62', Decimal('1431.5000'), 'Black', 'higher value')
+(838, 'HL Road Frame - Black, 44', Decimal('1431.5000'), 'Black', 'higher value')
+(839, 'HL Road Frame - Black, 48', Decimal('1431.5000'), 'Black', 'higher value')
+(840, 'HL Road Frame - Black, 52', Decimal('1431.5000'), 'Black', 'higher value')
+(841, "Men's Sports Shorts, S", Decimal('59.9900'), 'Black', 'low value')
+(849, "Men's Sports Shorts, M", Decimal('59.9900'), 'Black', 'low value')
+(850, "Men's Sports Shorts, L", Decimal('59.9900'), 'Black', 'low value')
+(851, "Men's Sports Shorts, XL", Decimal('59.9900'), 'Black', 'low value')
+(852, "Women's Tights, S", Decimal('74.9900'), 'Black', 'low value')
+(853, "Women's Tights, M", Decimal('74.9900'), 'Black', 'low value')
+(854, "Women's Tights, L", Decimal('74.9900'), 'Black', 'low value')
+(858, 'Half-Finger Gloves, S', Decimal('24.4900'), 'Black', 'low value')
+(859, 'Half-Finger Gloves, M', Decimal('24.4900'), 'Black', 'low value')
+(860, 'Half-Finger Gloves, L', Decimal('24.4900'), 'Black', 'low value')
+(861, 'Full-Finger Gloves, S', Decimal('37.9900'), 'Black', 'low value')
+(862, 'Full-Finger Gloves, M', Decimal('37.9900'), 'Black', 'low value')
+(863, 'Full-Finger Gloves, L', Decimal('37.9900'), 'Black', 'low value')
+(867, "Women's Mountain Shorts, S", Decimal('69.9900'), 'Black', 'low value')
+(868, "Women's Mountain Shorts, M", Decimal('69.9900'), 'Black', 'low value')
+(869, "Women's Mountain Shorts, L", Decimal('69.9900'), 'Black', 'low value')
+(880, 'Hydration Pack - 70 oz.', Decimal('54.9900'), 'Silver', 'low value')
+(894, 'Rear Derailleur', Decimal('121.4600'), 'Silver', 'low value')
+(904, 'ML Mountain Frame-W - Silver, 40', Decimal('364.0900'), 'Silver', 'mid value')
+(905, 'ML Mountain Frame-W - Silver, 42', Decimal('364.0900'), 'Silver', 'mid value')
+(906, 'ML Mountain Frame-W - Silver, 46', Decimal('364.0900'), 'Silver', 'mid value')
+(907, 'Rear Brakes', Decimal('106.5000'), 'Silver', 'low value')
+(917, 'LL Mountain Frame - Silver, 42', Decimal('264.0500'), 'Silver', 'mid value')
+(918, 'LL Mountain Frame - Silver, 44', Decimal('264.0500'), 'Silver', 'mid value')
+(919, 'LL Mountain Frame - Silver, 48', Decimal('264.0500'), 'Silver', 'mid value')
+(920, 'LL Mountain Frame - Silver, 52', Decimal('264.0500'), 'Silver', 'mid value')
+(924, 'LL Mountain Frame - Black, 42', Decimal('249.7900'), 'Black', 'mid value')
+(925, 'LL Mountain Frame - Black, 44', Decimal('249.7900'), 'Black', 'mid value')
+(926, 'LL Mountain Frame - Black, 48', Decimal('249.7900'), 'Black', 'mid value')
+(927, 'LL Mountain Frame - Black, 52', Decimal('249.7900'), 'Black', 'mid value')
+(942, 'ML Mountain Frame-W - Silver, 38', Decimal('364.0900'), 'Silver', 'mid value')
+(943, 'LL Mountain Frame - Black, 40', Decimal('249.7900'), 'Black', 'mid value')
+(944, 'LL Mountain Frame - Silver, 40', Decimal('264.0500'), 'Silver', 'mid value')
+(945, 'Front Derailleur', Decimal('91.4900'), 'Silver', 'low value')
+(948, 'Front Brakes', Decimal('106.5000'), 'Silver', 'low value')
+(949, 'LL Crankset', Decimal('175.4900'), 'Black', 'low value')
+(950, 'ML Crankset', Decimal('256.4900'), 'Black', 'mid value')
+(951, 'HL Crankset', Decimal('404.9900'), 'Black', 'mid value')
+(952, 'Chain', Decimal('20.2400'), 'Silver', 'low value')
+(977, 'Road-750 Black, 58', Decimal('539.9900'), 'Black', 'mid value')
+(980, 'Mountain-400-W Silver, 38', Decimal('769.4900'), 'Silver', 'mid to high value')
+(981, 'Mountain-400-W Silver, 40', Decimal('769.4900'), 'Silver', 'mid to high value')
+(982, 'Mountain-400-W Silver, 42', Decimal('769.4900'), 'Silver', 'mid to high value')
+(983, 'Mountain-400-W Silver, 46', Decimal('769.4900'), 'Silver', 'mid to high value')
+(984, 'Mountain-500 Silver, 40', Decimal('564.9900'), 'Silver', 'mid value')
+(985, 'Mountain-500 Silver, 42', Decimal('564.9900'), 'Silver', 'mid value')
+(986, 'Mountain-500 Silver, 44', Decimal('564.9900'), 'Silver', 'mid value')
+(987, 'Mountain-500 Silver, 48', Decimal('564.9900'), 'Silver', 'mid value')
+(988, 'Mountain-500 Silver, 52', Decimal('564.9900'), 'Silver', 'mid value')
+(989, 'Mountain-500 Black, 40', Decimal('539.9900'), 'Black', 'mid value')
+(990, 'Mountain-500 Black, 42', Decimal('539.9900'), 'Black', 'mid value')
+(991, 'Mountain-500 Black, 44', Decimal('539.9900'), 'Black', 'mid value')
+(992, 'Mountain-500 Black, 48', Decimal('539.9900'), 'Black', 'mid value')
+(993, 'Mountain-500 Black, 52', Decimal('539.9900'), 'Black', 'mid value')
+(997, 'Road-750 Black, 44', Decimal('539.9900'), 'Black', 'mid value')
+(998, 'Road-750 Black, 48', Decimal('539.9900'), 'Black', 'mid value')
+(999, 'Road-750 Black, 52', Decimal('539.9900'), 'Black', 'mid value')
+{
+    'result': [
+        {'ProductID': 317, 'Name': 'LL Crankarm', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 318, 'Name': 'ML Crankarm', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 319, 'Name': 'HL Crankarm', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 320, 'Name': 'Chainring Bolts', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 321, 'Name': 'Chainring Nut', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 322, 'Name': 'Chainring', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 332, 'Name': 'Freewheel', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 351, 'Name': 'Front Derailleur Cage', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 352, 'Name': 'Front Derailleur Linkage', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 461, 'Name': 'Lock Ring', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 679, 'Name': 'Rear Derailleur Cage', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 680, 'Name': 'HL Road Frame - Black, 58', 'ListPrice': Decimal('1431.5000'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 706, 'Name': 'HL Road Frame - Red, 58', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 707, 'Name': 'Sport-100 Helmet, Red', 'ListPrice': Decimal('34.9900'), 'Color': 'Red', 'ValueSegment': 'low value'},
+        {'ProductID': 708, 'Name': 'Sport-100 Helmet, Black', 'ListPrice': Decimal('34.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 717, 'Name': 'HL Road Frame - Red, 62', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 718, 'Name': 'HL Road Frame - Red, 44', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 719, 'Name': 'HL Road Frame - Red, 48', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 720, 'Name': 'HL Road Frame - Red, 52', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 721, 'Name': 'HL Road Frame - Red, 56', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 722, 'Name': 'LL Road Frame - Black, 58', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 723, 'Name': 'LL Road Frame - Black, 60', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 724, 'Name': 'LL Road Frame - Black, 62', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 725, 'Name': 'LL Road Frame - Red, 44', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 726, 'Name': 'LL Road Frame - Red, 48', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 727, 'Name': 'LL Road Frame - Red, 52', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 728, 'Name': 'LL Road Frame - Red, 58', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 729, 'Name': 'LL Road Frame - Red, 60', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 730, 'Name': 'LL Road Frame - Red, 62', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 731, 'Name': 'ML Road Frame - Red, 44', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 732, 'Name': 'ML Road Frame - Red, 48', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 733, 'Name': 'ML Road Frame - Red, 52', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 734, 'Name': 'ML Road Frame - Red, 58', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 735, 'Name': 'ML Road Frame - Red, 60', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 736, 'Name': 'LL Road Frame - Black, 44', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 737, 'Name': 'LL Road Frame - Black, 48', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 738, 'Name': 'LL Road Frame - Black, 52', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {
+            'ProductID': 739,
+            'Name': 'HL Mountain Frame - Silver, 42',
+            'ListPrice': Decimal('1364.5000'),
+            'Color': 'Silver',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 740,
+            'Name': 'HL Mountain Frame - Silver, 44',
+            'ListPrice': Decimal('1364.5000'),
+            'Color': 'Silver',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 741,
+            'Name': 'HL Mountain Frame - Silver, 48',
+            'ListPrice': Decimal('1364.5000'),
+            'Color': 'Silver',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 742,
+            'Name': 'HL Mountain Frame - Silver, 46',
+            'ListPrice': Decimal('1364.5000'),
+            'Color': 'Silver',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 743,
+            'Name': 'HL Mountain Frame - Black, 42',
+            'ListPrice': Decimal('1349.6000'),
+            'Color': 'Black',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 744,
+            'Name': 'HL Mountain Frame - Black, 44',
+            'ListPrice': Decimal('1349.6000'),
+            'Color': 'Black',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 745,
+            'Name': 'HL Mountain Frame - Black, 48',
+            'ListPrice': Decimal('1349.6000'),
+            'Color': 'Black',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 746,
+            'Name': 'HL Mountain Frame - Black, 46',
+            'ListPrice': Decimal('1349.6000'),
+            'Color': 'Black',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 747,
+            'Name': 'HL Mountain Frame - Black, 38',
+            'ListPrice': Decimal('1349.6000'),
+            'Color': 'Black',
+            'ValueSegment': 'higher value'
+        },
+        {
+            'ProductID': 748,
+            'Name': 'HL Mountain Frame - Silver, 38',
+            'ListPrice': Decimal('1364.5000'),
+            'Color': 'Silver',
+            'ValueSegment': 'higher value'
+        },
+        {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 754, 'Name': 'Road-450 Red, 58', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 755, 'Name': 'Road-450 Red, 60', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 756, 'Name': 'Road-450 Red, 44', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 757, 'Name': 'Road-450 Red, 48', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 758, 'Name': 'Road-450 Red, 52', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 759, 'Name': 'Road-650 Red, 58', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 760, 'Name': 'Road-650 Red, 60', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 761, 'Name': 'Road-650 Red, 62', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 762, 'Name': 'Road-650 Red, 44', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 763, 'Name': 'Road-650 Red, 48', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 764, 'Name': 'Road-650 Red, 52', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 765, 'Name': 'Road-650 Black, 58', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 766, 'Name': 'Road-650 Black, 60', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 767, 'Name': 'Road-650 Black, 62', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 768, 'Name': 'Road-650 Black, 44', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 769, 'Name': 'Road-650 Black, 48', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 770, 'Name': 'Road-650 Black, 52', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 776, 'Name': 'Mountain-100 Black, 42', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 777, 'Name': 'Mountain-100 Black, 44', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 778, 'Name': 'Mountain-100 Black, 48', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 779, 'Name': 'Mountain-200 Silver, 38', 'ListPrice': Decimal('2319.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 780, 'Name': 'Mountain-200 Silver, 42', 'ListPrice': Decimal('2319.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 781, 'Name': 'Mountain-200 Silver, 46', 'ListPrice': Decimal('2319.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 782, 'Name': 'Mountain-200 Black, 38', 'ListPrice': Decimal('2294.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 783, 'Name': 'Mountain-200 Black, 42', 'ListPrice': Decimal('2294.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 784, 'Name': 'Mountain-200 Black, 46', 'ListPrice': Decimal('2294.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 785, 'Name': 'Mountain-300 Black, 38', 'ListPrice': Decimal('1079.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 786, 'Name': 'Mountain-300 Black, 40', 'ListPrice': Decimal('1079.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 787, 'Name': 'Mountain-300 Black, 44', 'ListPrice': Decimal('1079.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 788, 'Name': 'Mountain-300 Black, 48', 'ListPrice': Decimal('1079.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 789, 'Name': 'Road-250 Red, 44', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 790, 'Name': 'Road-250 Red, 48', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 791, 'Name': 'Road-250 Red, 52', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 792, 'Name': 'Road-250 Red, 58', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 793, 'Name': 'Road-250 Black, 44', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 794, 'Name': 'Road-250 Black, 48', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 795, 'Name': 'Road-250 Black, 52', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 796, 'Name': 'Road-250 Black, 58', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 814, 'Name': 'ML Mountain Frame - Black, 38', 'ListPrice': Decimal('348.7600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 815, 'Name': 'LL Mountain Front Wheel', 'ListPrice': Decimal('60.7450'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 816, 'Name': 'ML Mountain Front Wheel', 'ListPrice': Decimal('209.0250'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 817, 'Name': 'HL Mountain Front Wheel', 'ListPrice': Decimal('300.2150'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 818, 'Name': 'LL Road Front Wheel', 'ListPrice': Decimal('85.5650'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 819, 'Name': 'ML Road Front Wheel', 'ListPrice': Decimal('248.3850'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 820, 'Name': 'HL Road Front Wheel', 'ListPrice': Decimal('330.0600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 821, 'Name': 'Touring Front Wheel', 'ListPrice': Decimal('218.0100'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 823, 'Name': 'LL Mountain Rear Wheel', 'ListPrice': Decimal('87.7450'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 824, 'Name': 'ML Mountain Rear Wheel', 'ListPrice': Decimal('236.0250'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 825, 'Name': 'HL Mountain Rear Wheel', 'ListPrice': Decimal('327.2150'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 826, 'Name': 'LL Road Rear Wheel', 'ListPrice': Decimal('112.5650'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 827, 'Name': 'ML Road Rear Wheel', 'ListPrice': Decimal('275.3850'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 828, 'Name': 'HL Road Rear Wheel', 'ListPrice': Decimal('357.0600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 829, 'Name': 'Touring Rear Wheel', 'ListPrice': Decimal('245.0100'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 830, 'Name': 'ML Mountain Frame - Black, 40', 'ListPrice': Decimal('348.7600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 831, 'Name': 'ML Mountain Frame - Black, 44', 'ListPrice': Decimal('348.7600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 832, 'Name': 'ML Mountain Frame - Black, 48', 'ListPrice': Decimal('348.7600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 837, 'Name': 'HL Road Frame - Black, 62', 'ListPrice': Decimal('1431.5000'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 838, 'Name': 'HL Road Frame - Black, 44', 'ListPrice': Decimal('1431.5000'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 839, 'Name': 'HL Road Frame - Black, 48', 'ListPrice': Decimal('1431.5000'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 840, 'Name': 'HL Road Frame - Black, 52', 'ListPrice': Decimal('1431.5000'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 841, 'Name': "Men's Sports Shorts, S", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 849, 'Name': "Men's Sports Shorts, M", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 850, 'Name': "Men's Sports Shorts, L", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 851, 'Name': "Men's Sports Shorts, XL", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 852, 'Name': "Women's Tights, S", 'ListPrice': Decimal('74.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 853, 'Name': "Women's Tights, M", 'ListPrice': Decimal('74.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 854, 'Name': "Women's Tights, L", 'ListPrice': Decimal('74.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 858, 'Name': 'Half-Finger Gloves, S', 'ListPrice': Decimal('24.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 859, 'Name': 'Half-Finger Gloves, M', 'ListPrice': Decimal('24.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 860, 'Name': 'Half-Finger Gloves, L', 'ListPrice': Decimal('24.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 861, 'Name': 'Full-Finger Gloves, S', 'ListPrice': Decimal('37.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 862, 'Name': 'Full-Finger Gloves, M', 'ListPrice': Decimal('37.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 863, 'Name': 'Full-Finger Gloves, L', 'ListPrice': Decimal('37.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 867, 'Name': "Women's Mountain Shorts, S", 'ListPrice': Decimal('69.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 868, 'Name': "Women's Mountain Shorts, M", 'ListPrice': Decimal('69.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 869, 'Name': "Women's Mountain Shorts, L", 'ListPrice': Decimal('69.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 880, 'Name': 'Hydration Pack - 70 oz.', 'ListPrice': Decimal('54.9900'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 894, 'Name': 'Rear Derailleur', 'ListPrice': Decimal('121.4600'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {
+            'ProductID': 904,
+            'Name': 'ML Mountain Frame-W - Silver, 40',
+            'ListPrice': Decimal('364.0900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid value'
+        },
+        {
+            'ProductID': 905,
+            'Name': 'ML Mountain Frame-W - Silver, 42',
+            'ListPrice': Decimal('364.0900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid value'
+        },
+        {
+            'ProductID': 906,
+            'Name': 'ML Mountain Frame-W - Silver, 46',
+            'ListPrice': Decimal('364.0900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid value'
+        },
+        {'ProductID': 907, 'Name': 'Rear Brakes', 'ListPrice': Decimal('106.5000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 917, 'Name': 'LL Mountain Frame - Silver, 42', 'ListPrice': Decimal('264.0500'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 918, 'Name': 'LL Mountain Frame - Silver, 44', 'ListPrice': Decimal('264.0500'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 919, 'Name': 'LL Mountain Frame - Silver, 48', 'ListPrice': Decimal('264.0500'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 920, 'Name': 'LL Mountain Frame - Silver, 52', 'ListPrice': Decimal('264.0500'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 924, 'Name': 'LL Mountain Frame - Black, 42', 'ListPrice': Decimal('249.7900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 925, 'Name': 'LL Mountain Frame - Black, 44', 'ListPrice': Decimal('249.7900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 926, 'Name': 'LL Mountain Frame - Black, 48', 'ListPrice': Decimal('249.7900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 927, 'Name': 'LL Mountain Frame - Black, 52', 'ListPrice': Decimal('249.7900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {
+            'ProductID': 942,
+            'Name': 'ML Mountain Frame-W - Silver, 38',
+            'ListPrice': Decimal('364.0900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid value'
+        },
+        {'ProductID': 943, 'Name': 'LL Mountain Frame - Black, 40', 'ListPrice': Decimal('249.7900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 944, 'Name': 'LL Mountain Frame - Silver, 40', 'ListPrice': Decimal('264.0500'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 945, 'Name': 'Front Derailleur', 'ListPrice': Decimal('91.4900'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 948, 'Name': 'Front Brakes', 'ListPrice': Decimal('106.5000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 949, 'Name': 'LL Crankset', 'ListPrice': Decimal('175.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 950, 'Name': 'ML Crankset', 'ListPrice': Decimal('256.4900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 951, 'Name': 'HL Crankset', 'ListPrice': Decimal('404.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 952, 'Name': 'Chain', 'ListPrice': Decimal('20.2400'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 977, 'Name': 'Road-750 Black, 58', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {
+            'ProductID': 980,
+            'Name': 'Mountain-400-W Silver, 38',
+            'ListPrice': Decimal('769.4900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid to high value'
+        },
+        {
+            'ProductID': 981,
+            'Name': 'Mountain-400-W Silver, 40',
+            'ListPrice': Decimal('769.4900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid to high value'
+        },
+        {
+            'ProductID': 982,
+            'Name': 'Mountain-400-W Silver, 42',
+            'ListPrice': Decimal('769.4900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid to high value'
+        },
+        {
+            'ProductID': 983,
+            'Name': 'Mountain-400-W Silver, 46',
+            'ListPrice': Decimal('769.4900'),
+            'Color': 'Silver',
+            'ValueSegment': 'mid to high value'
+        },
+        {'ProductID': 984, 'Name': 'Mountain-500 Silver, 40', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 985, 'Name': 'Mountain-500 Silver, 42', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 986, 'Name': 'Mountain-500 Silver, 44', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 987, 'Name': 'Mountain-500 Silver, 48', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 988, 'Name': 'Mountain-500 Silver, 52', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 989, 'Name': 'Mountain-500 Black, 40', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 990, 'Name': 'Mountain-500 Black, 42', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 991, 'Name': 'Mountain-500 Black, 44', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 992, 'Name': 'Mountain-500 Black, 48', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 993, 'Name': 'Mountain-500 Black, 52', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 997, 'Name': 'Road-750 Black, 44', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 998, 'Name': 'Road-750 Black, 48', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 999, 'Name': 'Road-750 Black, 52', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'}
+    ]
+}
+SQL execution succeeded.
+resp_dd
+{
+    'query': "Create a list of product segmentation by defining criteria that places each item in a predefined segment as follows. If price gets less 
+than 200 then low value. If price is between 201 and 750 then mid value. If between 750 and 1250 then mid to high value else higher value. For colours 
+'black, silver and red' products.",
+    'response': {
+        'result': [
+            {'ProductID': 317, 'Name': 'LL Crankarm', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 318, 'Name': 'ML Crankarm', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 319, 'Name': 'HL Crankarm', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 320, 'Name': 'Chainring Bolts', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 321, 'Name': 'Chainring Nut', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 322, 'Name': 'Chainring', 'ListPrice': Decimal('0.0000'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 332, 'Name': 'Freewheel', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 351, 'Name': 'Front Derailleur Cage', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 352, 'Name': 'Front Derailleur Linkage', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 461, 'Name': 'Lock Ring', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 679, 'Name': 'Rear Derailleur Cage', 'ListPrice': Decimal('0.0000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {
+                'ProductID': 680,
+                'Name': 'HL Road Frame - Black, 58',
+                'ListPrice': Decimal('1431.5000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {'ProductID': 706, 'Name': 'HL Road Frame - Red, 58', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 707, 'Name': 'Sport-100 Helmet, Red', 'ListPrice': Decimal('34.9900'), 'Color': 'Red', 'ValueSegment': 'low value'},
+            {'ProductID': 708, 'Name': 'Sport-100 Helmet, Black', 'ListPrice': Decimal('34.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 717, 'Name': 'HL Road Frame - Red, 62', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 718, 'Name': 'HL Road Frame - Red, 44', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 719, 'Name': 'HL Road Frame - Red, 48', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 720, 'Name': 'HL Road Frame - Red, 52', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 721, 'Name': 'HL Road Frame - Red, 56', 'ListPrice': Decimal('1431.5000'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 722, 'Name': 'LL Road Frame - Black, 58', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 723, 'Name': 'LL Road Frame - Black, 60', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 724, 'Name': 'LL Road Frame - Black, 62', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 725, 'Name': 'LL Road Frame - Red, 44', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 726, 'Name': 'LL Road Frame - Red, 48', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 727, 'Name': 'LL Road Frame - Red, 52', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 728, 'Name': 'LL Road Frame - Red, 58', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 729, 'Name': 'LL Road Frame - Red, 60', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 730, 'Name': 'LL Road Frame - Red, 62', 'ListPrice': Decimal('337.2200'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 731, 'Name': 'ML Road Frame - Red, 44', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 732, 'Name': 'ML Road Frame - Red, 48', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 733, 'Name': 'ML Road Frame - Red, 52', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 734, 'Name': 'ML Road Frame - Red, 58', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 735, 'Name': 'ML Road Frame - Red, 60', 'ListPrice': Decimal('594.8300'), 'Color': 'Red', 'ValueSegment': 'mid value'},
+            {'ProductID': 736, 'Name': 'LL Road Frame - Black, 44', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 737, 'Name': 'LL Road Frame - Black, 48', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 738, 'Name': 'LL Road Frame - Black, 52', 'ListPrice': Decimal('337.2200'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {
+                'ProductID': 739,
+                'Name': 'HL Mountain Frame - Silver, 42',
+                'ListPrice': Decimal('1364.5000'),
+                'Color': 'Silver',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 740,
+                'Name': 'HL Mountain Frame - Silver, 44',
+                'ListPrice': Decimal('1364.5000'),
+                'Color': 'Silver',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 741,
+                'Name': 'HL Mountain Frame - Silver, 48',
+                'ListPrice': Decimal('1364.5000'),
+                'Color': 'Silver',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 742,
+                'Name': 'HL Mountain Frame - Silver, 46',
+                'ListPrice': Decimal('1364.5000'),
+                'Color': 'Silver',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 743,
+                'Name': 'HL Mountain Frame - Black, 42',
+                'ListPrice': Decimal('1349.6000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 744,
+                'Name': 'HL Mountain Frame - Black, 44',
+                'ListPrice': Decimal('1349.6000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 745,
+                'Name': 'HL Mountain Frame - Black, 48',
+                'ListPrice': Decimal('1349.6000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 746,
+                'Name': 'HL Mountain Frame - Black, 46',
+                'ListPrice': Decimal('1349.6000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 747,
+                'Name': 'HL Mountain Frame - Black, 38',
+                'ListPrice': Decimal('1349.6000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 748,
+                'Name': 'HL Mountain Frame - Silver, 38',
+                'ListPrice': Decimal('1364.5000'),
+                'Color': 'Silver',
+                'ValueSegment': 'higher value'
+            },
+            {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'ListPrice': Decimal('3578.2700'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 754, 'Name': 'Road-450 Red, 58', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 755, 'Name': 'Road-450 Red, 60', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 756, 'Name': 'Road-450 Red, 44', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 757, 'Name': 'Road-450 Red, 48', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 758, 'Name': 'Road-450 Red, 52', 'ListPrice': Decimal('1457.9900'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 759, 'Name': 'Road-650 Red, 58', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 760, 'Name': 'Road-650 Red, 60', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 761, 'Name': 'Road-650 Red, 62', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 762, 'Name': 'Road-650 Red, 44', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 763, 'Name': 'Road-650 Red, 48', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 764, 'Name': 'Road-650 Red, 52', 'ListPrice': Decimal('782.9900'), 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 765, 'Name': 'Road-650 Black, 58', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 766, 'Name': 'Road-650 Black, 60', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 767, 'Name': 'Road-650 Black, 62', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 768, 'Name': 'Road-650 Black, 44', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 769, 'Name': 'Road-650 Black, 48', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 770, 'Name': 'Road-650 Black, 52', 'ListPrice': Decimal('782.9900'), 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+            {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+            {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+            {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+            {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'ListPrice': Decimal('3399.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+            {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 776, 'Name': 'Mountain-100 Black, 42', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 777, 'Name': 'Mountain-100 Black, 44', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 778, 'Name': 'Mountain-100 Black, 48', 'ListPrice': Decimal('3374.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 779, 'Name': 'Mountain-200 Silver, 38', 'ListPrice': Decimal('2319.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+            {'ProductID': 780, 'Name': 'Mountain-200 Silver, 42', 'ListPrice': Decimal('2319.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+            {'ProductID': 781, 'Name': 'Mountain-200 Silver, 46', 'ListPrice': Decimal('2319.9900'), 'Color': 'Silver', 'ValueSegment': 'higher value'},
+            {'ProductID': 782, 'Name': 'Mountain-200 Black, 38', 'ListPrice': Decimal('2294.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 783, 'Name': 'Mountain-200 Black, 42', 'ListPrice': Decimal('2294.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 784, 'Name': 'Mountain-200 Black, 46', 'ListPrice': Decimal('2294.9900'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {
+                'ProductID': 785,
+                'Name': 'Mountain-300 Black, 38',
+                'ListPrice': Decimal('1079.9900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid to high value'
+            },
+            {
+                'ProductID': 786,
+                'Name': 'Mountain-300 Black, 40',
+                'ListPrice': Decimal('1079.9900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid to high value'
+            },
+            {
+                'ProductID': 787,
+                'Name': 'Mountain-300 Black, 44',
+                'ListPrice': Decimal('1079.9900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid to high value'
+            },
+            {
+                'ProductID': 788,
+                'Name': 'Mountain-300 Black, 48',
+                'ListPrice': Decimal('1079.9900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid to high value'
+            },
+            {'ProductID': 789, 'Name': 'Road-250 Red, 44', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 790, 'Name': 'Road-250 Red, 48', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 791, 'Name': 'Road-250 Red, 52', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 792, 'Name': 'Road-250 Red, 58', 'ListPrice': Decimal('2443.3500'), 'Color': 'Red', 'ValueSegment': 'higher value'},
+            {'ProductID': 793, 'Name': 'Road-250 Black, 44', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 794, 'Name': 'Road-250 Black, 48', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 795, 'Name': 'Road-250 Black, 52', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {'ProductID': 796, 'Name': 'Road-250 Black, 58', 'ListPrice': Decimal('2443.3500'), 'Color': 'Black', 'ValueSegment': 'higher value'},
+            {
+                'ProductID': 814,
+                'Name': 'ML Mountain Frame - Black, 38',
+                'ListPrice': Decimal('348.7600'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {'ProductID': 815, 'Name': 'LL Mountain Front Wheel', 'ListPrice': Decimal('60.7450'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 816, 'Name': 'ML Mountain Front Wheel', 'ListPrice': Decimal('209.0250'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 817, 'Name': 'HL Mountain Front Wheel', 'ListPrice': Decimal('300.2150'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 818, 'Name': 'LL Road Front Wheel', 'ListPrice': Decimal('85.5650'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 819, 'Name': 'ML Road Front Wheel', 'ListPrice': Decimal('248.3850'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 820, 'Name': 'HL Road Front Wheel', 'ListPrice': Decimal('330.0600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 821, 'Name': 'Touring Front Wheel', 'ListPrice': Decimal('218.0100'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 823, 'Name': 'LL Mountain Rear Wheel', 'ListPrice': Decimal('87.7450'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 824, 'Name': 'ML Mountain Rear Wheel', 'ListPrice': Decimal('236.0250'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 825, 'Name': 'HL Mountain Rear Wheel', 'ListPrice': Decimal('327.2150'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 826, 'Name': 'LL Road Rear Wheel', 'ListPrice': Decimal('112.5650'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 827, 'Name': 'ML Road Rear Wheel', 'ListPrice': Decimal('275.3850'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 828, 'Name': 'HL Road Rear Wheel', 'ListPrice': Decimal('357.0600'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 829, 'Name': 'Touring Rear Wheel', 'ListPrice': Decimal('245.0100'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {
+                'ProductID': 830,
+                'Name': 'ML Mountain Frame - Black, 40',
+                'ListPrice': Decimal('348.7600'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 831,
+                'Name': 'ML Mountain Frame - Black, 44',
+                'ListPrice': Decimal('348.7600'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 832,
+                'Name': 'ML Mountain Frame - Black, 48',
+                'ListPrice': Decimal('348.7600'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 837,
+                'Name': 'HL Road Frame - Black, 62',
+                'ListPrice': Decimal('1431.5000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 838,
+                'Name': 'HL Road Frame - Black, 44',
+                'ListPrice': Decimal('1431.5000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 839,
+                'Name': 'HL Road Frame - Black, 48',
+                'ListPrice': Decimal('1431.5000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {
+                'ProductID': 840,
+                'Name': 'HL Road Frame - Black, 52',
+                'ListPrice': Decimal('1431.5000'),
+                'Color': 'Black',
+                'ValueSegment': 'higher value'
+            },
+            {'ProductID': 841, 'Name': "Men's Sports Shorts, S", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 849, 'Name': "Men's Sports Shorts, M", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 850, 'Name': "Men's Sports Shorts, L", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 851, 'Name': "Men's Sports Shorts, XL", 'ListPrice': Decimal('59.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 852, 'Name': "Women's Tights, S", 'ListPrice': Decimal('74.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 853, 'Name': "Women's Tights, M", 'ListPrice': Decimal('74.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 854, 'Name': "Women's Tights, L", 'ListPrice': Decimal('74.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 858, 'Name': 'Half-Finger Gloves, S', 'ListPrice': Decimal('24.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 859, 'Name': 'Half-Finger Gloves, M', 'ListPrice': Decimal('24.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 860, 'Name': 'Half-Finger Gloves, L', 'ListPrice': Decimal('24.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 861, 'Name': 'Full-Finger Gloves, S', 'ListPrice': Decimal('37.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 862, 'Name': 'Full-Finger Gloves, M', 'ListPrice': Decimal('37.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 863, 'Name': 'Full-Finger Gloves, L', 'ListPrice': Decimal('37.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 867, 'Name': "Women's Mountain Shorts, S", 'ListPrice': Decimal('69.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 868, 'Name': "Women's Mountain Shorts, M", 'ListPrice': Decimal('69.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 869, 'Name': "Women's Mountain Shorts, L", 'ListPrice': Decimal('69.9900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 880, 'Name': 'Hydration Pack - 70 oz.', 'ListPrice': Decimal('54.9900'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 894, 'Name': 'Rear Derailleur', 'ListPrice': Decimal('121.4600'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {
+                'ProductID': 904,
+                'Name': 'ML Mountain Frame-W - Silver, 40',
+                'ListPrice': Decimal('364.0900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 905,
+                'Name': 'ML Mountain Frame-W - Silver, 42',
+                'ListPrice': Decimal('364.0900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 906,
+                'Name': 'ML Mountain Frame-W - Silver, 46',
+                'ListPrice': Decimal('364.0900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {'ProductID': 907, 'Name': 'Rear Brakes', 'ListPrice': Decimal('106.5000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {
+                'ProductID': 917,
+                'Name': 'LL Mountain Frame - Silver, 42',
+                'ListPrice': Decimal('264.0500'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 918,
+                'Name': 'LL Mountain Frame - Silver, 44',
+                'ListPrice': Decimal('264.0500'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 919,
+                'Name': 'LL Mountain Frame - Silver, 48',
+                'ListPrice': Decimal('264.0500'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 920,
+                'Name': 'LL Mountain Frame - Silver, 52',
+                'ListPrice': Decimal('264.0500'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 924,
+                'Name': 'LL Mountain Frame - Black, 42',
+                'ListPrice': Decimal('249.7900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 925,
+                'Name': 'LL Mountain Frame - Black, 44',
+                'ListPrice': Decimal('249.7900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 926,
+                'Name': 'LL Mountain Frame - Black, 48',
+                'ListPrice': Decimal('249.7900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 927,
+                'Name': 'LL Mountain Frame - Black, 52',
+                'ListPrice': Decimal('249.7900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 942,
+                'Name': 'ML Mountain Frame-W - Silver, 38',
+                'ListPrice': Decimal('364.0900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 943,
+                'Name': 'LL Mountain Frame - Black, 40',
+                'ListPrice': Decimal('249.7900'),
+                'Color': 'Black',
+                'ValueSegment': 'mid value'
+            },
+            {
+                'ProductID': 944,
+                'Name': 'LL Mountain Frame - Silver, 40',
+                'ListPrice': Decimal('264.0500'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid value'
+            },
+            {'ProductID': 945, 'Name': 'Front Derailleur', 'ListPrice': Decimal('91.4900'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 948, 'Name': 'Front Brakes', 'ListPrice': Decimal('106.5000'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 949, 'Name': 'LL Crankset', 'ListPrice': Decimal('175.4900'), 'Color': 'Black', 'ValueSegment': 'low value'},
+            {'ProductID': 950, 'Name': 'ML Crankset', 'ListPrice': Decimal('256.4900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 951, 'Name': 'HL Crankset', 'ListPrice': Decimal('404.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 952, 'Name': 'Chain', 'ListPrice': Decimal('20.2400'), 'Color': 'Silver', 'ValueSegment': 'low value'},
+            {'ProductID': 977, 'Name': 'Road-750 Black, 58', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {
+                'ProductID': 980,
+                'Name': 'Mountain-400-W Silver, 38',
+                'ListPrice': Decimal('769.4900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid to high value'
+            },
+            {
+                'ProductID': 981,
+                'Name': 'Mountain-400-W Silver, 40',
+                'ListPrice': Decimal('769.4900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid to high value'
+            },
+            {
+                'ProductID': 982,
+                'Name': 'Mountain-400-W Silver, 42',
+                'ListPrice': Decimal('769.4900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid to high value'
+            },
+            {
+                'ProductID': 983,
+                'Name': 'Mountain-400-W Silver, 46',
+                'ListPrice': Decimal('769.4900'),
+                'Color': 'Silver',
+                'ValueSegment': 'mid to high value'
+            },
+            {'ProductID': 984, 'Name': 'Mountain-500 Silver, 40', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+            {'ProductID': 985, 'Name': 'Mountain-500 Silver, 42', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+            {'ProductID': 986, 'Name': 'Mountain-500 Silver, 44', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+            {'ProductID': 987, 'Name': 'Mountain-500 Silver, 48', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+            {'ProductID': 988, 'Name': 'Mountain-500 Silver, 52', 'ListPrice': Decimal('564.9900'), 'Color': 'Silver', 'ValueSegment': 'mid value'},
+            {'ProductID': 989, 'Name': 'Mountain-500 Black, 40', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 990, 'Name': 'Mountain-500 Black, 42', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 991, 'Name': 'Mountain-500 Black, 44', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 992, 'Name': 'Mountain-500 Black, 48', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 993, 'Name': 'Mountain-500 Black, 52', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 997, 'Name': 'Road-750 Black, 44', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 998, 'Name': 'Road-750 Black, 48', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'},
+            {'ProductID': 999, 'Name': 'Road-750 Black, 52', 'ListPrice': Decimal('539.9900'), 'Color': 'Black', 'ValueSegment': 'mid value'}
+        ]
+    }
+}
+Execution success completed.
+SQL executed successfully!
+
+Process completed!
+SQL Result:
+{
+    'result': [
+        {'ProductID': 317, 'Name': 'LL Crankarm', 'ListPrice': 0.0, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 318, 'Name': 'ML Crankarm', 'ListPrice': 0.0, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 319, 'Name': 'HL Crankarm', 'ListPrice': 0.0, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 320, 'Name': 'Chainring Bolts', 'ListPrice': 0.0, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 321, 'Name': 'Chainring Nut', 'ListPrice': 0.0, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 322, 'Name': 'Chainring', 'ListPrice': 0.0, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 332, 'Name': 'Freewheel', 'ListPrice': 0.0, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 351, 'Name': 'Front Derailleur Cage', 'ListPrice': 0.0, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 352, 'Name': 'Front Derailleur Linkage', 'ListPrice': 0.0, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 461, 'Name': 'Lock Ring', 'ListPrice': 0.0, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 679, 'Name': 'Rear Derailleur Cage', 'ListPrice': 0.0, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 680, 'Name': 'HL Road Frame - Black, 58', 'ListPrice': 1431.5, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 706, 'Name': 'HL Road Frame - Red, 58', 'ListPrice': 1431.5, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 707, 'Name': 'Sport-100 Helmet, Red', 'ListPrice': 34.99, 'Color': 'Red', 'ValueSegment': 'low value'},
+        {'ProductID': 708, 'Name': 'Sport-100 Helmet, Black', 'ListPrice': 34.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 717, 'Name': 'HL Road Frame - Red, 62', 'ListPrice': 1431.5, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 718, 'Name': 'HL Road Frame - Red, 44', 'ListPrice': 1431.5, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 719, 'Name': 'HL Road Frame - Red, 48', 'ListPrice': 1431.5, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 720, 'Name': 'HL Road Frame - Red, 52', 'ListPrice': 1431.5, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 721, 'Name': 'HL Road Frame - Red, 56', 'ListPrice': 1431.5, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 722, 'Name': 'LL Road Frame - Black, 58', 'ListPrice': 337.22, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 723, 'Name': 'LL Road Frame - Black, 60', 'ListPrice': 337.22, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 724, 'Name': 'LL Road Frame - Black, 62', 'ListPrice': 337.22, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 725, 'Name': 'LL Road Frame - Red, 44', 'ListPrice': 337.22, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 726, 'Name': 'LL Road Frame - Red, 48', 'ListPrice': 337.22, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 727, 'Name': 'LL Road Frame - Red, 52', 'ListPrice': 337.22, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 728, 'Name': 'LL Road Frame - Red, 58', 'ListPrice': 337.22, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 729, 'Name': 'LL Road Frame - Red, 60', 'ListPrice': 337.22, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 730, 'Name': 'LL Road Frame - Red, 62', 'ListPrice': 337.22, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 731, 'Name': 'ML Road Frame - Red, 44', 'ListPrice': 594.83, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 732, 'Name': 'ML Road Frame - Red, 48', 'ListPrice': 594.83, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 733, 'Name': 'ML Road Frame - Red, 52', 'ListPrice': 594.83, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 734, 'Name': 'ML Road Frame - Red, 58', 'ListPrice': 594.83, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 735, 'Name': 'ML Road Frame - Red, 60', 'ListPrice': 594.83, 'Color': 'Red', 'ValueSegment': 'mid value'},
+        {'ProductID': 736, 'Name': 'LL Road Frame - Black, 44', 'ListPrice': 337.22, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 737, 'Name': 'LL Road Frame - Black, 48', 'ListPrice': 337.22, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 738, 'Name': 'LL Road Frame - Black, 52', 'ListPrice': 337.22, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 739, 'Name': 'HL Mountain Frame - Silver, 42', 'ListPrice': 1364.5, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 740, 'Name': 'HL Mountain Frame - Silver, 44', 'ListPrice': 1364.5, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 741, 'Name': 'HL Mountain Frame - Silver, 48', 'ListPrice': 1364.5, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 742, 'Name': 'HL Mountain Frame - Silver, 46', 'ListPrice': 1364.5, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 743, 'Name': 'HL Mountain Frame - Black, 42', 'ListPrice': 1349.6, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 744, 'Name': 'HL Mountain Frame - Black, 44', 'ListPrice': 1349.6, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 745, 'Name': 'HL Mountain Frame - Black, 48', 'ListPrice': 1349.6, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 746, 'Name': 'HL Mountain Frame - Black, 46', 'ListPrice': 1349.6, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 747, 'Name': 'HL Mountain Frame - Black, 38', 'ListPrice': 1349.6, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 748, 'Name': 'HL Mountain Frame - Silver, 38', 'ListPrice': 1364.5, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 749, 'Name': 'Road-150 Red, 62', 'ListPrice': 3578.27, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 750, 'Name': 'Road-150 Red, 44', 'ListPrice': 3578.27, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 751, 'Name': 'Road-150 Red, 48', 'ListPrice': 3578.27, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 752, 'Name': 'Road-150 Red, 52', 'ListPrice': 3578.27, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 753, 'Name': 'Road-150 Red, 56', 'ListPrice': 3578.27, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 754, 'Name': 'Road-450 Red, 58', 'ListPrice': 1457.99, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 755, 'Name': 'Road-450 Red, 60', 'ListPrice': 1457.99, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 756, 'Name': 'Road-450 Red, 44', 'ListPrice': 1457.99, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 757, 'Name': 'Road-450 Red, 48', 'ListPrice': 1457.99, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 758, 'Name': 'Road-450 Red, 52', 'ListPrice': 1457.99, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 759, 'Name': 'Road-650 Red, 58', 'ListPrice': 782.99, 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 760, 'Name': 'Road-650 Red, 60', 'ListPrice': 782.99, 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 761, 'Name': 'Road-650 Red, 62', 'ListPrice': 782.99, 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 762, 'Name': 'Road-650 Red, 44', 'ListPrice': 782.99, 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 763, 'Name': 'Road-650 Red, 48', 'ListPrice': 782.99, 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 764, 'Name': 'Road-650 Red, 52', 'ListPrice': 782.99, 'Color': 'Red', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 765, 'Name': 'Road-650 Black, 58', 'ListPrice': 782.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 766, 'Name': 'Road-650 Black, 60', 'ListPrice': 782.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 767, 'Name': 'Road-650 Black, 62', 'ListPrice': 782.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 768, 'Name': 'Road-650 Black, 44', 'ListPrice': 782.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 769, 'Name': 'Road-650 Black, 48', 'ListPrice': 782.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 770, 'Name': 'Road-650 Black, 52', 'ListPrice': 782.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 771, 'Name': 'Mountain-100 Silver, 38', 'ListPrice': 3399.99, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 772, 'Name': 'Mountain-100 Silver, 42', 'ListPrice': 3399.99, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 773, 'Name': 'Mountain-100 Silver, 44', 'ListPrice': 3399.99, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 774, 'Name': 'Mountain-100 Silver, 48', 'ListPrice': 3399.99, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 775, 'Name': 'Mountain-100 Black, 38', 'ListPrice': 3374.99, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 776, 'Name': 'Mountain-100 Black, 42', 'ListPrice': 3374.99, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 777, 'Name': 'Mountain-100 Black, 44', 'ListPrice': 3374.99, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 778, 'Name': 'Mountain-100 Black, 48', 'ListPrice': 3374.99, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 779, 'Name': 'Mountain-200 Silver, 38', 'ListPrice': 2319.99, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 780, 'Name': 'Mountain-200 Silver, 42', 'ListPrice': 2319.99, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 781, 'Name': 'Mountain-200 Silver, 46', 'ListPrice': 2319.99, 'Color': 'Silver', 'ValueSegment': 'higher value'},
+        {'ProductID': 782, 'Name': 'Mountain-200 Black, 38', 'ListPrice': 2294.99, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 783, 'Name': 'Mountain-200 Black, 42', 'ListPrice': 2294.99, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 784, 'Name': 'Mountain-200 Black, 46', 'ListPrice': 2294.99, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 785, 'Name': 'Mountain-300 Black, 38', 'ListPrice': 1079.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 786, 'Name': 'Mountain-300 Black, 40', 'ListPrice': 1079.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 787, 'Name': 'Mountain-300 Black, 44', 'ListPrice': 1079.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 788, 'Name': 'Mountain-300 Black, 48', 'ListPrice': 1079.99, 'Color': 'Black', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 789, 'Name': 'Road-250 Red, 44', 'ListPrice': 2443.35, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 790, 'Name': 'Road-250 Red, 48', 'ListPrice': 2443.35, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 791, 'Name': 'Road-250 Red, 52', 'ListPrice': 2443.35, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 792, 'Name': 'Road-250 Red, 58', 'ListPrice': 2443.35, 'Color': 'Red', 'ValueSegment': 'higher value'},
+        {'ProductID': 793, 'Name': 'Road-250 Black, 44', 'ListPrice': 2443.35, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 794, 'Name': 'Road-250 Black, 48', 'ListPrice': 2443.35, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 795, 'Name': 'Road-250 Black, 52', 'ListPrice': 2443.35, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 796, 'Name': 'Road-250 Black, 58', 'ListPrice': 2443.35, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 814, 'Name': 'ML Mountain Frame - Black, 38', 'ListPrice': 348.76, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 815, 'Name': 'LL Mountain Front Wheel', 'ListPrice': 60.745, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 816, 'Name': 'ML Mountain Front Wheel', 'ListPrice': 209.025, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 817, 'Name': 'HL Mountain Front Wheel', 'ListPrice': 300.215, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 818, 'Name': 'LL Road Front Wheel', 'ListPrice': 85.565, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 819, 'Name': 'ML Road Front Wheel', 'ListPrice': 248.385, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 820, 'Name': 'HL Road Front Wheel', 'ListPrice': 330.06, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 821, 'Name': 'Touring Front Wheel', 'ListPrice': 218.01, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 823, 'Name': 'LL Mountain Rear Wheel', 'ListPrice': 87.745, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 824, 'Name': 'ML Mountain Rear Wheel', 'ListPrice': 236.025, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 825, 'Name': 'HL Mountain Rear Wheel', 'ListPrice': 327.215, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 826, 'Name': 'LL Road Rear Wheel', 'ListPrice': 112.565, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 827, 'Name': 'ML Road Rear Wheel', 'ListPrice': 275.385, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 828, 'Name': 'HL Road Rear Wheel', 'ListPrice': 357.06, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 829, 'Name': 'Touring Rear Wheel', 'ListPrice': 245.01, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 830, 'Name': 'ML Mountain Frame - Black, 40', 'ListPrice': 348.76, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 831, 'Name': 'ML Mountain Frame - Black, 44', 'ListPrice': 348.76, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 832, 'Name': 'ML Mountain Frame - Black, 48', 'ListPrice': 348.76, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 837, 'Name': 'HL Road Frame - Black, 62', 'ListPrice': 1431.5, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 838, 'Name': 'HL Road Frame - Black, 44', 'ListPrice': 1431.5, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 839, 'Name': 'HL Road Frame - Black, 48', 'ListPrice': 1431.5, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 840, 'Name': 'HL Road Frame - Black, 52', 'ListPrice': 1431.5, 'Color': 'Black', 'ValueSegment': 'higher value'},
+        {'ProductID': 841, 'Name': "Men's Sports Shorts, S", 'ListPrice': 59.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 849, 'Name': "Men's Sports Shorts, M", 'ListPrice': 59.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 850, 'Name': "Men's Sports Shorts, L", 'ListPrice': 59.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 851, 'Name': "Men's Sports Shorts, XL", 'ListPrice': 59.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 852, 'Name': "Women's Tights, S", 'ListPrice': 74.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 853, 'Name': "Women's Tights, M", 'ListPrice': 74.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 854, 'Name': "Women's Tights, L", 'ListPrice': 74.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 858, 'Name': 'Half-Finger Gloves, S', 'ListPrice': 24.49, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 859, 'Name': 'Half-Finger Gloves, M', 'ListPrice': 24.49, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 860, 'Name': 'Half-Finger Gloves, L', 'ListPrice': 24.49, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 861, 'Name': 'Full-Finger Gloves, S', 'ListPrice': 37.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 862, 'Name': 'Full-Finger Gloves, M', 'ListPrice': 37.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 863, 'Name': 'Full-Finger Gloves, L', 'ListPrice': 37.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 867, 'Name': "Women's Mountain Shorts, S", 'ListPrice': 69.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 868, 'Name': "Women's Mountain Shorts, M", 'ListPrice': 69.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 869, 'Name': "Women's Mountain Shorts, L", 'ListPrice': 69.99, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 880, 'Name': 'Hydration Pack - 70 oz.', 'ListPrice': 54.99, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 894, 'Name': 'Rear Derailleur', 'ListPrice': 121.46, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 904, 'Name': 'ML Mountain Frame-W - Silver, 40', 'ListPrice': 364.09, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 905, 'Name': 'ML Mountain Frame-W - Silver, 42', 'ListPrice': 364.09, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 906, 'Name': 'ML Mountain Frame-W - Silver, 46', 'ListPrice': 364.09, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 907, 'Name': 'Rear Brakes', 'ListPrice': 106.5, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 917, 'Name': 'LL Mountain Frame - Silver, 42', 'ListPrice': 264.05, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 918, 'Name': 'LL Mountain Frame - Silver, 44', 'ListPrice': 264.05, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 919, 'Name': 'LL Mountain Frame - Silver, 48', 'ListPrice': 264.05, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 920, 'Name': 'LL Mountain Frame - Silver, 52', 'ListPrice': 264.05, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 924, 'Name': 'LL Mountain Frame - Black, 42', 'ListPrice': 249.79, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 925, 'Name': 'LL Mountain Frame - Black, 44', 'ListPrice': 249.79, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 926, 'Name': 'LL Mountain Frame - Black, 48', 'ListPrice': 249.79, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 927, 'Name': 'LL Mountain Frame - Black, 52', 'ListPrice': 249.79, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 942, 'Name': 'ML Mountain Frame-W - Silver, 38', 'ListPrice': 364.09, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 943, 'Name': 'LL Mountain Frame - Black, 40', 'ListPrice': 249.79, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 944, 'Name': 'LL Mountain Frame - Silver, 40', 'ListPrice': 264.05, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 945, 'Name': 'Front Derailleur', 'ListPrice': 91.49, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 948, 'Name': 'Front Brakes', 'ListPrice': 106.5, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 949, 'Name': 'LL Crankset', 'ListPrice': 175.49, 'Color': 'Black', 'ValueSegment': 'low value'},
+        {'ProductID': 950, 'Name': 'ML Crankset', 'ListPrice': 256.49, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 951, 'Name': 'HL Crankset', 'ListPrice': 404.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 952, 'Name': 'Chain', 'ListPrice': 20.24, 'Color': 'Silver', 'ValueSegment': 'low value'},
+        {'ProductID': 977, 'Name': 'Road-750 Black, 58', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 980, 'Name': 'Mountain-400-W Silver, 38', 'ListPrice': 769.49, 'Color': 'Silver', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 981, 'Name': 'Mountain-400-W Silver, 40', 'ListPrice': 769.49, 'Color': 'Silver', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 982, 'Name': 'Mountain-400-W Silver, 42', 'ListPrice': 769.49, 'Color': 'Silver', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 983, 'Name': 'Mountain-400-W Silver, 46', 'ListPrice': 769.49, 'Color': 'Silver', 'ValueSegment': 'mid to high value'},
+        {'ProductID': 984, 'Name': 'Mountain-500 Silver, 40', 'ListPrice': 564.99, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 985, 'Name': 'Mountain-500 Silver, 42', 'ListPrice': 564.99, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 986, 'Name': 'Mountain-500 Silver, 44', 'ListPrice': 564.99, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 987, 'Name': 'Mountain-500 Silver, 48', 'ListPrice': 564.99, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 988, 'Name': 'Mountain-500 Silver, 52', 'ListPrice': 564.99, 'Color': 'Silver', 'ValueSegment': 'mid value'},
+        {'ProductID': 989, 'Name': 'Mountain-500 Black, 40', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 990, 'Name': 'Mountain-500 Black, 42', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 991, 'Name': 'Mountain-500 Black, 44', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 992, 'Name': 'Mountain-500 Black, 48', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 993, 'Name': 'Mountain-500 Black, 52', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 997, 'Name': 'Road-750 Black, 44', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 998, 'Name': 'Road-750 Black, 48', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'},
+        {'ProductID': 999, 'Name': 'Road-750 Black, 52', 'ListPrice': 539.99, 'Color': 'Black', 'ValueSegment': 'mid value'}
+    ]
+}
+Model used: o1
+Final Answer:
+Below is a recalculated segmentation of all Black, Silver, and Red products using the rules:
+
+• If ListPrice < 200 ⇒ low value  
+• If 200 < ListPrice ≤ 750 ⇒ mid value  
+• If 750 < ListPrice ≤ 1250 ⇒ mid to high value  
+• Otherwise ⇒ higher value  
+
+(ProductID | Name | ListPrice | Color | NewValueSegment)
+
+1) 317 | LL Crankarm               | 0.00    | Black  | low value  
+2) 318 | ML Crankarm               | 0.00    | Black  | low value  
+3) 319 | HL Crankarm               | 0.00    | Black  | low value  
+4) 320 | Chainring Bolts           | 0.00    | Silver | low value  
+5) 321 | Chainring Nut             | 0.00    | Silver | low value  
+6) 322 | Chainring                 | 0.00    | Black  | low value  
+7) 332 | Freewheel                 | 0.00    | Silver | low value  
+8) 351 | Front Derailleur Cage     | 0.00    | Silver | low value  
+9) 352 | Front Derailleur Linkage  | 0.00    | Silver | low value  
+10) 461 | Lock Ring                | 0.00    | Silver | low value  
+11) 679 | Rear Derailleur Cage     | 0.00    | Silver | low value  
+12) 680 | HL Road Frame - Black, 58| 1431.50 | Black  | higher value  
+13) 706 | HL Road Frame - Red, 58  | 1431.50 | Red    | higher value  
+14) 707 | Sport-100 Helmet, Red    | 34.99   | Red    | low value  
+15) 708 | Sport-100 Helmet, Black  | 34.99   | Black  | low value  
+16) 717 | HL Road Frame - Red, 62  | 1431.50 | Red    | higher value  
+17) 718 | HL Road Frame - Red, 44  | 1431.50 | Red    | higher value  
+18) 719 | HL Road Frame - Red, 48  | 1431.50 | Red    | higher value  
+19) 720 | HL Road Frame - Red, 52  | 1431.50 | Red    | higher value  
+20) 721 | HL Road Frame - Red, 56  | 1431.50 | Red    | higher value  
+21) 722 | LL Road Frame - Black, 58| 337.22  | Black  | mid value  
+22) 723 | LL Road Frame - Black, 60| 337.22  | Black  | mid value  
+23) 724 | LL Road Frame - Black, 62| 337.22  | Black  | mid value  
+24) 725 | LL Road Frame - Red, 44  | 337.22  | Red    | mid value  
+25) 726 | LL Road Frame - Red, 48  | 337.22  | Red    | mid value  
+26) 727 | LL Road Frame - Red, 52  | 337.22  | Red    | mid value  
+27) 728 | LL Road Frame - Red, 58  | 337.22  | Red    | mid value  
+28) 729 | LL Road Frame - Red, 60  | 337.22  | Red    | mid value  
+29) 730 | LL Road Frame - Red, 62  | 337.22  | Red    | mid value  
+30) 731 | ML Road Frame - Red, 44  | 594.83  | Red    | mid value  
+31) 732 | ML Road Frame - Red, 48  | 594.83  | Red    | mid value  
+32) 733 | ML Road Frame - Red, 52  | 594.83  | Red    | mid value  
+33) 734 | ML Road Frame - Red, 58  | 594.83  | Red    | mid value  
+34) 735 | ML Road Frame - Red, 60  | 594.83  | Red    | mid value  
+35) 736 | LL Road Frame - Black, 44| 337.22  | Black  | mid value  
+36) 737 | LL Road Frame - Black, 48| 337.22  | Black  | mid value  
+37) 738 | LL Road Frame - Black, 52| 337.22  | Black  | mid value  
+38) 739 | HL Mountain Frame-Sil,42 | 1364.50 | Silver | higher value  
+39) 740 | HL Mountain Frame-Sil,44 | 1364.50 | Silver | higher value  
+40) 741 | HL Mountain Frame-Sil,48 | 1364.50 | Silver | higher value  
+41) 742 | HL Mountain Frame-Sil,46 | 1364.50 | Silver | higher value  
+42) 743 | HL Mountain Frame-Blk,42 | 1349.60 | Black  | higher value  
+43) 744 | HL Mountain Frame-Blk,44 | 1349.60 | Black  | higher value  
+44) 745 | HL Mountain Frame-Blk,48 | 1349.60 | Black  | higher value  
+45) 746 | HL Mountain Frame-Blk,46 | 1349.60 | Black  | higher value  
+46) 747 | HL Mountain Frame-Blk,38 | 1349.60 | Black  | higher value  
+47) 748 | HL Mountain Frame-Sil,38 | 1364.50 | Silver | higher value  
+48) 749 | Road-150 Red, 62         | 3578.27 | Red    | higher value  
+49) 750 | Road-150 Red, 44         | 3578.27 | Red    | higher value  
+50) 751 | Road-150 Red, 48         | 3578.27 | Red    | higher value  
+51) 752 | Road-150 Red, 52         | 3578.27 | Red    | higher value  
+52) 753 | Road-150 Red, 56         | 3578.27 | Red    | higher value  
+53) 754 | Road-450 Red, 58         | 1457.99 | Red    | higher value  
+54) 755 | Road-450 Red, 60         | 1457.99 | Red    | higher value  
+55) 756 | Road-450 Red, 44         | 1457.99 | Red    | higher value  
+56) 757 | Road-450 Red, 48         | 1457.99 | Red    | higher value  
+57) 758 | Road-450 Red, 52         | 1457.99 | Red    | higher value  
+58) 759 | Road-650 Red, 58         | 782.99  | Red    | mid to high value  
+59) 760 | Road-650 Red, 60         | 782.99  | Red    | mid to high value  
+60) 761 | Road-650 Red, 62         | 782.99  | Red    | mid to high value  
+61) 762 | Road-650 Red, 44         | 782.99  | Red    | mid to high value  
+62) 763 | Road-650 Red, 48         | 782.99  | Red    | mid to high value  
+63) 764 | Road-650 Red, 52         | 782.99  | Red    | mid to high value  
+64) 765 | Road-650 Black, 58       | 782.99  | Black  | mid to high value  
+65) 766 | Road-650 Black, 60       | 782.99  | Black  | mid to high value  
+66) 767 | Road-650 Black, 62       | 782.99  | Black  | mid to high value  
+67) 768 | Road-650 Black, 44       | 782.99  | Black  | mid to high value  
+68) 769 | Road-650 Black, 48       | 782.99  | Black  | mid to high value  
+69) 770 | Road-650 Black, 52       | 782.99  | Black  | mid to high value  
+70) 771 | Mountain-100 Sil, 38     | 3399.99 | Silver | higher value  
+71) 772 | Mountain-100 Sil, 42     | 3399.99 | Silver | higher value  
+72) 773 | Mountain-100 Sil, 44     | 3399.99 | Silver | higher value  
+73) 774 | Mountain-100 Sil, 48     | 3399.99 | Silver | higher value  
+74) 775 | Mountain-100 Black, 38   | 3374.99 | Black  | higher value  
+75) 776 | Mountain-100 Black, 42   | 3374.99 | Black  | higher value  
+76) 777 | Mountain-100 Black, 44   | 3374.99 | Black  | higher value  
+77) 778 | Mountain-100 Black, 48   | 3374.99 | Black  | higher value  
+78) 779 | Mountain-200 Sil, 38     | 2319.99 | Silver | higher value  
+79) 780 | Mountain-200 Sil, 42     | 2319.99 | Silver | higher value  
+80) 781 | Mountain-200 Sil, 46     | 2319.99 | Silver | higher value  
+81) 782 | Mountain-200 Blk, 38     | 2294.99 | Black  | higher value  
+82) 783 | Mountain-200 Blk, 42     | 2294.99 | Black  | higher value  
+83) 784 | Mountain-200 Blk, 46     | 2294.99 | Black  | higher value  
+84) 785 | Mountain-300 Blk, 38     | 1079.99 | Black  | mid to high value  
+85) 786 | Mountain-300 Blk, 40     | 1079.99 | Black  | mid to high value  
+86) 787 | Mountain-300 Blk, 44     | 1079.99 | Black  | mid to high value  
+87) 788 | Mountain-300 Blk, 48     | 1079.99 | Black  | mid to high value  
+88) 789 | Road-250 Red, 44         | 2443.35 | Red    | higher value  
+89) 790 | Road-250 Red, 48         | 2443.35 | Red    | higher value  
+90) 791 | Road-250 Red, 52         | 2443.35 | Red    | higher value  
+91) 792 | Road-250 Red, 58         | 2443.35 | Red    | higher value  
+92) 793 | Road-250 Black, 44       | 2443.35 | Black  | higher value  
+93) 794 | Road-250 Black, 48       | 2443.35 | Black  | higher value  
+94) 795 | Road-250 Black, 52       | 2443.35 | Black  | higher value  
+95) 796 | Road-250 Black, 58       | 2443.35 | Black  | higher value  
+96) 814 | ML Mountain Frame-Blk,38 | 348.76  | Black  | mid value  
+97) 815 | LL Mountain Front Wheel  | 60.75   | Black  | low value  
+98) 816 | ML Mountain Front Wheel  | 209.03  | Black  | mid value  
+99) 817 | HL Mountain Front Wheel  | 300.22  | Black  | mid value  
+100)818 | LL Road Front Wheel      | 85.57   | Black  | low value  
+101)819 | ML Road Front Wheel      | 248.39  | Black  | mid value  
+102)820 | HL Road Front Wheel      | 330.06  | Black  | mid value  
+103)821 | Touring Front Wheel      | 218.01  | Black  | mid value  
+104)823 | LL Mountain Rear Wheel   | 87.75   | Black  | low value  
+105)824 | ML Mountain Rear Wheel   | 236.03  | Black  | mid value  
+106)825 | HL Mountain Rear Wheel   | 327.22  | Black  | mid value  
+107)826 | LL Road Rear Wheel       | 112.57  | Black  | low value  
+108)827 | ML Road Rear Wheel       | 275.39  | Black  | mid value  
+109)828 | HL Road Rear Wheel       | 357.06  | Black  | mid value  
+110)829 | Touring Rear Wheel       | 245.01  | Black  | mid value  
+111)830 | ML Mountain Frame-Blk,40 | 348.76  | Black  | mid value  
+112)831 | ML Mountain Frame-Blk,44 | 348.76  | Black  | mid value  
+113)832 | ML Mountain Frame-Blk,48 | 348.76  | Black  | mid value  
+114)837 | HL Road Frame - Black,62 | 1431.50 | Black  | higher value  
+115)838 | HL Road Frame - Black,44 | 1431.50 | Black  | higher value  
+116)839 | HL Road Frame - Black,48 | 1431.50 | Black  | higher value  
+117)840 | HL Road Frame - Black,52 | 1431.50 | Black  | higher value  
+118)841 | Men’s Sports Shorts, S   | 59.99   | Black  | low value  
+119)849 | Men’s Sports Shorts, M   | 59.99   | Black  | low value  
+120)850 | Men’s Sports Shorts, L   | 59.99   | Black  | low value  
+121)851 | Men’s Sports Shorts, XL  | 59.99   | Black  | low value  
+122)852 | Women’s Tights, S        | 74.99   | Black  | low value  
+123)853 | Women’s Tights, M        | 74.99   | Black  | low value  
+124)854 | Women’s Tights, L        | 74.99   | Black  | low value  
+125)858 | Half-Finger Gloves, S    | 24.49   | Black  | low value  
+126)859 | Half-Finger Gloves, M    | 24.49   | Black  | low value  
+127)860 | Half-Finger Gloves, L    | 24.49   | Black  | low value  
+128)861 | Full-Finger Gloves, S    | 37.99   | Black  | low value  
+129)862 | Full-Finger Gloves, M    | 37.99   | Black  | low value  
+130)863 | Full-Finger Gloves, L    | 37.99   | Black  | low value  
+131)867 | Women’s Mtn Shorts, S    | 69.99   | Black  | low value  
+132)868 | Women’s Mtn Shorts, M    | 69.99   | Black  | low value  
+133)869 | Women’s Mtn Shorts, L    | 69.99   | Black  | low value  
+134)880 | Hydration Pack - 70 oz.  | 54.99   | Silver | low value  
+135)894 | Rear Derailleur          | 121.46  | Silver | low value  
+136)904 | ML Mtn Frame-W Sil, 40   | 364.09  | Silver | mid value  
+137)905 | ML Mtn Frame-W Sil, 42   | 364.09  | Silver | mid value  
+138)906 | ML Mtn Frame-W Sil, 46   | 364.09  | Silver | mid value  
+139)907 | Rear Brakes              | 106.50  | Silver | low value  
+140)917 | LL Mtn Frame - Sil, 42   | 264.05  | Silver | mid value  
+141)918 | LL Mtn Frame - Sil, 44   | 264.05  | Silver | mid value  
+142)919 | LL Mtn Frame - Sil, 48   | 264.05  | Silver | mid value  
+143)920 | LL Mtn Frame - Sil, 52   | 264.05  | Silver | mid value  
+144)924 | LL Mtn Frame - Blk, 42   | 249.79  | Black  | mid value  
+145)925 | LL Mtn Frame - Blk, 44   | 249.79  | Black  | mid value  
+146)926 | LL Mtn Frame - Blk, 48   | 249.79  | Black  | mid value  
+147)927 | LL Mtn Frame - Blk, 52   | 249.79  | Black  | mid value  
+148)942 | ML Mtn Frame-W Sil, 38   | 364.09  | Silver | mid value  
+149)943 | LL Mtn Frame - Blk, 40   | 249.79  | Black  | mid value  
+150)944 | LL Mtn Frame - Sil, 40   | 264.05  | Silver | mid value  
+151)945 | Front Derailleur         | 91.49   | Silver | low value  
+152)948 | Front Brakes             | 106.50  | Silver | low value  
+153)949 | LL Crankset              | 175.49  | Black  | low value  
+154)950 | ML Crankset              | 256.49  | Black  | mid value  
+155)951 | HL Crankset              | 404.99  | Black  | mid value  
+156)952 | Chain                    | 20.24   | Silver | low value  
+157)977 | Road-750 Black, 58       | 539.99  | Black  | mid value  
+158)980 | Mountain-400-W Sil, 38   | 769.49  | Silver | mid to high value  
+159)981 | Mountain-400-W Sil, 40   | 769.49  | Silver | mid to high value  
+160)982 | Mountain-400-W Sil, 42   | 769.49  | Silver | mid to high value  
+161)983 | Mountain-400-W Sil, 46   | 769.49  | Silver | mid to high value  
+162)984 | Mountain-500 Sil, 40     | 564.99  | Silver | mid value  
+163)985 | Mountain-500 Sil, 42     | 564.99  | Silver | mid value  
+164)986 | Mountain-500 Sil, 44     | 564.99  | Silver | mid value  
+165)987 | Mountain-500 Sil, 48     | 564.99  | Silver | mid value  
+166)988 | Mountain-500 Sil, 52     | 564.99  | Silver | mid value  
+167)989 | Mountain-500 Black, 40   | 539.99  | Black  | mid value  
+168)990 | Mountain-500 Black, 42   | 539.99  | Black  | mid value  
+169)991 | Mountain-500 Black, 44   | 539.99  | Black  | mid value  
+170)992 | Mountain-500 Black, 48   | 539.99  | Black  | mid value  
+171)993 | Mountain-500 Black, 52   | 539.99  | Black  | mid value  
+172)997 | Road-750 Black, 44       | 539.99  | Black  | mid value  
+173)998 | Road-750 Black, 48       | 539.99  | Black  | mid value  
+174)999 | Road-750 Black, 52       | 539.99  | Black  | mid value  
+
+This listing applies only the new segmentation rules to all Black, Silver, and Red items:
+
+• ListPrice < 200 → low value  
+• 200 < ListPrice ≤ 750 → mid value  
+• 750 < ListPrice ≤ 1250 → mid to high value  
+• ListPrice > 1250 → higher value.  
+
+Assessment: Generated SQL includes more columns than reqiured but otherwise 100%
+

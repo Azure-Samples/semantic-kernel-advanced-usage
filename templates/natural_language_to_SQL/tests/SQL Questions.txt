@@ -1,0 +1,136 @@
+SQL Questions
+1. Retrieve from product tables all colours except blanks,Red, silver/black and white
+with unit price between £75 and £750. Rename the column standard cost price. Sort
+price in ascending order.
+
+Solution:
+```sql
+SELECT DISTINCT p.Name, p.StandardCost AS [Standard Cost Price], p.Color    from Production.Product p
+WHERE p.Color NOT IN ('Red', 'Silver/Black', 'White', '') AND p.StandardCost BETWEEN 75 AND 750
+ORDER BY p.StandardCost ASC;
+
+```
+
+2. Find all male employees born from 1962 to 1970 and their hire date greater than
+2001 and female employees born between 1972 to 1975 and hire date between
+2001/2002.
+solution:   
+```sql
+select NationalIDNumber, Gender, BirthDate, HireDate From HumanResources.Employee
+where (Gender = 'M' 
+    and Year(BirthDate) between 1962 and 1970 and year(HireDate) >2001)
+    or
+    (Gender = 'F'
+    And Year(Birthdata)between 1972 and 1975
+    And Year(HireDate )between 2001 and 2002)
+```
+
+3. Create a list of 10 most expensive products from the Production.Product table that have a product number beginning with ‘BK’. Include only the product ID, Name and colour.
+```sql
+SELECT TOP 10 ProductID, Name, Color
+FROM Production.Product
+WHERE ProductNumber LIKE 'BK%'
+ORDER BY ListPrice DESC;
+```
+
+4. Create a list of all contact persons where the first 4 characters of the front of the last name is the same as the first four characters of the email address in small letters. Also, for all contacts whose first name and the last name begin with the same characters, create a new column called full name combining first name and the last name only. Would also like information on the length of the full name?
+
+Ground Truth:
+``` sql:
+SELECT pp.BusinessEntityID, pp.EmailAddress, pp.FirstName, pp.LastName, 
+CASE WHEN Lower(LEFT(pp.EmailAddress, 4)) = LOWER(LEFT(pp.LastName, 4)) 
+    THEN CONCAT(pp.FirstName, ' ', pp.LastName) 
+ELSE NULL 
+    END AS FullName, 
+    LEN(CONCAT(pp.FirstName, ' ', pp.LastName))  AS FullNameLength
+FROM Person.Person pp JOIN Person.EmailAddress pea 
+    ON pp.BusinessEntityID = pea.BusinessEntityID
+    WHERE LOWER(LEFT(pp.LastName, 4)) = LEFT(LOWER(pea.EmailAddress), 4);
+```
+
+5. If commission is calculated based on 14.790% of standard cost, extract product item
+and calculate the margin if standard cost is increased or decreased as follows for
+each product colours as follows:
+Black +22%, Red - 12%, Silver +15%, Multi +5%
+White (2) times original price divided by the square root of the margin price ,while
+other colours remain the same.
+
+Ground Truth: 
+
+```sql
+SELECT P.ProductID, P.Name, P.Color, P.StandardCost, CASE WHEN P.Color = 'Black' THEN P.StandardCost * 1.22 WHEN P.Color = 'Red' THEN P.StandardCost * 0.88 WHEN P.Color = 'Silver' THEN P.StandardCost * 1.15 WHEN P.Color = 'Multi' THEN P.StandardCost * 1.05 WHEN P.Color = 'White' THEN P.StandardCost * 2 ELSE P.StandardCost END AS AdjustedStandardCost, (CASE WHEN P.Color = 'Black' THEN P.StandardCost * 1.22 WHEN P.Color = 'Red' THEN P.StandardCost * 0.88 WHEN P.Color = 'Silver' THEN P.StandardCost * 1.15 WHEN P.Color = 'Multi' THEN P.StandardCost * 1.05 WHEN P.Color = 'White' THEN P.StandardCost * 2 ELSE P.StandardCost END - P.StandardCost * 1.1479) AS Margin FROM Production.Product AS P
+```
+
+
+6. Return all product subcategory record that take an Average 3 days or longer to manufacture.
+
+```sql:
+SELECT DISTINCT psc.Name FROM Production.ProductSubcategory AS psc JOIN Production.Product AS p ON psc.ProductSubcategoryID = p.ProductSubcategoryID GROUP BY psc.Name HAVING AVG(p.DaysToManufacture) >= 3
+```
+
+7. Create a list of product segmentation by defining criteria that places each item in a predefined segment as follows. If price gets less than 200 then low value. If price is between 201 and 750 then mid value. If between 750 and 1250 then mid to high value else higher value. For colours “black, silver and red” products.
+
+``` sql:
+SELECT  P.Name,  P.Color,P.ListPrice, 
+CASE WHEN P.ListPrice < 200 THEN 'low value' 
+WHEN P.ListPrice BETWEEN 201 AND 750 THEN 'mid value' 
+WHEN P.ListPrice BETWEEN 751 AND 1250 THEN 'mid to high value' 
+ELSE 'higher value' END 
+AS ValueSegment 
+FROM Production.Product AS P WHERE P.Color IN ('black','silver','red');
+
+```
+
+8. How many Distinct Jobtitle are there?
+
+``` sql:
+SELECT COUNT(DISTINCT E.JobTitle) AS JobTitles FROM HumanResources.Employee E
+```
+
+9. Use employee table and calculate the ages of each employee at the time of hiring
+
+```sql:
+
+SELECT NationalIDNumber, BirthDate, HireDate, YEAR(HireDate) - YEAR(BirthDate) AS AgeTimeofHire
+FROM HumanResources. Employee
+```
+
+
+10. How many employees will be due a long service award in the next 5 years if long service is 20 years?
+Ground Truth SQL:
+```
+SELECT COUNT (NationalIDNumber) AS No_ofEmployees
+FROM HumanResources. Employee
+WHERE DATEPART(YEAR, GETDATE()) - YEAR(HireDate) >= 15
+```
+
+11. How many more years does each employee have to work before reaching sentiment. If sentiment age is 65?
+
+Ground Truth SQL:
+```
+SELECT p.FirstName, p.LastName, (65 - DATEDIFF(year, e.BirthDate, GETDATE())) AS YearsLeft FROM HumanResources.Employee AS e INNER JOIN Person.Person AS p ON e.BusinessEntityID = p.BusinessEntityID;
+```
+
+12. Derive the week day, month name and year from the hire. Also how long has each
+female employee been employed?
+13. Implement new price policy on the product table base on the colour of the item
+If white increase price by 8%
+If yellow reduce price by 7.5%
+If black increase price by 17.2%
+If multi, silver, silver/black or blue take the square root of the price and double the
+value. Column should be called Newprice, while other colours remain the same. For
+each item, also calculate commission as 37.5% of newly computed list price.
+
+14. I would like information Sales.Person and their sales quota. For every Sales person
+should have a FirstName, LastName, HireDate, SickLeave Hours and Region where
+they Work
+15. Using adventure works, write a query to extract a data table that must contain the
+following variables:
+ Product name
+ Product category name
+ Product subcategory name
+ Sales person
+ Revenue
+ Month of transaction
+ Quarter of transaction
+ Region

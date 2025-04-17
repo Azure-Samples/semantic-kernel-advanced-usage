@@ -1,0 +1,129 @@
+Q6:  Return all product subcategory record that take an Average 3 days or longer to manufacture.
+
+Ground Truth Answer:
+```sql:
+
+SELECT P1.DaysToManufacture, PS.Name, PS.ProductSubcategoryID, PS.ProductCategoryID, PS.rowguid, PS.ModifiedDate
+FROM Production.Product AS P1
+LEFT JOIN Production. ProductSubcategory AS PS
+ON P1.ProductSubcategoryID=PS.ProductSubcategoryID
+WHERE P1.DaysToManufacture >= 3
+
+```
+
+
+Output:
+
+Generated SQL:
+
+SELECT s.ProductSubcategoryID, s.ProductCategoryID, s.Name FROM Production.ProductSubcategory AS s JOIN Production.Product AS p ON s.ProductSubcategoryID = p.ProductSubcategoryID GROUP BY s.ProductSubcategoryID, s.ProductCategoryID, s.Name HAVING AVG(p.DaysToManufacture) >= 3
+
+
+python src\main.py "Return all product subcategory record that take an Average 3 days or longer to manufacture" 
+AzureChatCompletion service registered with kernel.
+SQL Process initialized
+Processing query: Return all product subcategory record that take an Average 3 days or longer to manufacture
+Executing TableNameStep...
+Running TableNameStep...
+Received user query: Return all product subcategory record that take an Average 3 days or longer to manufacture
+Model used: o1
+Extracted table names:
+
+GetTableNames(table_names=[ValidTableName(table_name='Production.Product'), ValidTableName(table_name='Production.ProductSubcategory')])
+Executing ColumnNameStep...
+Running ColumnNameStep...
+Model used: o1
+Extracted column names:
+
+GetColumnNames(
+    table_column_list=[
+        TableColumns(table_name='Production.Product', column_names=['ProductID', 'ProductSubcategoryID', 'DaysToManufacture']),
+        TableColumns(table_name='Production.ProductSubcategory', column_names=['ProductSubcategoryID', 'ProductCategoryID', 'Name'])
+    ],
+    table_column_names=[
+        TableColumns(table_name='Production.Product', column_names=['ProductID', 'ProductSubcategoryID', 'DaysToManufacture']),
+        TableColumns(table_name='Production.ProductSubcategory', column_names=['ProductSubcategoryID', 'ProductCategoryID', 'Name'])
+    ]
+)
+Executing SQLGenerationStep...
+Running SQLGenerationStep...
+Writing file to full path: C:\Users\wknupp\Documents\Code\semantic-kernel-advanced-usage\templates\natural_language_to_SQL\output_prompts\prompt_0.txt
+Model used: o1
+Generated SQL statement:
+
+SQLGenerateResult(
+    sql_statement='SELECT s.ProductSubcategoryID, s.ProductCategoryID, s.Name FROM Production.ProductSubcategory AS s JOIN Production.Product AS p ON 
+s.ProductSubcategoryID = p.ProductSubcategoryID GROUP BY s.ProductSubcategoryID, s.ProductCategoryID, s.Name HAVING AVG(p.DaysToManufacture) >= 3',
+    result='SELECT s.ProductSubcategoryID, s.ProductCategoryID, s.Name FROM Production.ProductSubcategory AS s JOIN Production.Product AS p ON 
+s.ProductSubcategoryID = p.ProductSubcategoryID GROUP BY s.ProductSubcategoryID, s.ProductCategoryID, s.Name HAVING AVG(p.DaysToManufacture) >= 3',
+    status='OK',
+    reason=''
+)
+Executing BusinessRulesStep...
+Running BusinessRulesStep...
+Model used: o1
+Applied business rules:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ValidationStep...
+Running ValidationStep...
+SQL statement to validate: SELECT s.ProductSubcategoryID, s.ProductCategoryID, s.Name FROM Production.ProductSubcategory AS s JOIN Production.Product AS p ON s.ProductSubcategoryID = p.ProductSubcategoryID GROUP BY s.ProductSubcategoryID, s.ProductCategoryID, s.Name HAVING AVG(p.DaysToManufacture) >= 3
+Model used: o1
+SQL validation results:
+
+ValidationResult(status='OK', list_of_issues=[], list_of_fixes=[])
+Executing ExecutionStep...
+Running ExecutionStep...
+SQL statement to execute: SELECT s.ProductSubcategoryID, s.ProductCategoryID, s.Name FROM Production.ProductSubcategory AS s JOIN Production.Product AS p ON s.ProductSubcategoryID = p.ProductSubcategoryID GROUP BY s.ProductSubcategoryID, s.ProductCategoryID, s.Name HAVING AVG(p.DaysToManufacture) >= 3
+Connecting to Azure SQL Database: myazsqlsv.database.windows.net, adventureworks (Attempt 1/4, Auth method: Azure CLI Credential Token, Auth retry: 1)
+* Running SQL in Azure SQL [SELECT s.ProductSubcategoryID, s.ProductCategoryID, s.Name FROM Production.ProductSubcategory AS s JOIN Production.Product AS p ON s.ProductSubcategoryID = p.ProductSubcategoryID GROUP BY s.ProductSubcategoryID, s.ProductCategoryID, s.Name HAVING AVG(p.DaysToManufacture) >= 3]...
+
+(1, 1, 'Mountain Bikes')
+(2, 1, 'Road Bikes')
+(3, 1, 'Touring Bikes')
+{
+    'result': [
+        {'ProductSubcategoryID': 1, 'ProductCategoryID': 1, 'Name': 'Mountain Bikes'},
+        {'ProductSubcategoryID': 2, 'ProductCategoryID': 1, 'Name': 'Road Bikes'},
+        {'ProductSubcategoryID': 3, 'ProductCategoryID': 1, 'Name': 'Touring Bikes'}
+    ]
+}
+SQL execution succeeded.
+resp_dd
+{
+    'query': 'Return all product subcategory record that take an Average 3 days or longer to manufacture',
+    'response': {
+        'result': [
+            {'ProductSubcategoryID': 1, 'ProductCategoryID': 1, 'Name': 'Mountain Bikes'},
+            {'ProductSubcategoryID': 2, 'ProductCategoryID': 1, 'Name': 'Road Bikes'},
+            {'ProductSubcategoryID': 3, 'ProductCategoryID': 1, 'Name': 'Touring Bikes'}
+        ]
+    }
+}
+Execution success completed.
+SQL executed successfully!
+
+Process completed!
+SQL Result:
+{
+    'result': [
+        {'ProductSubcategoryID': 1, 'ProductCategoryID': 1, 'Name': 'Mountain Bikes'},
+        {'ProductSubcategoryID': 2, 'ProductCategoryID': 1, 'Name': 'Road Bikes'},
+        {'ProductSubcategoryID': 3, 'ProductCategoryID': 1, 'Name': 'Touring Bikes'}
+    ]
+}
+Model used: o1
+Final Answer:
+I’m sorry, but the provided database context does not include any information about the average days to manufacture these products. Without that data, I 
+cannot determine which (if any) product subcategories take an average of three days or longer to produce. The only information returned in the context is
+the list of subcategories:
+
+• ProductSubcategoryID: 1 | Category: 1 | Name: Mountain Bikes
+• ProductSubcategoryID: 2 | Category: 1 | Name: Road Bikes
+• ProductSubcategoryID: 3 | Category: 1 | Name: Touring Bikes
+
+No manufacturing time details were provided.
+
+Assessment: The Ground Truth Answer seems to include columns that were not asked for and  therefore I consider it suboptimal.
+
+The Generated SQL is correct.

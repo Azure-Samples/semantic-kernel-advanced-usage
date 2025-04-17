@@ -1,0 +1,8 @@
+{
+    "query": "What are the key characteristics and purchasing behaviors of our most profitable customer segments",
+    "response": {
+        "error": "('42000', '[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]The XML data type cannot be compared or sorted, except when using the IS NULL operator. (305) (SQLExecDirectW)')",
+        "error_type": "sql_syntax"
+    },
+    "filename": "C:\\Users\\wknupp\\Documents\\Code\\semantic-kernel-advanced-usage\\templates\\natural_language_to_SQL\\responses\\response_20250415_173814_what_are_the_0fdc3c96.json"
+}
