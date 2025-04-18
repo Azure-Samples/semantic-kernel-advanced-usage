@@ -27,13 +27,13 @@ class TechnicalAgentPlugin:
     def check_customer_telemetry(
         service_sku: Annotated[
             str,
-            "The SKU of the service to check status for, values can be INET_MOBILE, INET_BUNDLE, INET_HOME",
+            "The SKU of the service to check status for, value can be only INET_MOBILE, INET_BUNDLE, INET_HOME",
         ],
         customerCode: Annotated[str, "The customer code to check telemetry for"],
     ) -> Annotated[str, "Telemetry summary for the specified customer"]:
 
         if service_sku == "INET_MOBILE":
-            base_telemetry = f"Customer {customerCode}: Mobile telemetry indicates strong signal with no issues."
+            base_telemetry = f"Customer {customerCode}: Mobile telemetry indicates user monthly data limit reached."
         elif service_sku == "INET_BUNDLE":
             base_telemetry = f"Customer {customerCode}: Bundle telemetry shows slight latency but overall stable connection."
         elif service_sku == "INET_HOME":

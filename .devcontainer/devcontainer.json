@@ -25,6 +25,7 @@
         "ms-dotnettools.vscode-dapr",
         "esbenp.prettier-vscode",
         "ms-python.black-formatter",
+        "ms-python.flake8",
         "vscode-icons-team.vscode-icons",
         "teamsdevapp.vscode-ai-foundry",
         "ms-azuretools.vscode-azurecontainerapps",
