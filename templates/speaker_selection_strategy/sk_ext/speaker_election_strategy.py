@@ -106,7 +106,7 @@ class SpeakerElectionStrategy(SelectionStrategy):
         import json
 
         messages = [
-            f"{idx+1}) {message.name or "user"} => {json.dumps(message.content)}"
+            f"{idx+1}) {message.name or 'user'} => {json.dumps(message.content)}"
             for idx, message in enumerate(history)
             # For selection strategy, we only need messages from user and assistant
             if message.role in [AuthorRole.USER, AuthorRole.ASSISTANT]
