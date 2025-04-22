@@ -4,6 +4,10 @@ from semantic_kernel.kernel import Kernel
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
+# Ensure the environment variables are loaded
+from dotenv import load_dotenv
+load_dotenv(override=True)
+
 # See https://techcommunity.microsoft.com/blog/azuredevcommunityblog/using-keyless-authentication-with-azure-openai/4111521
 credential = DefaultAzureCredential()
 token_provider = get_bearer_token_provider(
