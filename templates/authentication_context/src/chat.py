@@ -33,6 +33,7 @@ async def on_message(message: cl.Message):
             chat_history=ContextAwareChatHistoryReducer(messages=[], target_count=100, auto_reduce=True)
         )
 
+    await thread.reduce()
     async for result in agent.invoke(messages=message.content, thread=thread):
         message = result.message
         content = message.content
