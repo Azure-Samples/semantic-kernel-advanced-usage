@@ -1,11 +1,10 @@
+from semantic_kernel.contents.chat_message_content import ChatMessageContent
+from dapr.actor import ActorInterface, actormethod, ActorProxyFactory, ActorId
+import logging
+import chainlit as cl
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-
-import chainlit as cl
-
-from dapr.actor import ActorInterface, actormethod, ActorProxyFactory, ActorId
-from semantic_kernel.contents.chat_message_content import ChatMessageContent
 
 
 class SKAgentActorInterface(ActorInterface):
@@ -15,12 +14,6 @@ class SKAgentActorInterface(ActorInterface):
     @actormethod(name="get_history")
     async def get_history(self) -> dict: ...
 
-
-import logging
-
-# import debugpy
-# # Start the debug server on port 5678
-# debugpy.listen(("localhost", 5678))
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)  # Ensure logging level is set as required
