@@ -11,6 +11,10 @@ This repository contains advanced usage examples for [Semantic Kernel](https://g
 - **Copilot Studio integration**
 - **Copilot Agent with Semantic Kernel and MS Graph APIs**
 
+> [!NOTE]
+> We're in the process of updating the examples to use the latest version of Semantic Kernel, which introduced some breaking changes.
+> Please double check `requirements.txt` files for the tested version of Semantic Kernel in that specific example.
+
 ## Scenarios
 
 > [!NOTE]
