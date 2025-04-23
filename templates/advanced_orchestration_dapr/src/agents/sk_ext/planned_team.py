@@ -144,7 +144,7 @@ class PlannedTeam(TeamBase):
         local_thread = thread
         if self.fork_history:
             local_history = await self._build_history(thread)
-            local_thread = ChatHistoryAgentThread(local_history)
+            local_thread = ChatHistoryAgentThread(local_history, thread_id=f"fork_{thread.id}")
 
         while not self.is_complete:
             # Create a plan based on the current history and feedback (if any)
@@ -164,16 +164,34 @@ class PlannedTeam(TeamBase):
                     name=self.id,
                     content=step.instructions,
                 )
+
+                message = None
                 # TODO: when forking history, do we need to still yield intermediate messages?
-                async for message in selected_agent.invoke_stream(
+                async for response in selected_agent.invoke_stream(
                     messages=[step_instructions], thread=local_thread
                 ):
-                    yield message
+                    chunk = response.message
 
-                for message in messages:
-                    local_history.messages.append(message)
+                    yield chunk
 
+                    message = await self._collect_chunks(chunk, message, thread)
+
+            local_history = await self._build_history(thread)
             ok, feedback = await self.feedback_strategy.provide_feedback(
                 local_history.messages
             )
             self.is_complete = ok
+
+        if self.fork_history:
+            logger.debug("Merging history after plan execution")
+            local_history = await self._build_history(local_thread)
+            source_history = await self._build_history(thread)
+            delta = await self.merge_strategy.merge(
+                source_history.messages, local_history.messages
+            )
+
+            # Yield the merged history delta and update the thread
+            for d in delta:
+                # In this case, we simply state the message is from the team and not from a specific agent
+                d.name = self.id
+                await thread.on_new_message(d)

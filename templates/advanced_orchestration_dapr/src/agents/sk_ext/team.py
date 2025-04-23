@@ -83,6 +83,9 @@ class Team(TeamBase):
                 message = response.message
                 logger.debug(f"Agent '{selected_agent.id}' sent message: {message}")
 
+                # NOTE: "child" agents append their messages to the thread
+                # and the "parent" agent reads from the same thread
+
                 yield message
 
                 # Check for termination
@@ -131,13 +134,7 @@ class Team(TeamBase):
 
                 yield chunk
 
-                if message is None:
-                    message = chunk
-                elif chunk.role == message.role:
-                    message += chunk
-                else:
-                    # Update the thread with the new message
-                    await thread.on_new_message(message)
+            message = await self._collect_chunks(chunk, message, thread)
 
             # Check for termination
             task = self.termination_strategy.should_terminate(

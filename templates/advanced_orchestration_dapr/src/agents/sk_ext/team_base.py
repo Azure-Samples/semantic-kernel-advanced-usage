@@ -24,6 +24,7 @@ from semantic_kernel.contents import (
     ChatHistory,
     ChatMessageContent,
     StreamingChatMessageContent,
+    AuthorRole
 )
 from semantic_kernel.functions.kernel_arguments import KernelArguments
 from semantic_kernel.agents.channels.agent_channel import AgentChannel
@@ -239,8 +240,37 @@ class TeamBase(Agent, ABC):
         return ChatHistoryChannel(messages=messages, thread=thread)
 
     async def _build_history(self, thread: ChatHistoryAgentThread) -> ChatHistory:
-        """Build the history."""
+        """Build the history from the thread."""
         chat_history = ChatHistory()
         async for message in thread.get_messages():
             chat_history.add_message(message)
         return chat_history
+
+    async def _collect_chunks(self, chunk: StreamingChatMessageContent, message: ChatMessageContent, thread: AgentThread) -> None:
+        """
+        Collect chunks of messages from the agent and update the thread.
+        This method is used to handle streaming responses from the agent.
+        Args:
+            chunk: The chunk of the message.
+            message: The current message being built.
+            thread: The agent thread.
+        Returns:
+            The updated message.
+        """
+        # NOTE: unlike the invoke method, here we need to handle
+        # the chunks and collect them into a single message
+
+        # Initially or after completing a message, the message is None
+        if message is None:
+            message = chunk
+        # If the chunk is from the same role, append it to the message
+        elif chunk.role == message.role:
+            message += chunk
+        else:
+            # Update the thread with the new message,
+            # but only if it's not a tool message (otherwise it will be duplicated)
+            if message.role != AuthorRole.TOOL:
+                await thread.on_new_message(message)
+            message = None
+
+        return message
