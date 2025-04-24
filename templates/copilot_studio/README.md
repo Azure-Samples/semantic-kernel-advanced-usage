@@ -18,6 +18,9 @@ This way, you can create any amount of agents in Copilot Studio and interact wit
 
 ## Implementation
 
+> [!TIP]
+> Many thanks to our peers Megha Patil and Ankit Sinha for their help in upgrading the code to the latest version of Semantic Kernel!
+
 The implementation enables seamless integration with Copilot Studio agents via the DirectLine API. Several key components work together to provide this functionality:
 
 - [`DirectLineClient`](src/agents/copilot_studio/directline_client.py): A utility module that handles all Direct Line API operations including authentication, conversation management, posting user activities, and retrieving bot responses using watermark-based polling.
