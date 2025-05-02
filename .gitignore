@@ -172,3 +172,4 @@ cython_debug/
 
 .chainlit/
 .azure/
+mlruns/
