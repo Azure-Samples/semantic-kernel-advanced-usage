@@ -27,6 +27,7 @@ This repository contains advanced usage examples for [Semantic Kernel](https://g
 - [`copilot_studio`](/templates/copilot_studio/README.md): Demonstrates how to use Microsoft Copilot Agents as they were first-party agents in Semantic Kernel.
 - [`copilot-agent-ms-graph`](/templates/copilot-agent-ms-graph/README.md): Demonstrates how to deploy a Semantic Kernel-powered Agent to Copilot that uses Microsoft MS Graph APIs.
 - [`speaker_selection_strategy`](/templates/speaker_selection_strategy/README.md): Demonstrates how to use a custom speaker election strategy in a multi-agent scenario.
+- [`opentelemetry`](/templates/opentelemetry/play.ipynb): Demonstrates how to use and customize tracing and telemetry in Semantic Kernel.
 
 ## Contributing
 
